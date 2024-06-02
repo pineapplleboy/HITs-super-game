@@ -8,6 +8,8 @@ public class PlayerMovement : MonoBehaviour
 {
 
     private Rigidbody2D rb;
+    private Animator animator;
+
     private bool onGround = false;
     private bool mustAutoJump = false;
     private bool isFacedRight = true;
@@ -18,19 +20,20 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
-    void FixedUpdate()
+    void Update()
     {
         float moveX = Input.GetAxis("Horizontal");
 
-        if(Input.GetKey(KeyCode.Space) && onGround)
+        if(Input.GetKeyDown(KeyCode.Space) && onGround)
         {
             rb.AddForce(Vector2.up * jumpForce);
             onGround = false;
         }
 
-        if(Mathf.Abs(moveX) > 0.1 && mustAutoJump)
+        if(Mathf.Abs(moveX) > 0.1 && mustAutoJump && onGround)
         {
             transform.Translate(0, autoJumpForce, 0);
         }
@@ -38,10 +41,16 @@ public class PlayerMovement : MonoBehaviour
         if(moveX > 0)
         {
             isFacedRight = true;
+            animator.SetBool("isRunning", true);
         }
         else if(moveX < 0)
         {
             isFacedRight = false;
+            animator.SetBool("isRunning", true);
+        }
+        else
+        {
+            animator.SetBool("isRunning", false);
         }
 
         Vector2 move = new Vector2(moveX * speed, rb.velocity.y);

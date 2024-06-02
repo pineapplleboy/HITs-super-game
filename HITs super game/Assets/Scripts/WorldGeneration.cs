@@ -1,19 +1,79 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+[System.Serializable]
+public class Block
+{
+    [SerializeField] public string name;
+    [SerializeField] public TileBase tile;
+    [SerializeField] private float timeToBreak;
+
+    public float GetTimeToBreak()
+    {
+        return timeToBreak;
+    }
+}
+
+[System.Serializable]
+public class Blocks
+{
+    [SerializeField] public Block[] blocks;
+
+    public Block GetBlock(string name)
+    {
+        foreach (Block block in blocks)
+        {
+            if(block.name == name)
+            {
+                return block;
+            }
+        }
+
+        return null;
+    }
+}
+
 public class WorldGeneration : MonoBehaviour
 {
+    [SerializeField] public Blocks blocks;
+
     [SerializeField] Tilemap tilemap;
-    [SerializeField] Tile cobblestone;
 
-    private int[,] map;
+    [SerializeField] int worldWidth;
+    [SerializeField] int worldHeight;
+    [SerializeField] int chunkSize;
+    [SerializeField] int renderDistance;
+
+    public static Block[,] world;
+    private int[] maxHeights;
+
     private float seed;
+    private GameObject Player;
 
-    public static int[,] GenerateArray(int width, int height, bool empty)
+    private int playerChunkX;
+    private int playerChunkY;
+
+    private int renderLeftBorder = 0;
+    private int renderRightBorder = 0;
+    private int renderDownBorder = 0;
+    private int renderUpBorder = 0;
+
+    private int prevRenderLeftBorder = 0;
+    private int prevRenderRightBorder = 0;
+    private int prevRenderDownBorder = 0;
+    private int prevRenderUpBorder = 0;
+
+    private float blockPressedTime;
+    private Vector3Int blockPressedCoords;
+
+    public Block[,] GenerateArray(int width, int height, bool empty)
     {
-        int[,] map = new int[width, height];
+        Block[,] map = new Block[width, height];
 
         for (int x = 0; x < map.GetUpperBound(0); x++)
         {
@@ -22,11 +82,11 @@ public class WorldGeneration : MonoBehaviour
 
                 if (empty)
                 {
-                    map[x, y] = 0;
+                    map[x, y] = null;
                 }
                 else
                 {
-                    map[x, y] = 1;
+                    map[x, y] = blocks.GetBlock("cobblestone");
                 }
             }
         }
@@ -34,38 +94,54 @@ public class WorldGeneration : MonoBehaviour
         return map;
     }
 
-    public static void RenderMap(int[,] map, Tilemap tilemap, TileBase tile)
+    public void RenderMap(Block[,] map, Tilemap tilemap, int chunkX, int chunkY, int chunkSize)
     {
-        tilemap.ClearAllTiles();
+        //tilemap.ClearAllTiles();
 
-        for (int x = 0; x < map.GetUpperBound(0); x++)
+        for (int x = chunkX * chunkSize; x < (chunkX + 1) * chunkSize; x++)
         {
-            for (int y = 0; y < map.GetUpperBound(1); y++)
+            for (int y = chunkY * chunkSize; y < (chunkY + 1) * chunkSize; y++)
             {
 
-                if (map[x, y] == 1)
+                if (map[x, y] != null)
                 {
-                    tilemap.SetTile(new Vector3Int(x, y, 0), tile);
+                    tilemap.SetTile(new Vector3Int(x, y, 0), map[x, y].tile);
                 }
-            }
-        }
-    }
 
-    public static void UpdateMap(int[,] map, Tilemap tilemap)
-    {
-        for (int x = 0; x < map.GetUpperBound(0); x++)
-        {
-            for (int y = 0; y < map.GetUpperBound(1); y++)
-            {
-
-                if (map[x, y] == 0)
+                else
                 {
                     tilemap.SetTile(new Vector3Int(x, y, 0), null);
                 }
             }
         }
     }
-    public static int[,] PerlinNoise(int[,] map, float seed)
+    public static void ClearTileMap(Tilemap tilemap, int chunkX, int chunkY, int chunkSize)
+    {
+        for (int x = chunkX * chunkSize; x < (chunkX + 1) * chunkSize; x++)
+        {
+            for (int y = chunkY * chunkSize; y < (chunkY + 1) * chunkSize; y++)
+            {
+                tilemap.SetTile(new Vector3Int(x, y, 0), null);
+            }
+        }
+    }
+
+    //public void UpdateMap(int[,] map, Tilemap tilemap, int chunkX, int chunkY, int chunkSize)
+    //{
+    //    for (int x = chunkX * chunkSize; x < (chunkX + 1) * chunkSize; x++)
+    //    {
+    //        for (int y = chunkY * chunkSize; y < (chunkY + 1) * chunkSize; y++)
+    //        {
+
+    //            if (map[x, y] == 0)
+    //            {
+    //                tilemap.SetTile(new Vector3Int(x, y, 0), null);
+    //            }
+    //        }
+    //    }
+    //}
+
+    public Block[,] PerlinNoise(Block[,] map, float seed)
     {
         int newPoint;
         float reduction = 0.5f;
@@ -78,13 +154,13 @@ public class WorldGeneration : MonoBehaviour
 
             for (int y = newPoint; y >= 0; y--)
             {
-                map[x, y] = 1;
+                map[x, y] = blocks.GetBlock("cobblestone");
             }
         }
         return map;
     }
 
-    public static int[,] PerlinNoiseSmooth(int[,] map, float seed, int interval)
+    public Block[,] PerlinNoiseSmooth(Block[,] map, float seed, int interval)
     {
         if (interval > 1)
         {
@@ -117,7 +193,7 @@ public class WorldGeneration : MonoBehaviour
                 {
                     for (int y = Mathf.FloorToInt(currHeight); y > 0; y--)
                     {
-                        map[x, y] = 1;
+                        map[x, y] = blocks.GetBlock("cobblestone");
                     }
                     currHeight += heightChange;
                 }
@@ -131,42 +207,163 @@ public class WorldGeneration : MonoBehaviour
         return map;
     }
 
-    public static int[,] PerlinNoiseCave(int[,] map, float modifier)
+    public Block[,] PerlinNoiseCave(Block[,] map, int[] maxHeights, float modifier)
     {
         int newPoint;
         for (int x = 0; x < map.GetUpperBound(0); x++)
         {
-            int highestPoint = map.GetUpperBound(1) - 1;
-
-            for(int y = map.GetUpperBound(1) - 1; y > 0; y--)
-            {
-                if (map[x,y] != 0)
-                {
-                    highestPoint = y;
-                    break;
-                }
-            }
-
-            for (int y = 0; y < highestPoint - 50; y++)
+            for (int y = 0; y < maxHeights[x] - 50; y++)
             {
                 newPoint = Mathf.RoundToInt(Mathf.PerlinNoise(x * modifier, y * modifier));
-                map[x, y] = newPoint;
+                map[x, y] = newPoint == 1 ? blocks.GetBlock("cobblestone") : null;
             }
         }
         return map;
     }
 
+    public Block[,] OresGeneration(Block[,] map, int[] maxHeights, float seed)
+    {
+        float frequency = 10;
+        for(int x = 0; x < map.GetUpperBound(0); x++)
+        {
+            for(int y = 0; y < map.GetUpperBound(1); ++y)
+            {
+                if (map[x, y] != null)
+                {
+                    float oreNoise = Mathf.PerlinNoise((x / frequency) + seed, (y / frequency) + seed);
+
+                    if (y > maxHeights[x] - 30 && oreNoise > 0.3)
+                    {
+                        map[x, y] = blocks.GetBlock("dirt");
+                    }
+                    else if(oreNoise > 0.9)
+                    {
+                        map[x, y] = blocks.GetBlock("dirt");
+                    }
+
+                    if (y < maxHeights[x] - 15 && oreNoise > 0.8)
+                    {
+                        map[x, y] = map[x, y] = blocks.GetBlock("iron");
+
+                    }
+
+                    if (y < maxHeights[x] - 30 && oreNoise > 0.65)
+                    {
+                        map[x, y] = map[x, y] = blocks.GetBlock("diamond");
+                    }
+                }
+            }
+        }
+
+        return map;
+    }
+
+    public int[] GetMaxHeights(Block[,] map)
+    {
+        int[] maxHeights = new int[map.GetUpperBound(0)];
+        for(int x = 0; x < map.GetUpperBound(0); ++x)
+        {
+            int highestPoint = map.GetUpperBound(1) - 1;
+
+            for (int y = map.GetUpperBound(1) - 1; y > 0; y--)
+            {
+                if (map[x, y] != null)
+                {
+                    highestPoint = y;
+                    maxHeights[x] = highestPoint;
+                    break;
+                }
+            }
+        }
+
+        return maxHeights;
+    }
+
+    void DetectTilePressed(float distanceToBreak)
+    {
+        Vector3 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3Int cellPosition = tilemap.WorldToCell(worldPoint);
+        TileBase clickedTile = tilemap.GetTile(cellPosition);
+
+        if(Vector3.Distance(Player.transform.position, cellPosition) <= distanceToBreak)
+        {
+
+            if (clickedTile != null && blockPressedCoords == cellPosition)
+            {
+                blockPressedTime += Time.deltaTime;
+            }
+            else
+            {
+                blockPressedTime = 0;
+                blockPressedCoords = cellPosition;
+            }
+
+            if (blockPressedTime >= world[blockPressedCoords.x, blockPressedCoords.y].GetTimeToBreak())
+            {
+                world[blockPressedCoords.x, blockPressedCoords.y] = null;
+            }
+        }
+    }
+
     private void Start()
     {
-        seed = Random.value;
-        map = GenerateArray(302, 302, true);
-        map = PerlinNoiseSmooth(map, seed, 25);
-        map = PerlinNoiseCave(map, seed * 0.1f);
-        RenderMap(map, tilemap, cobblestone);
+        Player = GameObject.FindGameObjectWithTag("Player");
+
+        seed = UnityEngine.Random.Range(0.05f, 0.15f);
+        Debug.Log(seed);
+
+        world = GenerateArray(worldWidth, worldHeight, true);
+        world = PerlinNoiseSmooth(world, seed, 25);
+        maxHeights = GetMaxHeights(world);
+        world = PerlinNoiseCave(world, maxHeights, seed * 0.5f);
+        world = OresGeneration(world, maxHeights, seed);
+
+        playerChunkX = Mathf.Clamp((int)Player.transform.position.x / chunkSize, 0, worldWidth / chunkSize);
+        playerChunkY = Mathf.Clamp((int)Player.transform.position.y / chunkSize, 0, worldHeight / chunkSize);
+
+        prevRenderLeftBorder = Mathf.Clamp(playerChunkX - renderDistance, 0, worldWidth / chunkSize);
+        prevRenderRightBorder = Mathf.Clamp(playerChunkX + renderDistance, 0, worldWidth / chunkSize);
+        prevRenderDownBorder = Mathf.Clamp(playerChunkY - renderDistance, 0, worldHeight / chunkSize);
+        prevRenderUpBorder = Mathf.Clamp(playerChunkY + renderDistance, 0, worldHeight / chunkSize);
     }
 
     private void Update()
     {
-        UpdateMap(map, tilemap);
+        playerChunkX = Mathf.Clamp((int)Player.transform.position.x / chunkSize, 0, worldWidth / chunkSize);
+        playerChunkY = Mathf.Clamp((int)Player.transform.position.y / chunkSize, 0, worldHeight / chunkSize);
+        
+        renderLeftBorder = Mathf.Clamp(playerChunkX - renderDistance, 0, worldWidth / chunkSize);
+        renderRightBorder = Mathf.Clamp(playerChunkX + renderDistance, 0, worldWidth / chunkSize);
+        renderDownBorder = Mathf.Clamp(playerChunkY - renderDistance, 0, worldHeight / chunkSize);
+        renderUpBorder = Mathf.Clamp(playerChunkY + renderDistance, 0, worldHeight / chunkSize);
+
+        for (int i = renderLeftBorder; i < renderRightBorder; ++i)
+        {
+            for (int j = renderDownBorder; j < renderUpBorder; ++j)
+            {
+                RenderMap(world, tilemap, i, j, chunkSize);
+            }
+        }
+
+        for (int i = prevRenderLeftBorder; i < prevRenderRightBorder; ++i)
+        {
+            for (int j = prevRenderDownBorder; j < prevRenderUpBorder; ++j)
+            {
+                if (i < renderLeftBorder || i >= renderRightBorder || j < renderDownBorder || j >= renderUpBorder)
+                {
+                    ClearTileMap(tilemap, i, j, chunkSize);
+                }
+            }
+        }
+
+        prevRenderLeftBorder = renderLeftBorder;
+        prevRenderRightBorder = renderRightBorder;
+        prevRenderDownBorder = renderDownBorder;
+        prevRenderUpBorder = renderUpBorder;
+
+        if (Input.GetKey(KeyCode.Mouse0))
+        {
+            DetectTilePressed(5);
+        }
     }
 }
