@@ -105,11 +105,6 @@ public class PlayerMovement : MonoBehaviour
         Flip();
     }
 
-    private void Inertion()
-    {
-
-    }
-
     private void Flip()
     {
         if (isFacedRight)

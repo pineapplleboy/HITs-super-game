@@ -23,7 +23,7 @@ public class Gun : MonoBehaviour
     {
         if (!isActive) return;
 
-        Vector3 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+        Vector2 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
         float rotZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
 
         if (amountOfBullets > 0 && Input.GetMouseButton(0)) {

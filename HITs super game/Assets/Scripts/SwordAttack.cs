@@ -61,7 +61,9 @@ public class SwordAttack : MonoBehaviour
 
         foreach (Collider2D enemy in hitEnemies)
         {
-            enemy.GetComponent<Enemy>().TakeDamage(currentDamage(), 0);
+            Enemy hittedEnemy = enemy.GetComponent<Enemy>();
+            hittedEnemy.TakeDamage(CurrentDamage(), 0);
+            hittedEnemy.PushAway(attackPoint.position, 12500f);
         }
     }
 
@@ -76,7 +78,7 @@ public class SwordAttack : MonoBehaviour
         Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
 
-    private int currentDamage()
+    private int CurrentDamage()
     {
         int boostDamage = (int) (damage * (swingTime / maxSwingTime));
         return (int) Random.Range(damage * 0.75f, damage * 1.25f + 1) + boostDamage;

@@ -38,7 +38,7 @@ public class Bullet : MonoBehaviour
         Enemy enemy = collision.GetComponent<Enemy>();
         if (enemy != null)
         {
-            enemy.TakeDamage(calculateDamage(), 1);
+            enemy.TakeDamage(CalculateDamage(), 1);
         }
 
         if (collision.name != "Player")
@@ -48,7 +48,7 @@ public class Bullet : MonoBehaviour
         
     }
 
-    int calculateDamage()
+    int CalculateDamage()
     {
         return (int)Random.Range((damage + gunDamage) * 0.75f, (damage + gunDamage) * 1.25f + 1);
     }
