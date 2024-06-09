@@ -534,6 +534,7 @@ GameObject:
   - component: {fileID: 918260989}
   - component: {fileID: 918260988}
   - component: {fileID: 918260991}
+  - component: {fileID: 918260992}
   m_Layer: 0
   m_Name: LaserGun
   m_TagString: Untagged
@@ -729,6 +730,21 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!114 &918260992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 918260987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4970018bfaef61445ae181ca200040a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firePoint: {fileID: 1426223398}
+  baseDamage: 50
+  laserCooldown: 0.5
 --- !u!1 &1061372818
 GameObject:
   m_ObjectHideFlags: 0

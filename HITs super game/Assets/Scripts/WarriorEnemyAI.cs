@@ -53,10 +53,18 @@ public class WarriorEnemyAI : MonoBehaviour
 
         if (collision.transform.name == "Tilemap")
         {
-            if (player.transform.localScale.x / 2 + player.position.x < 0)
+            foreach (ContactPoint2D contactPoint in collision.contacts)
             {
+                Vector2 hitPoint = contactPoint.point;
+
+                if (Mathf.Abs(hitPoint.y - transform.position.y) > 0)
+                {
+                    Jump();
+                    break;
+                }
 
             }
+
         }
     }
 

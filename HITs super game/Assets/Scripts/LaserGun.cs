@@ -4,7 +4,6 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using UnityEngine;
 
-
 public class LaserGun : MonoBehaviour
 {
     public Transform firePoint;
@@ -31,6 +30,7 @@ public class LaserGun : MonoBehaviour
     private void Start()
     {
         //strikeThread = new Thread(StrikeEnemy);
+
         lineRenderer.startWidth = laserWidth;
         lineRenderer.endWidth = laserWidth;
     }
@@ -43,6 +43,10 @@ public class LaserGun : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
+            //if (!strikeThread.IsAlive)
+            //{
+            //    strikeThread.Start();
+            //}
 
             if (PlayerStats.intellectAmount > 0)
             {
@@ -66,7 +70,12 @@ public class LaserGun : MonoBehaviour
         }
         else
         {
-            
+
+            //if (strikeThread.IsAlive)
+            //{
+            //    strikeThread.Abort();
+            //}
+
             Draw2DRay(firePoint.position, firePoint.position);
             realDamage = baseDamage;
             shootingTime = 0f;
@@ -130,7 +139,7 @@ public class LaserGun : MonoBehaviour
         if (hitInfo)
         {
             //Debug.Log(hitInfo.transform.name);
-            StrikeEnemy();
+            //StrikeEnemy();
 
             Draw2DRay(firePoint.position, hitInfo.point);
         }

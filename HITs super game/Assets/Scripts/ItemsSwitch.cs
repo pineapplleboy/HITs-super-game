@@ -24,6 +24,7 @@ public class ItemsSwitch : MonoBehaviour
                 SwordAttack.isActive = true;
                 Gun.isActive = false;
                 LaserGun.isActive = false;
+                LaserDamage.isActive = false;
 
                 sword.SetActive(true);
                 gun.SetActive(false);
@@ -38,6 +39,7 @@ public class ItemsSwitch : MonoBehaviour
                 SwordAttack.isActive = false;
                 Gun.isActive = true;
                 LaserGun.isActive = false;
+                LaserDamage.isActive = false;
 
                 gun.SetActive(true);
                 sword.SetActive(false);
@@ -52,6 +54,7 @@ public class ItemsSwitch : MonoBehaviour
                 SwordAttack.isActive = false;
                 Gun.isActive = false;
                 LaserGun.isActive = true;
+                LaserDamage.isActive = true;
 
                 laserGun.SetActive(true);
                 sword.SetActive(false);
