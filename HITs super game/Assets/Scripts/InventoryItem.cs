@@ -13,6 +13,11 @@ public class InventoryItem : MonoBehaviour
         UpdateSlot();
     }
 
+    public Item GetItem()
+    {
+        return item;
+    }
+
     public void UpdateSlot()
     {
         transform.Find("Image").GetComponent<Image>().sprite = item.sprite;

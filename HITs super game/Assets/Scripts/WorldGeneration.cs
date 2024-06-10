@@ -51,7 +51,7 @@ public class WorldGeneration : MonoBehaviour
 {
     [SerializeField] public Blocks blocks;
 
-    [SerializeField] Tilemap tilemap;
+    [SerializeField] public Tilemap tilemap;
     [SerializeField] Tilemap bgTilemap;
     [SerializeField] Tilemap fgTilemap;
 
@@ -60,10 +60,10 @@ public class WorldGeneration : MonoBehaviour
     [SerializeField] int chunkSize;
     [SerializeField] int renderDistance;
 
-    public static Block[,] world;
-    public static Block[,] bgWorld;
-    public static Block[,] fgWorld;
-    public static int[,] lightMap;
+    public Block[,] world;
+    public Block[,] bgWorld;
+    public Block[,] fgWorld;
+    public int[,] lightMap;
     private int[] maxHeights;
 
     private float seed;
@@ -116,6 +116,10 @@ public class WorldGeneration : MonoBehaviour
 
     public int[,] RenderLight(int[,] lightMap, int x, int y, int lightLvl, bool reduceLight)
     {
+        if(reduceLight && lightLvl != lightMap[x, y])
+        {
+            return lightMap;
+        }
 
         Queue<(int x, int y, int lightLvl)> queue = new Queue<(int x, int y, int lightLvl)>();
         queue.Enqueue((x, y, lightLvl));
@@ -137,7 +141,7 @@ public class WorldGeneration : MonoBehaviour
                 else
                 {
                     lightMap[currentX, currentY] = (currentX == x && currentY == y) ? 0 :
-                        Mathf.Max(Mathf.Max(lightMap[x + 1, y], lightMap[x, y + 1]), Mathf.Max(lightMap[x, y - 1], lightMap[x - 1, y])) > lightMap[currentX, currentY] ?
+                        Mathf.Max(Mathf.Max(lightMap[x + 1, y], lightMap[x, y + 1]), Mathf.Max(lightMap[x, y - 1], lightMap[x - 1, y])) >= lightMap[currentX, currentY] ?
                         Mathf.Max(Mathf.Max(lightMap[x + 1, y], lightMap[x, y + 1]), Mathf.Max(lightMap[x, y - 1], lightMap[x - 1, y])) - 1 : 0;
                 }
 
@@ -216,6 +220,11 @@ public class WorldGeneration : MonoBehaviour
                 fgTilemap.SetTile(new Vector3Int(x, y, 0), null);
             }
         }
+    }
+
+    public void SetBlock(Block[,] map, Block block, int x, int y)
+    {
+        map[x, y] = block;
     }
 
     //public void UpdateMap(int[,] map, Tilemap tilemap, int chunkX, int chunkY, int chunkSize)
@@ -512,7 +521,7 @@ public class WorldGeneration : MonoBehaviour
         return maxHeights;
     }
 
-    void DetectTilePressed(float distanceToBreak)
+    public void DetectTilePressed(float distanceToBreak)
     {
         Vector3 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector3Int cellPosition = tilemap.WorldToCell(worldPoint);
