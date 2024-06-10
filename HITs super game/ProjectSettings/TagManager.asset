@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Ground
   - World
+  - Enemy
+  - Platform
+  - Sword
   layers:
   - Default
   - TransparentFX
@@ -13,7 +16,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Enemy
   - 
   - 
   - 
