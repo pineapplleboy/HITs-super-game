@@ -46,6 +46,7 @@ public class KamikazeEnemyAI : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             PlayerStats.TakeDamage(damage, 0);
+            Spawner.currentNearEnemies--;
             Destroy(gameObject);
         }
 
