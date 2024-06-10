@@ -14,11 +14,10 @@ public class Spawner : MonoBehaviour
     public static int currentNearEnemies = 0;
 
     private float timer = 0f;
-    
 
     void Update()
     {
-        if (currentNearEnemies == 0 || (timer >= 3 && currentNearEnemies < maxNearEnemies))
+        if (timer >= 3 && currentNearEnemies < maxNearEnemies)
         {
             timer = 0f;
 
@@ -39,7 +38,7 @@ public class Spawner : MonoBehaviour
     {
         currentNearEnemies++;
         randEnemy = Random.Range(0, enemies.Length);
-        randEnemy = 1;
+        //randEnemy = 1;
         spawnPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
         Instantiate(enemies[randEnemy], spawnPosition, Quaternion.identity);

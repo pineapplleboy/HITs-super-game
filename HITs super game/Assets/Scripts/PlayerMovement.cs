@@ -19,18 +19,18 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] int jumpForce = 1;
     [SerializeField] float autoJumpForce = 1;
 
-    private float acceleration = 1f; // ��������� ���������
-    private float timeOfWalking = 0f; // �����, ������� �� ��������� - ����� ��� ���������
+    private float acceleration = 1f;
+    private float timeOfWalking = 0f;
     private float lastMovingDirection = 0f;
 
     private Vector2 tempWalkingSlide;
     private int amountOfSlides = 0;
 
-    public static float slowRate = 1f; // ���������� ��� ���������� �����
+    public static float slowRate = 1f;
 
-    public static bool isShooting = false; // ��� �������� ��� ��������
+    public static bool isShooting = false;
 
-    public float dashCooldown = 2f; // ����������� �����
+    public float dashCooldown = 2f;
     private float currentDashCD = 0f;
 
     void Start()
@@ -54,13 +54,7 @@ public class PlayerMovement : MonoBehaviour
             transform.Translate(0, autoJumpForce, 0);
         }
 
-        if(moveX > 0){
-            isFacedRight = true;
-            animator.SetBool("isRunning", true);
-        }
-        else if(moveX < 0)
-        {
-            isFacedRight = false;
+        if(moveX != 0){
             animator.SetBool("isRunning", true);
         }
         else
