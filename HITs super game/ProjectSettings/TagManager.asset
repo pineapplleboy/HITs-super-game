@@ -9,6 +9,8 @@ TagManager:
   - Enemy
   - Platform
   - Sword
+  - Item
+  - Panel
   layers:
   - Default
   - TransparentFX

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading;
 using Unity.Mathematics;
 using UnityEditor.PackageManager;
@@ -14,6 +15,8 @@ public class Block
     [SerializeField] public TileBase tile;
     [SerializeField] private float timeToBreak;
     [SerializeField] private int lightLvl = 15;
+    [SerializeField] public ItemScriptableObject item;
+    [SerializeField] private Sprite icon;
 
     public Block(Block block)
     {
@@ -21,6 +24,8 @@ public class Block
         this.tile = block.tile;
         this.timeToBreak = block.timeToBreak;
         this.lightLvl = block.lightLvl;
+        this.item = block.item;
+        this.icon = block.icon;
     }
 
     public float GetTimeToBreak()
@@ -37,7 +42,7 @@ public class Blocks
     {
         foreach (Block block in blocks)
         {
-            if(block.name == name)
+            if (block.name == name)
             {
                 return new Block(block);
             }
@@ -64,6 +69,7 @@ public class WorldGeneration : MonoBehaviour
     public Block[,] bgWorld;
     public Block[,] fgWorld;
     public int[,] lightMap;
+    public GameObject tileDrop;
     private int[] maxHeights;
 
     private float seed;
@@ -116,7 +122,7 @@ public class WorldGeneration : MonoBehaviour
 
     public int[,] RenderLight(int[,] lightMap, int x, int y, int lightLvl, bool reduceLight)
     {
-        if(reduceLight && lightLvl != lightMap[x, y])
+        if (reduceLight && lightLvl != lightMap[x, y])
         {
             return lightMap;
         }
@@ -194,9 +200,9 @@ public class WorldGeneration : MonoBehaviour
     {
         Block[,] bgWorld = new Block[world.GetUpperBound(0), world.GetUpperBound(1)];
 
-        for(int i = 0; i < world.GetUpperBound(0); ++i)
+        for (int i = 0; i < world.GetUpperBound(0); ++i)
         {
-            for(int j = 0; j < world.GetUpperBound(1); ++j)
+            for (int j = 0; j < world.GetUpperBound(1); ++j)
             {
 
                 if (world[i, j] != null)
@@ -477,9 +483,9 @@ public class WorldGeneration : MonoBehaviour
     {
         Block[,] fgMap = new Block[map.GetUpperBound(0), map.GetUpperBound(1)];
 
-        for(int x = 0; x < fgMap.GetLength(0); x++)
+        for (int x = 0; x < fgMap.GetLength(0); x++)
         {
-            if(UnityEngine.Random.Range(0, 100) > 90)
+            if (UnityEngine.Random.Range(0, 100) > 90)
             {
                 int maxY = map.GetUpperBound(1);
                 while (map[x, maxY] == null)
@@ -489,7 +495,7 @@ public class WorldGeneration : MonoBehaviour
 
                 int treeHeight = UnityEngine.Random.Range(0, 4);
                 fgMap[x, maxY + 1] = blocks.GetBlock("tree_4");
-                for(int i = 0; i < treeHeight; i++)
+                for (int i = 0; i < treeHeight; i++)
                 {
                     fgMap[x, maxY + i + 2] = UnityEngine.Random.Range(0, 100) > 50 ? blocks.GetBlock("tree_3") : blocks.GetBlock("tree_2");
                 }
@@ -503,7 +509,7 @@ public class WorldGeneration : MonoBehaviour
     public int[] GetMaxHeights(Block[,] map)
     {
         int[] maxHeights = new int[map.GetUpperBound(0)];
-        for(int x = 0; x < map.GetUpperBound(0); ++x)
+        for (int x = 0; x < map.GetUpperBound(0); ++x)
         {
             int highestPoint = map.GetUpperBound(1) - 1;
 
@@ -527,7 +533,7 @@ public class WorldGeneration : MonoBehaviour
         Vector3Int cellPosition = tilemap.WorldToCell(worldPoint);
         TileBase clickedTile = tilemap.GetTile(cellPosition);
 
-        if(Vector3.Distance(Player.transform.position, cellPosition) <= distanceToBreak)
+        if (Vector3.Distance(Player.transform.position, cellPosition) <= distanceToBreak)
         {
             if (Input.GetKey(KeyCode.Mouse1))
             {
@@ -544,18 +550,33 @@ public class WorldGeneration : MonoBehaviour
                 blockPressedCoords = cellPosition;
             }
 
-            if (/*blockPressedTime >= world[blockPressedCoords.x, blockPressedCoords.y].GetTimeToBreak()*/true)
+            if (world[blockPressedCoords.x, blockPressedCoords.y] != null)
             {
+                GameObject newTileDrop = Instantiate(tileDrop, new Vector2(blockPressedCoords.x, blockPressedCoords.y), Quaternion.identity);
+                newTileDrop.GetComponent<SpriteRenderer>().sprite = tilemap.GetSprite(cellPosition);
+                newTileDrop.GetComponent<Item>().item = world[blockPressedCoords.x, blockPressedCoords.y].item;
                 world[blockPressedCoords.x, blockPressedCoords.y] = null;
             }
+        }
+    }
+    public void SetBlockOnMap(float distanceToBreak, ItemScriptableObject inputObject)
+    {
+        Vector3 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3Int cellPosition = tilemap.WorldToCell(worldPoint);
+        TileBase clickedTile = tilemap.GetTile(cellPosition);
+
+        if (Vector3.Distance(Player.transform.position, cellPosition) <= distanceToBreak)
+        {
+            Debug.Log($"{inputObject.itemName}");
+            world[cellPosition.x, cellPosition.y] = blocks.GetBlock(inputObject.itemName);
         }
     }
 
     public int[,] SetDayLight(int[,] light, Block[,] map)
     {
-        for(int x = 0; x < map.GetUpperBound(0); x++)
+        for (int x = 0; x < map.GetUpperBound(0); x++)
         {
-            for(int y = map.GetUpperBound(1); y >= 0 ; y--)
+            for (int y = map.GetUpperBound(1); y >= 0; y--)
             {
                 light = RenderLight(light, x, y, 15, false);
 
@@ -632,12 +653,12 @@ public class WorldGeneration : MonoBehaviour
             }
         }
 
-        if(prevPlayerPositionX != playerPositionX || prevPlayerPositionY != playerPositionY)
+        if (prevPlayerPositionX != playerPositionX || prevPlayerPositionY != playerPositionY)
         {
             //lightMap = RenderLight(lightMap, prevPlayerPositionX, prevPlayerPositionY, 15, true);
             lightMap = RenderLight(lightMap, playerPositionX, playerPositionY, 15, false);
         }
-
+        
         prevRenderLeftBorder = renderLeftBorder;
         prevRenderRightBorder = renderRightBorder;
         prevRenderDownBorder = renderDownBorder;
@@ -650,5 +671,6 @@ public class WorldGeneration : MonoBehaviour
         {
             DetectTilePressed(5);
         }
+
     }
 }
