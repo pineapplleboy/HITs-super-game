@@ -9,6 +9,8 @@ public class DragAndDropItem : MonoBehaviour, IPointerDownHandler, IPointerUpHan
 {
     public InventorySlot oldSlot;
     private Transform player;
+    private bool isFacingRight;
+    private float throwForce = 10f;
 
     private void Start()
     {
@@ -42,9 +44,7 @@ public class DragAndDropItem : MonoBehaviour, IPointerDownHandler, IPointerUpHan
         transform.position = oldSlot.transform.position;
         if (eventData.pointerCurrentRaycast.gameObject.name == "UIPanel")
         {
-            GameObject itemObject = Instantiate(oldSlot.item.itemPrefab, player.position + Vector3.up + player.right * 5f, Quaternion.identity);
-            itemObject.GetComponent<Item>().amount = oldSlot.amount;
-            NullifySlotData();
+            DropAndThrowItem();
         }
         else if (eventData.pointerCurrentRaycast.gameObject.transform.parent.parent.GetComponent<InventorySlot>() != null)
         {
@@ -121,5 +121,21 @@ public class DragAndDropItem : MonoBehaviour, IPointerDownHandler, IPointerUpHan
         }
 
         
+    }
+    private void DropAndThrowItem()
+    {
+        isFacingRight = PlayerMovement.isFacedRight;
+
+        GameObject itemObject = Instantiate(oldSlot.item.itemPrefab, player.position + Vector3.up + player.right * 1.4f, Quaternion.identity);
+        itemObject.GetComponent<Item>().amount = oldSlot.amount;
+
+        Rigidbody2D rb = itemObject.GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            Vector2 throwDirection = new Vector2(isFacingRight ? 1 : -1, 0.5f);
+            rb.AddForce(throwDirection * throwForce, ForceMode2D.Impulse);
+        }
+
+        NullifySlotData();
     }
 }
