@@ -21,6 +21,13 @@ public class WarriorEnemyAI : MonoBehaviour
     private float flipTime = 0.2f;
     private float currentFlipTime = 0;
 
+    private float jumpCooldown = 0.3f;
+    private float currentJumpTime = 0;
+
+    public Transform attackPoint;
+    public float attackRange = 5;
+    public LayerMask enemyLayers;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
@@ -39,17 +46,31 @@ public class WarriorEnemyAI : MonoBehaviour
         {
             speed = 6;
         }
+
+        currentJumpTime -= Time.deltaTime;
+
+        Collider2D[] hitPlayer = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+
+        if (hitPlayer.Length > 0)
+        {
+            //Attack(hitPlayer);
+        }
         //transform.position = Vector2.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
+
+        if (collision.collider.tag == "Ground" || collision.collider.tag == "Platform")
+        {
+            onGround = true;
+        }
+
         if (collision.gameObject.tag == "Player")
         {
             //PlayerStats.TakeDamage(damage, 0);
             //Destroy(gameObject);
         }
-
 
         if (collision.transform.name == "Tilemap")
         {
@@ -57,7 +78,7 @@ public class WarriorEnemyAI : MonoBehaviour
             {
                 Vector2 hitPoint = contactPoint.point;
 
-                if (Mathf.Abs(hitPoint.y - transform.position.y) > 0)
+                if (hitPoint.y - transform.position.y > 0)
                 {
                     Jump();
                     break;
@@ -70,20 +91,13 @@ public class WarriorEnemyAI : MonoBehaviour
 
     private void Jump()
     {
-        if (onGround)
+        if (onGround && currentJumpTime <= 0)
         {
+            currentJumpTime = jumpCooldown;
             rb.AddForce(Vector2.up * (jumpForce * slowRate));
             onGround = false;
         }
         
-    }
-
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        if (collision.collider.tag == "Ground" || collision.collider.tag == "Platform")
-        {
-            onGround = true;
-        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -145,5 +159,20 @@ public class WarriorEnemyAI : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, 180, 0);
             currentFlipTime = 0;
         }
+    }
+
+    //private void Attack(Collider2D[] hitPlayer) // не назначены точки атаки, радиус и кого может бить
+    //{
+    //    foreach (Collider2D npc in hitPlayer)
+    //    {
+    //        PlayerStats hittedNpc = npc.GetComponent<PlayerStats>();
+    //        hittedNpc.TakeDamage(CurrentDamage(), 0);
+    //    }
+
+    //}
+
+    private int CurrentDamage()
+    {
+        return 1;
     }
 }

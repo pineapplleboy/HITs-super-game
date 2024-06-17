@@ -17,6 +17,7 @@ public class PlayerStats : MonoBehaviour
     public static int currentRadiationImpact = 0;
 
     public static float intellectAmount = 100;
+    public static float maxIntellectAmount = 100;
 
     void Start()
     {
@@ -27,6 +28,8 @@ public class PlayerStats : MonoBehaviour
     private void Update()
     {
         maxHealth = healthAmount;
+        intellectAmount += 3 * Time.deltaTime;
+        intellectAmount = Mathf.Min(intellectAmount, maxIntellectAmount);
     }
 
     public static void Block()
@@ -43,7 +46,17 @@ public class PlayerStats : MonoBehaviour
         tempDamageResistance[0] -= 5;
     }
 
-    public static void TakeDamage(int damage, int typeOfDamage)
+    public void TakeDamage(int damage, int typeOfDamage)
+    {
+        healthAmount -= CalculateDamage(damage, typeOfDamage);
+
+        if (healthAmount <= 0)
+        {
+            // возрождение ??
+        }
+    }
+
+    public static void TakeTouchDamage(int damage, int typeOfDamage)
     {
         healthAmount -= CalculateDamage(damage, typeOfDamage);
 
