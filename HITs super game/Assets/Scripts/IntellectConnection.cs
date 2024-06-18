@@ -9,11 +9,11 @@ public class IntellectConnection : MonoBehaviour
     public float attackRange = 20;
     public LayerMask enemyLayers;
 
-    public static bool startedConnection = false;
-    public static bool foundConnection = false;
+    public static bool startedConnection = true;
 
     private static Collider2D hittedEnemy;
     public static Enemy targetEnemy;
+    public static WarriorEnemyAI warrior;
 
     void Update()
     {
@@ -21,14 +21,21 @@ public class IntellectConnection : MonoBehaviour
         {
             Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(head.position, attackRange, enemyLayers);
 
-            if (hitEnemies.Contains(hittedEnemy))
+            if (hitEnemies.Length == 0)
             {
-
+                hittedEnemy = null;
+                targetEnemy = null;
+                return;
             }
 
-            foreach (Collider2D enemy in hitEnemies)
+            if (!hitEnemies.Contains(hittedEnemy))
             {
-                targetEnemy = enemy.GetComponent<Enemy>();
+                SetTarget(hitEnemies[0]);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                NextTarget(hitEnemies);
             }
         }
     }
@@ -42,5 +49,24 @@ public class IntellectConnection : MonoBehaviour
 
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(head.position, attackRange);
+    }
+
+    private void NextTarget(Collider2D[] hitEnemies)
+    {
+        foreach (Collider2D enemy in hitEnemies)
+        {
+            if (enemy != hittedEnemy)
+            {
+                SetTarget(enemy);
+                return;
+            }
+        }
+    }
+
+    private void SetTarget(Collider2D enemy)
+    {
+        hittedEnemy = enemy;
+        targetEnemy = enemy.GetComponent<Enemy>();
+        warrior = enemy.GetComponent<WarriorEnemyAI>();
     }
 }

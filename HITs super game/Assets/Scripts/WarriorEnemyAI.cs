@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -24,6 +25,8 @@ public class WarriorEnemyAI : MonoBehaviour
     private float jumpCooldown = 0.3f;
     private float currentJumpTime = 0;
 
+    private float sleepTime = 0f;
+
     public Transform attackPoint;
     public float attackRange = 5;
     public LayerMask enemyLayers;
@@ -36,6 +39,9 @@ public class WarriorEnemyAI : MonoBehaviour
 
     void Update()
     {
+        sleepTime -= Time.deltaTime;
+        if (sleepTime > 0) return;
+
         Move();
         Flip();
         if (!onGround)
@@ -48,7 +54,7 @@ public class WarriorEnemyAI : MonoBehaviour
         }
 
         currentJumpTime -= Time.deltaTime;
-
+        
         Collider2D[] hitPlayer = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
 
         if (hitPlayer.Length > 0)
@@ -174,5 +180,10 @@ public class WarriorEnemyAI : MonoBehaviour
     private int CurrentDamage()
     {
         return 1;
+    }
+
+    public void Sleep(float newSleepingTime)
+    {
+        sleepTime = newSleepingTime;
     }
 }

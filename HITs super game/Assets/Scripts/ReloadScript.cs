@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+public class ReloadScript : MonoBehaviour
 {
-    private int damage = 2000;
-    private int needIntellect = 70;
+
+    private int damage = 10;
+    private int needIntellect = 30;
+    private float sleepTime = 3f;
 
     void Update()
     {
@@ -16,7 +18,9 @@ public class NewBehaviourScript : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             PlayerStats.intellectAmount -= needIntellect;
+            IntellectConnection.warrior.Sleep(sleepTime);
             IntellectConnection.targetEnemy.TakeDamage(damage, -1);
         }
     }
+
 }
