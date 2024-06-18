@@ -32,6 +32,7 @@ public class Enemy : MonoBehaviour
 
     public int CalculateDamage(int damage, int typeOfDamage)
     {
+        if (typeOfDamage == -1) return damage;
         return (int)(damage * ((100.0 - damageResistance[typeOfDamage]) / 100));
     }
 

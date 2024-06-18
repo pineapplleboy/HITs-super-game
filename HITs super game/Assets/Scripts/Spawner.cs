@@ -9,7 +9,7 @@ public class Spawner : MonoBehaviour
     private Vector2 spawnPosition;
 
     public static int spawnRate = 3;
-    private int maxNearEnemies = 1;
+    private int maxNearEnemies = 3;
 
     public static int currentNearEnemies = 0;
 
