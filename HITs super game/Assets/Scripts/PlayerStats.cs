@@ -40,6 +40,7 @@ public class PlayerStats : MonoBehaviour
 
     private void Update()
     {
+        healthAmount = (healthAmount < 0) ? 0 : healthAmount;
         currHealth = healthAmount;
         intellectAmount += 3 * Time.deltaTime;
         intellectAmount = Mathf.Min(intellectAmount, maxIntellectAmount);
