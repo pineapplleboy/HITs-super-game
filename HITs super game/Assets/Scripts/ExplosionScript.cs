@@ -5,7 +5,7 @@ using UnityEngine;
 public class NewBehaviourScript : MonoBehaviour
 {
     private int damage = 2000;
-    private int needIntellect = 70;
+    private int needIntellect = 0;
 
     void Update()
     {

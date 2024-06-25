@@ -115,6 +115,11 @@ public class WorldGeneration : MonoBehaviour
     private float blockPressedTime;
     private Vector3Int blockPressedCoords;
 
+    public bool IsBlock(int x, int y)
+    {
+        return world[x, y] != null;
+    }
+
     public Block[,] GenerateArray(int width, int height, bool empty)
     {
         Block[,] map = new Block[width, height];

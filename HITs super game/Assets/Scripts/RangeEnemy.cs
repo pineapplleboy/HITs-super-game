@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
-public class WarriorEnemyAI : MonoBehaviour
+public class RangeEnemy : MonoBehaviour
 {
+
     public float speed = 1;
     private Transform player;
 
@@ -14,7 +15,7 @@ public class WarriorEnemyAI : MonoBehaviour
     public int jumpForce = 500;
     public static float slowRate = 1;
 
-    public int damage = 100;
+    public int damage = 10;
 
     private bool onGround = false;
     private bool isFacedRight = true;
@@ -27,9 +28,14 @@ public class WarriorEnemyAI : MonoBehaviour
 
     private float sleepTime = 0f;
 
-    public Transform attackPoint;
-    public float attackRange = 5;
-    public LayerMask enemyLayers;
+    private float maxReach = 30f;
+
+    public float cooldown = 1f;
+    private float currentCd = 0f;
+    private bool isShooting = false;
+
+    public GameObject bullet;
+    public Transform shotPoint;
 
     void Start()
     {
@@ -40,9 +46,9 @@ public class WarriorEnemyAI : MonoBehaviour
     void Update()
     {
         sleepTime -= Time.deltaTime;
+        currentCd -= Time.deltaTime;
         if (sleepTime > 0) return;
-
-        Move();
+        
         Flip();
         if (!onGround)
         {
@@ -54,14 +60,17 @@ public class WarriorEnemyAI : MonoBehaviour
         }
 
         currentJumpTime -= Time.deltaTime;
-        
-        //Collider2D[] hitPlayer = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
 
-        //if (hitPlayer.Length > 0)
-        //{
-        //    Attack(hitPlayer);
-        //}
-        //transform.position = Vector2.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
+        if (CheckDistance() <= maxReach && CheckReach())
+        {
+            isShooting = true;
+            Shoot();
+        }
+        else if (currentCd <= 0)
+        {
+            isShooting = false;
+            Move();
+        }
     }
 
     private void OnCollisionStay2D(Collision2D collision)
@@ -77,6 +86,8 @@ public class WarriorEnemyAI : MonoBehaviour
             //PlayerStats.TakeDamage(damage, 0);
             //Destroy(gameObject);
         }
+
+        if (isShooting) return;
 
         if (collision.transform.name == "Tilemap")
         {
@@ -103,7 +114,7 @@ public class WarriorEnemyAI : MonoBehaviour
             rb.AddForce(Vector2.up * (jumpForce * slowRate));
             onGround = false;
         }
-        
+
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -155,6 +166,15 @@ public class WarriorEnemyAI : MonoBehaviour
             return;
         }
 
+        if (player.position.x >= transform.position.x)
+        {
+            isFacedRight = true;
+        }
+        else
+        {
+            isFacedRight = false;
+        }
+
         if (isFacedRight)
         {
             transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -167,16 +187,6 @@ public class WarriorEnemyAI : MonoBehaviour
         }
     }
 
-    //private void Attack(Collider2D[] hitPlayer) // не назначены точки атаки, радиус и кого может бить
-    //{
-    //    foreach (Collider2D npc in hitPlayer)
-    //    {
-    //        PlayerStats hittedNpc = npc.GetComponent<PlayerStats>();
-    //        hittedNpc.TakeDamage(CurrentDamage(), 0);
-    //    }
-
-    //}
-
     private int CurrentDamage()
     {
         return 1;
@@ -185,5 +195,32 @@ public class WarriorEnemyAI : MonoBehaviour
     public void Sleep(float newSleepingTime)
     {
         sleepTime = newSleepingTime;
+    }
+
+    private void Shoot()
+    {
+        Vector2 difference = player.position - transform.position;
+        float rotZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
+
+        if (currentCd > 0)
+        {
+            return;
+        }
+        currentCd = cooldown;
+
+        PlayerMovement.isShooting = true;
+        Instantiate(bullet, shotPoint.position, Quaternion.Euler(0f, 0f, rotZ));
+    }
+
+    private float CheckDistance()
+    {
+        return Mathf.Sqrt(Mathf.Pow(player.position.x - transform.position.x, 2) + Mathf.Pow(player.position.y - transform.position.y, 2));
+    }
+
+    private bool CheckReach()
+    {
+        Vector2 difference = player.position - transform.position;
+        RaycastHit2D hitInfo = Physics2D.Raycast(shotPoint.position, difference);
+        return hitInfo.transform.name == "Player";
     }
 }

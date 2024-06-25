@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -33,6 +34,12 @@ public class PlayerMovement : MonoBehaviour
     public float dashCooldown = 2f;
     private float currentDashCD = 0f;
 
+    private int lastDirection = 0;
+    private bool blockMoving = false;
+
+    private float jumpCd = 0.3f;
+    private float currentJumpCd = 0f;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -43,13 +50,32 @@ public class PlayerMovement : MonoBehaviour
     {
         float moveX = Input.GetAxis("Horizontal");
 
-        if(Input.GetKeyDown(KeyCode.Space) && onGround)
+        if (Input.GetKey(KeyCode.A))
+        {
+            if (lastDirection != -1) blockMoving = false;
+            lastDirection = -1;
+        }
+        else if (Input.GetKey(KeyCode.D)) 
+        {
+            if (lastDirection != 1) blockMoving = false;
+            lastDirection = 1;
+        }
+        else
+        {
+            blockMoving = false;
+            lastDirection = 0;
+        }
+
+        if(Input.GetKeyDown(KeyCode.Space) && onGround && currentJumpCd <= 0)
         {
             rb.AddForce(Vector2.up * (jumpForce * slowRate));
+            currentJumpCd = jumpCd;
             onGround = false;
         }
 
-        if(Mathf.Abs(moveX) > 0.1 && mustAutoJump && onGround)
+        currentJumpCd -= Time.deltaTime;
+
+        if (Mathf.Abs(moveX) > 0.1 && mustAutoJump && onGround)
         {
             transform.Translate(0, autoJumpForce, 0);
         }
@@ -105,15 +131,23 @@ public class PlayerMovement : MonoBehaviour
         if (moveX == 0) timeOfWalking = 0;
         else timeOfWalking += Time.deltaTime;
 
-        acceleration = Mathf.Min(2, 1 + (timeOfWalking / 3));
+        if (!blockMoving)
+        {
+            acceleration = Mathf.Min(2, 1 + (timeOfWalking / 3));
+            rb.velocity = move;
+        }
+        else
+        {
+            acceleration = 1;
+        }
 
         currentDashCD -= Time.deltaTime;
-        
-        rb.velocity = move;
 
         lastMovingDirection = moveX;
 
         Flip();
+
+        //Debug.Log(blockMoving);
     }
 
     private void Flip()
@@ -132,12 +166,54 @@ public class PlayerMovement : MonoBehaviour
     {
         if(collision.collider.tag == "Ground" || collision.collider.tag == "Platform")
         {
+
+            if (collision.transform.name == "Tilemap")
+            {
+                foreach (ContactPoint2D contactPoint in collision.contacts)
+                {
+                    Vector2 hitPoint = contactPoint.point;
+
+                    //Debug.Log(hitPoint.x + " " + transform.position.x);
+
+                    if (hitPoint.y - transform.position.y <= -0.5)
+                    {
+                        onGround = true;
+                        blockMoving = false;
+                        return;
+                    }
+
+                }
+
+                foreach (ContactPoint2D contactPoint in collision.contacts)
+                {
+                    Vector2 hitPoint = contactPoint.point;
+
+                    if (hitPoint.y - transform.position.y > 0)
+                    {
+                        if ((lastDirection == 1 && Input.GetKey(KeyCode.D)) || (lastDirection == -1 && Input.GetKey(KeyCode.A)))
+                        {
+                            blockMoving = true;
+                        }
+                        else
+                        {
+                            blockMoving = false;
+                        }
+
+
+                        onGround = false;
+                        return;
+                    }
+
+                }
+            }
+
             onGround = true;
         }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
+        blockMoving = false;
         if (collision.collider.tag == "Ground" || collision.collider.tag == "Platform")
         {
             onGround = false;
