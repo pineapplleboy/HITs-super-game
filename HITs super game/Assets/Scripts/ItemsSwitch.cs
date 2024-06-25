@@ -11,7 +11,7 @@ public class ItemsSwitch : MonoBehaviour
     private void Start()
     {
         gun.SetActive(false);
-        sword.SetActive(true);
+        sword.SetActive(false);
         laserGun.SetActive(false);
     }
 
