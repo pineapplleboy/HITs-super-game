@@ -17,22 +17,37 @@ public class LaserDamage : MonoBehaviour
     private float damageGrowthPercentagePerSecond = 0.2f;
     private int maxDamage = 152;
 
+    private float intellectPerTick = 10f;
+
     public float laserCooldown = 0.5f;
     private float currentLaserAttackTime = 0f;
 
     public RaycastHit2D hitInfo;
 
+    private bool isShooting = false;
+    private float necessaryIntellectAmount = 10f;
+
     void Update()
     {
         if (!isActive) return;
 
-        if (Input.GetMouseButton(0))
+        if (isShooting)
         {
-            if (PlayerStats.intellectAmount > 0)
-            {
-                shootingTime += Time.deltaTime;
-                Shoot();
-            }
+            necessaryIntellectAmount = 1f;
+        }
+        else
+        {
+            necessaryIntellectAmount = 10f;
+        }
+
+        if (Input.GetMouseButton(0) && PlayerStats.intellectAmount > necessaryIntellectAmount)
+        {
+
+            isShooting = true;
+
+            shootingTime += Time.deltaTime;
+            PlayerStats.intellectAmount -= intellectPerTick * Time.deltaTime;
+            Shoot();
 
             if ((int)shootingTime != lastDigit)
             {
@@ -44,6 +59,9 @@ public class LaserDamage : MonoBehaviour
         }
         else
         {
+            isShooting = false;
+            necessaryIntellectAmount = 10f;
+
             realDamage = baseDamage;
             shootingTime = 0f;
             currentLaserAttackTime = 0f;

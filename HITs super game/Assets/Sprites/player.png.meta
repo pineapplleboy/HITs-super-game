@@ -71,7 +71,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -189,7 +189,7 @@ TextureImporter:
         width: 14
         height: 24
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -197,6 +197,69 @@ TextureImporter:
       bones: []
       spriteID: 791de9174a2d5d04c9d957c6fe1fe248
       internalID: -507192388
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player_5
+      rect:
+        serializedVersion: 2
+        x: 85
+        y: 101
+        width: 6
+        height: 23
+      alignment: 9
+      pivot: {x: 0.4751803, y: 0.111503266}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eb874dc0fd72ade4ea3654d0ec6fc26f
+      internalID: -991564095
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player_6
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 101
+        width: 6
+        height: 23
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 64afb887a04265c409c5e7d508cd6ded
+      internalID: 1634299220
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player_7
+      rect:
+        serializedVersion: 2
+        x: 116
+        y: 102
+        width: 7
+        height: 17
+      alignment: 9
+      pivot: {x: 0.45745087, y: 0.19339214}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f746736e8b034948b49a8fcfa934592
+      internalID: -1127442751
       vertices: []
       indices: 
       edges: []
@@ -217,6 +280,9 @@ TextureImporter:
       player_2: -128271749
       player_3: 1576819533
       player_4: -507192388
+      player_5: -991564095
+      player_6: 1634299220
+      player_7: -1127442751
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

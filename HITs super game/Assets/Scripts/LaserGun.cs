@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Threading;
 using UnityEngine;
 
 public class LaserGun : MonoBehaviour
@@ -24,13 +23,15 @@ public class LaserGun : MonoBehaviour
 
     private float laserWidth = 0.2f;
 
+    private float intellectPerTick = 10f;
+
     public RaycastHit2D hitInfo;
-    Thread strikeThread;
+
+    private bool isShooting = false;
+    private float necessaryIntellectAmount = 10f;
 
     private void Start()
     {
-        //strikeThread = new Thread(StrikeEnemy);
-
         lineRenderer.startWidth = laserWidth;
         lineRenderer.endWidth = laserWidth;
     }
@@ -39,20 +40,25 @@ public class LaserGun : MonoBehaviour
     {
         if (!isActive) return;
 
+        if (isShooting)
+        {
+            necessaryIntellectAmount = 1f;
+        }
+        else
+        {
+            necessaryIntellectAmount = 10f;
+        }
+
         ChangePosition();
 
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && PlayerStats.intellectAmount > necessaryIntellectAmount)
         {
-            //if (!strikeThread.IsAlive)
-            //{
-            //    strikeThread.Start();
-            //}
+            isShooting = true;
 
-            if (PlayerStats.intellectAmount > 0)
-            {
-                shootingTime += Time.deltaTime;
-                Shoot();
-            }
+            shootingTime += Time.deltaTime;
+            PlayerStats.intellectAmount -= intellectPerTick * Time.deltaTime;
+            PlayerStats.intellectAmount = Mathf.Max(PlayerStats.intellectAmount, 0);
+            Shoot();
 
             if ((int)shootingTime != lastDigit)
             {
@@ -70,11 +76,8 @@ public class LaserGun : MonoBehaviour
         }
         else
         {
-
-            //if (strikeThread.IsAlive)
-            //{
-            //    strikeThread.Abort();
-            //}
+            isShooting = false;
+            necessaryIntellectAmount = 10f;
 
             Draw2DRay(firePoint.position, firePoint.position);
             realDamage = baseDamage;
@@ -138,15 +141,11 @@ public class LaserGun : MonoBehaviour
 
         if (hitInfo)
         {
-            //Debug.Log(hitInfo.transform.name);
-            //StrikeEnemy();
-
             Draw2DRay(firePoint.position, hitInfo.point);
         }
         else
         {
             Vector2 mousePoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            //Debug.Log(mousePoint + " " + mousePoint * 2);
 
             Draw2DRay(firePoint.position, mousePoint + difference * 50);
         }

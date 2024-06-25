@@ -17,6 +17,7 @@ public class Block
     [SerializeField] private int lightLvl = 15;
     [SerializeField] public ItemScriptableObject item;
     [SerializeField] private Sprite icon;
+    private bool isImportantForBase;
 
     public Block(Block block)
     {
@@ -26,11 +27,28 @@ public class Block
         this.lightLvl = block.lightLvl;
         this.item = block.item;
         this.icon = block.icon;
+        isImportantForBase = false;
+    }
+
+    public bool getImportance()
+    {
+        return isImportantForBase;
+    }
+
+    public void setImportance(bool importance)
+    {
+        isImportantForBase = importance;
     }
 
     public float GetTimeToBreak()
     {
         return timeToBreak;
+    }
+    
+    public bool CheckByName(string name)
+    {
+        if(this.name == name) return true;
+        return false;
     }
 }
 
@@ -97,6 +115,11 @@ public class WorldGeneration : MonoBehaviour
     private float blockPressedTime;
     private Vector3Int blockPressedCoords;
 
+    public bool IsBlock(int x, int y)
+    {
+        return world[x, y] != null;
+    }
+
     public Block[,] GenerateArray(int width, int height, bool empty)
     {
         Block[,] map = new Block[width, height];
@@ -161,7 +184,45 @@ public class WorldGeneration : MonoBehaviour
         return lightMap;
     }
 
-    public void RenderMap(Block[,] map, Block[,] bgMap, Block[,] fgMap, int[,] lightMap, Tilemap tilemap, Tilemap bgTilemap, Tilemap fgTilemap, int chunkX, int chunkY, int chunkSize)
+    public void RenderMapByPosition(Vector3 pos)
+    {
+        int objX = Mathf.Clamp((int)pos.x / chunkSize, 0, worldWidth / chunkSize);
+        int objY = Mathf.Clamp((int)pos.y / chunkSize, 0, worldHeight / chunkSize);
+
+        renderLeftBorder = Mathf.Clamp(objX - renderDistance, 0, worldWidth / chunkSize);
+        renderRightBorder = Mathf.Clamp(objX + renderDistance, 0, worldWidth / chunkSize);
+        renderDownBorder = Mathf.Clamp(objY - renderDistance, 0, worldHeight / chunkSize);
+        renderUpBorder = Mathf.Clamp(objY + renderDistance, 0, worldHeight / chunkSize);
+
+        for (int i = renderLeftBorder; i < renderRightBorder; ++i)
+        {
+            for (int j = renderDownBorder; j < renderUpBorder; ++j)
+            {
+                RenderMap(i, j, chunkSize);
+            }
+        }
+    }
+
+    public void ClearMapByPosition(Vector3 pos)
+    {
+        int objX = Mathf.Clamp((int)pos.x / chunkSize, 0, worldWidth / chunkSize);
+        int objY = Mathf.Clamp((int)pos.y / chunkSize, 0, worldHeight / chunkSize);
+
+        renderLeftBorder = Mathf.Clamp(objX - renderDistance, 0, worldWidth / chunkSize);
+        renderRightBorder = Mathf.Clamp(objX + renderDistance, 0, worldWidth / chunkSize);
+        renderDownBorder = Mathf.Clamp(objY - renderDistance, 0, worldHeight / chunkSize);
+        renderUpBorder = Mathf.Clamp(objY + renderDistance, 0, worldHeight / chunkSize);
+
+        for (int i = renderLeftBorder; i < renderRightBorder; ++i)
+        {
+            for (int j = renderDownBorder; j < renderUpBorder; ++j)
+            {
+                ClearTileMap(tilemap, bgTilemap, fgTilemap, i, j, chunkSize);
+            }
+        }
+    }
+
+    public void RenderMap(int chunkX, int chunkY, int chunkSize)
     {
         //tilemap.ClearAllTiles();
 
@@ -170,9 +231,9 @@ public class WorldGeneration : MonoBehaviour
             for (int y = chunkY * chunkSize; y < (chunkY + 1) * chunkSize; y++)
             {
 
-                if (map[x, y] != null)
+                if (world[x, y] != null)
                 {
-                    tilemap.SetTile(new Vector3Int(x, y, 0), map[x, y].tile);
+                    tilemap.SetTile(new Vector3Int(x, y, 0), world[x, y].tile);
                     tilemap.SetColor(new Vector3Int(x, y, 0), new Color(lightMap[x, y] / 15.0f, lightMap[x, y] / 15.0f, lightMap[x, y] / 15.0f));
                 }
 
@@ -181,16 +242,26 @@ public class WorldGeneration : MonoBehaviour
                     tilemap.SetTile(new Vector3Int(x, y, 0), null);
                 }
 
-                if (bgMap[x, y] != null)
+                if (bgWorld[x, y] != null)
                 {
-                    bgTilemap.SetTile(new Vector3Int(x, y, 0), bgMap[x, y].tile);
+                    bgTilemap.SetTile(new Vector3Int(x, y, 0), bgWorld[x, y].tile);
                     bgTilemap.SetColor(new Vector3Int(x, y, 0), new Color(lightMap[x, y] / 15.0f, lightMap[x, y] / 15.0f, lightMap[x, y] / 15.0f));
                 }
 
-                if (fgMap[x, y] != null)
+                else
                 {
-                    fgTilemap.SetTile(new Vector3Int(x, y, 0), fgMap[x, y].tile);
+                    bgTilemap.SetTile(new Vector3Int(x, y, 0), null);
+                }
+
+                if (fgWorld[x, y] != null)
+                {
+                    fgTilemap.SetTile(new Vector3Int(x, y, 0), fgWorld[x, y].tile);
                     fgTilemap.SetColor(new Vector3Int(x, y, 0), new Color(lightMap[x, y] / 15.0f, lightMap[x, y] / 15.0f, lightMap[x, y] / 15.0f));
+                }
+
+                else
+                {
+                    fgTilemap.SetTile(new Vector3Int(x, y, 0), null);
                 }
             }
         }
@@ -527,7 +598,7 @@ public class WorldGeneration : MonoBehaviour
         return maxHeights;
     }
 
-    public void DetectTilePressed(float distanceToBreak)
+    public void BreakBlock(float distanceToBreak)
     {
         Vector3 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector3Int cellPosition = tilemap.WorldToCell(worldPoint);
@@ -535,10 +606,10 @@ public class WorldGeneration : MonoBehaviour
 
         if (Vector3.Distance(Player.transform.position, cellPosition) <= distanceToBreak)
         {
-            if (Input.GetKey(KeyCode.Mouse1))
-            {
-                RenderLight(lightMap, blockPressedCoords.x, blockPressedCoords.y, 15, false);
-            }
+            //if (Input.GetKey(KeyCode.Mouse1))
+            //{
+            //    RenderLight(lightMap, blockPressedCoords.x, blockPressedCoords.y, 15, false);
+            //}
 
             if (clickedTile != null && blockPressedCoords == cellPosition)
             {
@@ -550,11 +621,17 @@ public class WorldGeneration : MonoBehaviour
                 blockPressedCoords = cellPosition;
             }
 
-            if (world[blockPressedCoords.x, blockPressedCoords.y] != null)
+            if (world[blockPressedCoords.x, blockPressedCoords.y] != null && blockPressedTime >= world[blockPressedCoords.x, blockPressedCoords.y].GetTimeToBreak())
             {
                 GameObject newTileDrop = Instantiate(tileDrop, new Vector2(blockPressedCoords.x, blockPressedCoords.y), Quaternion.identity);
                 newTileDrop.GetComponent<SpriteRenderer>().sprite = tilemap.GetSprite(cellPosition);
                 newTileDrop.GetComponent<Item>().item = world[blockPressedCoords.x, blockPressedCoords.y].item;
+
+                if (world[blockPressedCoords.x, blockPressedCoords.y].getImportance())
+                {
+                    DestroyRoom(blockPressedCoords.x, blockPressedCoords.y);
+                }
+
                 world[blockPressedCoords.x, blockPressedCoords.y] = null;
             }
         }
@@ -590,6 +667,229 @@ public class WorldGeneration : MonoBehaviour
         return light;
     }
 
+    public void TpObjectOnSurface(GameObject obj, int x)
+    {
+        for(int i = worldHeight - 1; i >= 0; i--)
+        {
+            if (world[x, i] != null)
+            {
+                obj.transform.position = new Vector3(x, i + 5, obj.transform.position.z);
+                return;
+            }
+        }
+    }
+
+    public void GenerateBase()
+    {
+        int floorHeight = 0;
+        int baseWidth = 20;
+        int baseHeight = 10;
+
+        for(int i = worldHeight - 1; i >= 0; i--)
+        {
+            if (world[worldWidth/2, i] != null)
+            {
+                floorHeight = i;
+                break;
+            }
+        }
+
+        for(int x = worldWidth/2; x < worldWidth/2 + baseWidth; x++)
+        {
+            world[x, floorHeight] = blocks.GetBlock("lead");
+            fgWorld[x, floorHeight] = null;
+            bgWorld[x, floorHeight] = null;
+
+            int currHeight = floorHeight - 1;
+
+            while (world[x, currHeight] == null)
+            {
+                world[x, currHeight] = blocks.GetBlock("lead");
+                bgWorld[x, currHeight] = null;
+                fgWorld[x, currHeight] = null;
+
+                currHeight--;
+            }
+
+            for(int y = floorHeight + 1; y < worldHeight - 1; y++)
+            {
+                world[x, y] = null;
+                bgWorld[x, y] = null;
+                fgWorld[x, y] = null;
+            }
+
+            world[x, floorHeight + baseHeight] = blocks.GetBlock("lead");
+        }
+
+        for(int y = floorHeight; y < floorHeight + baseHeight; y++)
+        {
+            world[worldWidth/2, y] = blocks.GetBlock("lead");
+            world[worldWidth/2 + baseWidth - 1, y] = blocks.GetBlock("lead");
+        }
+
+        for(int x = worldWidth/2; x < worldWidth/2 + baseWidth; x++)
+        {
+            for(int y = floorHeight; y < floorHeight + baseHeight; y++)
+            {
+                bgWorld[x, y] = blocks.GetBlock("lead");
+            }
+        }
+    }
+
+    public Vector2Int[] CheckPlaceForRoom(Vector3Int cellPosition)
+    {
+        int leftBorderX = cellPosition.x;
+        int leftBorderTop = cellPosition.y;
+        int leftBorderDown = cellPosition.y;
+        while(leftBorderX >= 0)
+        {
+            if (world[leftBorderX, cellPosition.y] != null && world[leftBorderX, cellPosition.y].CheckByName("lead"))
+            {
+                while (world[leftBorderX, leftBorderTop] != null && world[leftBorderX, leftBorderTop].CheckByName("lead"))
+                {
+                    leftBorderTop++;
+                }
+                leftBorderTop--;
+
+                while (world[leftBorderX, leftBorderDown] != null && world[leftBorderX, leftBorderDown].CheckByName("lead"))
+                {
+                    leftBorderDown--;
+                }
+                leftBorderDown++;
+
+                break;
+            }
+
+            leftBorderX--;
+        }
+
+        if (leftBorderX < 0)
+            return null;
+
+        int rightBorderX = cellPosition.x;
+        int rightBorderTop = cellPosition.y;
+        int rightBorderDown = cellPosition.y;
+        while (rightBorderX < worldWidth)
+        {
+            if (world[rightBorderX, cellPosition.y] != null && world[rightBorderX, cellPosition.y].CheckByName("lead"))
+            {
+                while (world[rightBorderX, rightBorderTop] != null && world[rightBorderX, rightBorderTop].CheckByName("lead"))
+                {
+                    rightBorderTop++;
+                }
+                rightBorderTop--;
+
+                while (world[rightBorderX, rightBorderDown] != null && world[rightBorderX, rightBorderDown].CheckByName("lead"))
+                {
+                    rightBorderDown--;
+                }
+                rightBorderDown++;
+
+                break;
+            }
+
+            rightBorderX++;
+        }
+
+        if (rightBorderX >= worldWidth)
+            return null;
+
+        int roofY = Mathf.Min(leftBorderTop, rightBorderTop);
+        while(roofY >= 0)
+        {
+            int currX = leftBorderX;
+            while(currX < rightBorderX && world[currX, roofY] != null && world[currX, roofY].CheckByName("lead"))
+            {
+                currX++;
+            }
+
+            if (currX == rightBorderX)
+                break;
+
+            roofY--;
+        }
+
+        if (roofY < 0)
+            return null;
+
+        int floorY = Mathf.Max(leftBorderDown, rightBorderDown);
+        while (floorY < worldHeight)
+        {
+            int currX = leftBorderX;
+            while (currX < rightBorderX && world[currX, floorY] != null && world[currX, floorY].CheckByName("lead"))
+            {
+                currX++;
+            }
+
+            if (currX == rightBorderX)
+                break;
+
+            floorY++;
+        }
+
+        if (floorY >= worldHeight)
+            return null;
+
+        if (cellPosition.x < leftBorderX || cellPosition.x > rightBorderX || cellPosition.y < floorY || cellPosition.y > roofY)
+            return null;
+
+        Debug.Log(leftBorderX + " " + leftBorderDown + " " + leftBorderTop + " " + rightBorderX + " " + rightBorderDown + " " + rightBorderTop + " " + roofY + " " + floorY);
+
+        return new Vector2Int[] { new Vector2Int(leftBorderX, floorY), new Vector2Int(rightBorderX, roofY) };
+    }
+
+    public void SetRoom(Room room)
+    {
+        for(int x = room.GetLeftDownCorner().x; x <= room.GetRightUpCorner().x; x++)
+        {
+            world[x, room.GetLeftDownCorner().y].setImportance(true);
+            world[x, room.GetRightUpCorner().y].setImportance(true);
+        }
+
+        for (int y = room.GetLeftDownCorner().y; y <= room.GetRightUpCorner().y; y++)
+        {
+            world[room.GetLeftDownCorner().x, y].setImportance(true);
+            world[room.GetRightUpCorner().x, y].setImportance(true);
+        }
+
+        for (int x = room.GetLeftDownCorner().x; x <= room.GetRightUpCorner().x; x++)
+        {
+            for (int y = room.GetLeftDownCorner().y; y <= room.GetRightUpCorner().y; y++)
+            {
+                bgWorld[x, y] = new Block(blocks.GetBlock("lead"));
+            }
+        }
+    }
+
+    public void DestroyRoom(int blockX, int blockY)
+    {
+        Room room = Base.GetRoomFromCoords(blockX, blockY);
+
+        for (int x = room.GetLeftDownCorner().x; x <= room.GetRightUpCorner().x; x++)
+        {
+            world[x, room.GetLeftDownCorner().y].setImportance(false);
+            world[x, room.GetRightUpCorner().y].setImportance(false);
+        }
+
+        for (int y = room.GetLeftDownCorner().y; y <= room.GetRightUpCorner().y; y++)
+        {
+            world[room.GetLeftDownCorner().x, y].setImportance(false);
+            world[room.GetRightUpCorner().x, y].setImportance(false);
+        }
+
+        for (int x = room.GetLeftDownCorner().x; x <= room.GetRightUpCorner().x; x++)
+        {
+            for (int y = room.GetLeftDownCorner().y; y <= room.GetRightUpCorner().y; y++)
+            {
+                Debug.Log(bgWorld[x, y].name);
+                bgWorld[x, y] = null;
+                Debug.Log(x + " " + y);
+            }
+        }
+
+        Base.DestroyRoom(room);
+    }
+
     private void Start()
     {
         Player = GameObject.FindGameObjectWithTag("Player");
@@ -609,6 +909,9 @@ public class WorldGeneration : MonoBehaviour
         lightMap = new int[worldWidth, worldHeight];
         lightMap = SetDayLight(lightMap, bgWorld);
 
+        TpObjectOnSurface(Player, worldWidth / 2);
+        TpObjectOnSurface(GameObject.FindGameObjectWithTag("NPC"), worldWidth / 2 - 10);
+
         playerChunkX = Mathf.Clamp((int)Player.transform.position.x / chunkSize, 0, worldWidth / chunkSize);
         playerChunkY = Mathf.Clamp((int)Player.transform.position.y / chunkSize, 0, worldHeight / chunkSize);
 
@@ -619,6 +922,8 @@ public class WorldGeneration : MonoBehaviour
         prevRenderRightBorder = Mathf.Clamp(playerChunkX + renderDistance, 0, worldWidth / chunkSize);
         prevRenderDownBorder = Mathf.Clamp(playerChunkY - renderDistance, 0, worldHeight / chunkSize);
         prevRenderUpBorder = Mathf.Clamp(playerChunkY + renderDistance, 0, worldHeight / chunkSize);
+
+        GenerateBase();
     }
 
     private void Update()
@@ -638,7 +943,7 @@ public class WorldGeneration : MonoBehaviour
         {
             for (int j = renderDownBorder; j < renderUpBorder; ++j)
             {
-                RenderMap(world, bgWorld, fgWorld, lightMap, tilemap, bgTilemap, fgTilemap, i, j, chunkSize);
+                RenderMap(i, j, chunkSize);
             }
         }
 
@@ -669,7 +974,7 @@ public class WorldGeneration : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Mouse0))
         {
-            DetectTilePressed(5);
+            BreakBlock(5);
         }
 
     }

@@ -3,15 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - Ground
-  - World
-  - Enemy
-  - Platform
-  - Sword
-  - Item
-  - Panel
-  - Shop
+  tags: []
   layers:
   - Default
   - TransparentFX
@@ -19,7 +11,7 @@ TagManager:
   - 
   - Water
   - UI
-  - Enemy
+  - 
   - 
   - 
   - 
@@ -48,13 +40,4 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: background
-    uniqueID: 2582927473
-    locked: 0
-  - name: player
-    uniqueID: 1833733397
-    locked: 0
-  - name: frontground
-    uniqueID: 90648953
     locked: 0
