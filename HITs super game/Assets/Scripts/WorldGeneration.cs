@@ -606,10 +606,10 @@ public class WorldGeneration : MonoBehaviour
 
         if (Vector3.Distance(Player.transform.position, cellPosition) <= distanceToBreak)
         {
-            if (Input.GetKey(KeyCode.Mouse1))
-            {
-                RenderLight(lightMap, blockPressedCoords.x, blockPressedCoords.y, 15, false);
-            }
+            //if (Input.GetKey(KeyCode.Mouse1))
+            //{
+            //    RenderLight(lightMap, blockPressedCoords.x, blockPressedCoords.y, 15, false);
+            //}
 
             if (clickedTile != null && blockPressedCoords == cellPosition)
             {
@@ -621,7 +621,7 @@ public class WorldGeneration : MonoBehaviour
                 blockPressedCoords = cellPosition;
             }
 
-            if (world[blockPressedCoords.x, blockPressedCoords.y] != null)
+            if (world[blockPressedCoords.x, blockPressedCoords.y] != null && blockPressedTime >= world[blockPressedCoords.x, blockPressedCoords.y].GetTimeToBreak())
             {
                 GameObject newTileDrop = Instantiate(tileDrop, new Vector2(blockPressedCoords.x, blockPressedCoords.y), Quaternion.identity);
                 newTileDrop.GetComponent<SpriteRenderer>().sprite = tilemap.GetSprite(cellPosition);

@@ -8,6 +8,7 @@ public class KamikazeEnemyAI : MonoBehaviour
     private Transform player;
 
     private Rigidbody2D rb;
+    private Animator anim;
 
     public int jumpForce = 500;
     public static float slowRate = 1;
@@ -24,6 +25,7 @@ public class KamikazeEnemyAI : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
     void Update()
@@ -103,11 +105,13 @@ public class KamikazeEnemyAI : MonoBehaviour
         {
             isFacedRight = true;
             moveX = 1;
+            anim.SetBool("isRunning", true);
         }
         else
         {
             isFacedRight = false;
             moveX = -1;
+            anim.SetBool("isRunning", true);
         }
 
         Vector2 move = new Vector2(moveX * (speed), rb.velocity.y);

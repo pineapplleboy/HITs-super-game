@@ -11,6 +11,7 @@ public class RangeEnemy : MonoBehaviour
     private Transform player;
 
     private Rigidbody2D rb;
+    private Animator anim;
 
     public int jumpForce = 500;
     public static float slowRate = 1;
@@ -41,6 +42,7 @@ public class RangeEnemy : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
     }
 
     void Update()
@@ -65,11 +67,13 @@ public class RangeEnemy : MonoBehaviour
         {
             isShooting = true;
             Shoot();
+            anim.SetBool("isRunning", false);
         }
         else if (currentCd <= 0)
         {
             isShooting = false;
             Move();
+            anim.SetBool("isRunning", true);
         }
     }
 
