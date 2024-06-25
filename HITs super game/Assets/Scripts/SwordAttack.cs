@@ -9,6 +9,8 @@ using Random = UnityEngine.Random;
 
 public class SwordAttack : MonoBehaviour
 {
+    private Animator anim;
+
     private float timeBetweenAttack = 0;
     public float attackSpeed = 1;
 
@@ -23,6 +25,11 @@ public class SwordAttack : MonoBehaviour
     private float maxSwingTime = 1f;
 
     public static bool isActive = true;
+
+    private void Start()
+    {
+        anim = GetComponent<Animator>();
+    }
 
     void Update()
     {
@@ -57,6 +64,8 @@ public class SwordAttack : MonoBehaviour
 
     void Attack()
     {
+        anim.SetTrigger("swordAtack");
+
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
 
         foreach (Collider2D enemy in hitEnemies)

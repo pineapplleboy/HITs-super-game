@@ -1,11 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Scripting;
 
 public class PlayerStats : MonoBehaviour
 {
     public static int healthAmount = 100;
+    public int currHealth = 100;
     public int maxHealth = 100;
 
     public static List<int> damageResistance;
@@ -19,17 +23,72 @@ public class PlayerStats : MonoBehaviour
     public static float intellectAmount = 100;
     public static float maxIntellectAmount = 100;
 
+    public TMPro.TMP_Text HealthText;
+    public TMPro.TMP_Text IntellectText;
+
+    public GameObject[] Hearts;
+    public GameObject[] Brains;
+
     void Start()
     {
         damageResistance = new List<int>() { 0, 0, 0 };
         tempDamageResistance = new List<int>() { 0, 0, 0 };
+
+        HealthText.text = Convert.ToInt32(healthAmount).ToString() + "/" + Convert.ToInt32(maxHealth).ToString();
+        IntellectText.text = Convert.ToInt32(intellectAmount).ToString() + "/" + Convert.ToInt32(maxIntellectAmount).ToString();
     }
 
     private void Update()
     {
-        maxHealth = healthAmount;
+        currHealth = healthAmount;
         intellectAmount += 3 * Time.deltaTime;
         intellectAmount = Mathf.Min(intellectAmount, maxIntellectAmount);
+
+        HealthText.text = Convert.ToInt32(healthAmount).ToString() + "/" + Convert.ToInt32(maxHealth).ToString();
+        IntellectText.text = Convert.ToInt32(intellectAmount).ToString() + "/" + Convert.ToInt32(maxIntellectAmount).ToString();
+
+        int activeHearts = currHealth * Hearts.Length / maxHealth;
+        for(int i = 0; i < activeHearts; i++)
+        {
+            Hearts[i].SetActive(true);
+            SetAlpha(Hearts[i], 1);
+        }
+
+        if(activeHearts < Hearts.Length)
+        {
+            Hearts[activeHearts].SetActive(true);
+            SetAlpha(Hearts[activeHearts], (currHealth - activeHearts * (maxHealth / Hearts.Length)) / (maxHealth / Hearts.Length));
+        }
+
+        for(int i = activeHearts + 1; i < Hearts.Length; ++i)
+        {
+            Hearts[i].SetActive(false);
+        }
+
+        int activeBrains = Convert.ToInt32(intellectAmount * Brains.Length / maxIntellectAmount);
+        for (int i = 0; i < activeBrains; i++)
+        {
+            Brains[i].SetActive(true);
+            SetAlpha(Brains[i], 1);
+        }
+
+        if(activeBrains < Brains.Length)
+        {
+            Brains[activeBrains].SetActive(true);
+            SetAlpha(Brains[activeBrains], (intellectAmount - activeBrains * (maxIntellectAmount / Brains.Length)) / (maxIntellectAmount / Brains.Length));
+        }
+
+        for (int i = activeBrains + 1; i < Brains.Length; ++i)
+        {
+            Brains[i].SetActive(false);
+        }
+    }
+
+    private void SetAlpha(GameObject Image, float alpha)
+    {
+        var tempColor = Image.GetComponent<Image>().color;
+        tempColor.a = alpha;
+        Image.GetComponent<Image>().color = tempColor;
     }
 
     public static void Block()

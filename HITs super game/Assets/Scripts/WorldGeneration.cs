@@ -179,7 +179,45 @@ public class WorldGeneration : MonoBehaviour
         return lightMap;
     }
 
-    public void RenderMap(Block[,] map, Block[,] bgMap, Block[,] fgMap, int[,] lightMap, Tilemap tilemap, Tilemap bgTilemap, Tilemap fgTilemap, int chunkX, int chunkY, int chunkSize)
+    public void RenderMapByPosition(Vector3 pos)
+    {
+        int objX = Mathf.Clamp((int)pos.x / chunkSize, 0, worldWidth / chunkSize);
+        int objY = Mathf.Clamp((int)pos.y / chunkSize, 0, worldHeight / chunkSize);
+
+        renderLeftBorder = Mathf.Clamp(objX - renderDistance, 0, worldWidth / chunkSize);
+        renderRightBorder = Mathf.Clamp(objX + renderDistance, 0, worldWidth / chunkSize);
+        renderDownBorder = Mathf.Clamp(objY - renderDistance, 0, worldHeight / chunkSize);
+        renderUpBorder = Mathf.Clamp(objY + renderDistance, 0, worldHeight / chunkSize);
+
+        for (int i = renderLeftBorder; i < renderRightBorder; ++i)
+        {
+            for (int j = renderDownBorder; j < renderUpBorder; ++j)
+            {
+                RenderMap(i, j, chunkSize);
+            }
+        }
+    }
+
+    public void ClearMapByPosition(Vector3 pos)
+    {
+        int objX = Mathf.Clamp((int)pos.x / chunkSize, 0, worldWidth / chunkSize);
+        int objY = Mathf.Clamp((int)pos.y / chunkSize, 0, worldHeight / chunkSize);
+
+        renderLeftBorder = Mathf.Clamp(objX - renderDistance, 0, worldWidth / chunkSize);
+        renderRightBorder = Mathf.Clamp(objX + renderDistance, 0, worldWidth / chunkSize);
+        renderDownBorder = Mathf.Clamp(objY - renderDistance, 0, worldHeight / chunkSize);
+        renderUpBorder = Mathf.Clamp(objY + renderDistance, 0, worldHeight / chunkSize);
+
+        for (int i = renderLeftBorder; i < renderRightBorder; ++i)
+        {
+            for (int j = renderDownBorder; j < renderUpBorder; ++j)
+            {
+                ClearTileMap(tilemap, bgTilemap, fgTilemap, i, j, chunkSize);
+            }
+        }
+    }
+
+    public void RenderMap(int chunkX, int chunkY, int chunkSize)
     {
         //tilemap.ClearAllTiles();
 
@@ -188,9 +226,9 @@ public class WorldGeneration : MonoBehaviour
             for (int y = chunkY * chunkSize; y < (chunkY + 1) * chunkSize; y++)
             {
 
-                if (map[x, y] != null)
+                if (world[x, y] != null)
                 {
-                    tilemap.SetTile(new Vector3Int(x, y, 0), map[x, y].tile);
+                    tilemap.SetTile(new Vector3Int(x, y, 0), world[x, y].tile);
                     tilemap.SetColor(new Vector3Int(x, y, 0), new Color(lightMap[x, y] / 15.0f, lightMap[x, y] / 15.0f, lightMap[x, y] / 15.0f));
                 }
 
@@ -199,9 +237,9 @@ public class WorldGeneration : MonoBehaviour
                     tilemap.SetTile(new Vector3Int(x, y, 0), null);
                 }
 
-                if (bgMap[x, y] != null)
+                if (bgWorld[x, y] != null)
                 {
-                    bgTilemap.SetTile(new Vector3Int(x, y, 0), bgMap[x, y].tile);
+                    bgTilemap.SetTile(new Vector3Int(x, y, 0), bgWorld[x, y].tile);
                     bgTilemap.SetColor(new Vector3Int(x, y, 0), new Color(lightMap[x, y] / 15.0f, lightMap[x, y] / 15.0f, lightMap[x, y] / 15.0f));
                 }
 
@@ -210,9 +248,9 @@ public class WorldGeneration : MonoBehaviour
                     bgTilemap.SetTile(new Vector3Int(x, y, 0), null);
                 }
 
-                if (fgMap[x, y] != null)
+                if (fgWorld[x, y] != null)
                 {
-                    fgTilemap.SetTile(new Vector3Int(x, y, 0), fgMap[x, y].tile);
+                    fgTilemap.SetTile(new Vector3Int(x, y, 0), fgWorld[x, y].tile);
                     fgTilemap.SetColor(new Vector3Int(x, y, 0), new Color(lightMap[x, y] / 15.0f, lightMap[x, y] / 15.0f, lightMap[x, y] / 15.0f));
                 }
 
@@ -867,6 +905,7 @@ public class WorldGeneration : MonoBehaviour
         lightMap = SetDayLight(lightMap, bgWorld);
 
         TpObjectOnSurface(Player, worldWidth / 2);
+        TpObjectOnSurface(GameObject.FindGameObjectWithTag("NPC"), worldWidth / 2 - 10);
 
         playerChunkX = Mathf.Clamp((int)Player.transform.position.x / chunkSize, 0, worldWidth / chunkSize);
         playerChunkY = Mathf.Clamp((int)Player.transform.position.y / chunkSize, 0, worldHeight / chunkSize);
@@ -899,7 +938,7 @@ public class WorldGeneration : MonoBehaviour
         {
             for (int j = renderDownBorder; j < renderUpBorder; ++j)
             {
-                RenderMap(world, bgWorld, fgWorld, lightMap, tilemap, bgTilemap, fgTilemap, i, j, chunkSize);
+                RenderMap(i, j, chunkSize);
             }
         }
 

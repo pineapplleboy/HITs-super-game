@@ -11,6 +11,7 @@ TagManager:
   - Sword
   - Item
   - Panel
+  - NPC
   layers:
   - Default
   - TransparentFX

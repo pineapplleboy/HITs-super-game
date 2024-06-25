@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Tilemaps;
@@ -8,11 +9,14 @@ public class Room
 {
     Vector2Int leftDownCorner;
     Vector2Int rightUpCorner;
+    Vector2Int center;
 
     public Room(Vector2Int leftDownCorner, Vector2Int rightUpCorner)
     {
         this.leftDownCorner = leftDownCorner;
         this.rightUpCorner = rightUpCorner;
+
+        center = new Vector2Int((leftDownCorner.x + rightUpCorner.x) / 2, (leftDownCorner.y + rightUpCorner.y) / 2);
     }
 
     public Vector2Int GetLeftDownCorner()
@@ -23,6 +27,11 @@ public class Room
     public Vector2Int GetRightUpCorner()
     {
         return rightUpCorner;
+    }
+
+    public Vector2Int GetCenter()
+    {
+        return center;
     }
 }
 
@@ -64,20 +73,45 @@ public static class Base
     {
         rooms.Remove(room);
     }
+
+    public static int GetRoomsAmount()
+    {
+        return rooms.Count;
+    }
+
+    public static Room getRoomByID(int id)
+    {
+        return rooms[id];
+    }
 }
 
 public class BaseManagement : MonoBehaviour
 {
     [SerializeField] private Tilemap tilemap;
+    [SerializeField] private GameObject HomeIndicator;
+    private bool homeModOn = false;
+
+    public void ChangeSetHomeMod()
+    {
+        homeModOn = !homeModOn;
+        HomeIndicator.SetActive(homeModOn);
+    }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (homeModOn)
         {
-            Vector3 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector3Int cellPosition = tilemap.WorldToCell(worldPoint);
+            HomeIndicator.transform.position = Input.mousePosition;
 
-            Base.AddRoom(cellPosition);
+            if (Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                Vector3 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Vector3Int cellPosition = tilemap.WorldToCell(worldPoint);
+
+                Base.AddRoom(cellPosition);
+
+                ChangeSetHomeMod();
+            }
         }
     }
 }
