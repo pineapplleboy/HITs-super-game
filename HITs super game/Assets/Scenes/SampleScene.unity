@@ -3035,7 +3035,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 2.4456177, y: -300.34937}
+  m_AnchoredPosition: {x: 2.4455566, y: -300.34937}
   m_SizeDelta: {x: -1462.1934, y: -913.1807}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &670942830
@@ -7255,37 +7255,37 @@ MonoBehaviour:
     blocks:
     - name: cobblestone
       tile: {fileID: 11400000, guid: 176e2780ff972524fbd86c78ed644db6, type: 2}
-      timeToBreak: 0.1
+      timeToBreak: 0.4
       lightLvl: 0
       item: {fileID: 11400000, guid: c807a0992ac3e8f4680a5aba3de4e6c3, type: 2}
       icon: {fileID: 1373156484, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
     - name: dirt
       tile: {fileID: 11400000, guid: abb6c0693b6a7c84fa6f724c10cee3d1, type: 2}
-      timeToBreak: 0.1
+      timeToBreak: 0.2
       lightLvl: 0
       item: {fileID: 11400000, guid: 2deb40bf76fc24a47b950663b34e1ab4, type: 2}
       icon: {fileID: 403524440, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
     - name: aluminum
       tile: {fileID: 11400000, guid: f7004465f974b1245a7835022356e138, type: 2}
-      timeToBreak: 0.1
+      timeToBreak: 1
       lightLvl: 0
       item: {fileID: 11400000, guid: efaa9255395c1d04488083beffcd2281, type: 2}
       icon: {fileID: -1997327415, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
     - name: lead
       tile: {fileID: 11400000, guid: 1e0c2e5b7b74a174484fcf9440122845, type: 2}
-      timeToBreak: 0.1
+      timeToBreak: 1
       lightLvl: 0
       item: {fileID: 11400000, guid: 02b8b61d3aa69fd4f9a83600aca219ae, type: 2}
       icon: {fileID: -301507201, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
     - name: uranus
       tile: {fileID: 11400000, guid: 6866e5ebcd1ca8c4696080cccd082500, type: 2}
-      timeToBreak: 0.1
+      timeToBreak: 1
       lightLvl: 0
       item: {fileID: 11400000, guid: 392c668ce631a2b4f86da82b5c33d073, type: 2}
       icon: {fileID: -293530752, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
     - name: zink
       tile: {fileID: 11400000, guid: 85a87350f50dd8343869e410628e022b, type: 2}
-      timeToBreak: 0.1
+      timeToBreak: 1
       lightLvl: 0
       item: {fileID: 11400000, guid: fcb8f78a9a74e3442af2c2bd2ce3f42a, type: 2}
       icon: {fileID: 391304829, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
