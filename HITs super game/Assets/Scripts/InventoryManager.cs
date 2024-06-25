@@ -84,9 +84,9 @@ public class InventoryManager : MonoBehaviour
     }
     public void BuySword()
     {
-        if (player.GetComponent<PlayerStats>().money >= 200)
+        if (player.GetComponent<PlayerStats>().money >= 1)
         {
-            player.GetComponent<PlayerStats>().money -= 200;
+            player.GetComponent<PlayerStats>().money -= 1;
             wallet.text = player.GetComponent<PlayerStats>().money.ToString();
             Item weapon = sword.GetComponent<Item>();
             AddItem(weapon.item, weapon.amount);
@@ -98,9 +98,9 @@ public class InventoryManager : MonoBehaviour
     }
     public void BuyGun()
     {
-        if (player.GetComponent<PlayerStats>().money >= 1000)
+        if (player.GetComponent<PlayerStats>().money >= 1)
         {
-            player.GetComponent<PlayerStats>().money -= 1000;
+            player.GetComponent<PlayerStats>().money -= 1;
             wallet.text = player.GetComponent<PlayerStats>().money.ToString();
             Item weapon = gun.GetComponent<Item>();
             AddItem(weapon.item, weapon.amount);
@@ -112,9 +112,9 @@ public class InventoryManager : MonoBehaviour
     }
     public void BuyLaserGun()
     {
-        if (player.GetComponent<PlayerStats>().money >= 2000)
+        if (player.GetComponent<PlayerStats>().money >= 1)
         {
-            player.GetComponent<PlayerStats>().money -= 2000;
+            player.GetComponent<PlayerStats>().money -= 1;
             wallet.text = player.GetComponent<PlayerStats>().money.ToString();
             Item weapon = laserGun.GetComponent<Item>();
             AddItem(weapon.item, weapon.amount);

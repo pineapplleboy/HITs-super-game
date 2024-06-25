@@ -186,6 +186,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   oldSlot: {fileID: 1138404699657228311}
+  wallet: {fileID: 0}
 --- !u!114 &704833322544201731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -295,11 +296,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d46e02ad2634a4543ba1fe988bf1c0f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isShop: 0
   item: {fileID: 0}
   amount: 0
   isEmpty: 1
-  iconGO: {fileID: 0}
-  itemAmountText: {fileID: 0}
+  iconGO: {fileID: 8928482331713141676}
+  itemAmountText: {fileID: 1810954200239178581}
 --- !u!1 &8928482331713141676
 GameObject:
   m_ObjectHideFlags: 0

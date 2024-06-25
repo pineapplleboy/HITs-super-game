@@ -15,7 +15,7 @@ MonoBehaviour:
   itemType: 0
   itemPrefab: {fileID: 7711506575736541975, guid: 8bb131586ab34794994895dbf1494aae, type: 3}
   itemName: Sword
-  icon: {fileID: 484658470, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
+  icon: {fileID: 1634299220, guid: b424224c91c9d0d40949ee6c7e26b419, type: 3}
   maximumAmount: 1
   itemDescription: 
   isConsumeable: 0
