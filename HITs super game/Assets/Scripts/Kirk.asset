@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c7477b0aa65859b488c60b93e6f86289, type: 3}
-  m_Name: Stone_bricks
+  m_Name: Kirk
   m_EditorClassIdentifier: 
-  itemType: 1
-  itemPrefab: {fileID: 7931007952951430306, guid: 41fb63a67a78ff14490db86aabf5395a, type: 3}
-  itemName: stone_bricks
-  icon: {fileID: -903343890, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
-  maximumAmount: 64
+  itemType: 0
+  itemPrefab: {fileID: 6573914249929306734, guid: 7410595da95ab2e469141cf35650369a, type: 3}
+  itemName: kirk
+  icon: {fileID: 484658470, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
+  maximumAmount: 1
   itemDescription: 
   isConsumeable: 0
   healAmount: 0

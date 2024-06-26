@@ -108,6 +108,9 @@ MonoBehaviour:
   lineRenderer: {fileID: 6203322785291215186}
   baseDamage: 50
   laserCooldown: 0.5
+  mask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!120 &6203322785291215186
 LineRenderer:
   serializedVersion: 2
@@ -227,6 +230,9 @@ MonoBehaviour:
   firePoint: {fileID: 4896766179753749961}
   baseDamage: 50
   laserCooldown: 0.5
+  mask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!61 &-4646969154975317019
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -270,7 +276,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.1, y: 4}
+  m_Size: {x: 0.4, y: 0.5}
   m_EdgeRadius: 0
 --- !u!50 &2075006341079312047
 Rigidbody2D:
@@ -356,7 +362,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.1, y: 0.2}
   m_EdgeRadius: 0
 --- !u!1 &2617155107440517469
 GameObject:

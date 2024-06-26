@@ -7,6 +7,7 @@ using Unity.Mathematics;
 using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class Block
@@ -44,10 +45,10 @@ public class Block
     {
         return timeToBreak;
     }
-    
+
     public bool CheckByName(string name)
     {
-        if(this.name == name) return true;
+        if (this.name == name) return true;
         return false;
     }
 }
@@ -112,6 +113,9 @@ public class WorldGeneration : MonoBehaviour
     private int prevRenderRightBorder = 0;
     private int prevRenderDownBorder = 0;
     private int prevRenderUpBorder = 0;
+
+    public Transform QuickslotPanel;
+    public Sprite selectedSprite;
 
     private float blockPressedTime;
     private Vector3Int blockPressedCoords;
@@ -653,7 +657,7 @@ public class WorldGeneration : MonoBehaviour
 
             if (world[blockPressedCoords.x, blockPressedCoords.y] != null && blockPressedTime >= world[blockPressedCoords.x, blockPressedCoords.y].GetTimeToBreak())
             {
-                GameObject newTileDrop = Instantiate(tileDrop, new Vector2(blockPressedCoords.x, blockPressedCoords.y), Quaternion.identity);
+                GameObject newTileDrop = Instantiate(tileDrop, new Vector2(blockPressedCoords.x, blockPressedCoords.y + 1), Quaternion.identity);
                 newTileDrop.GetComponent<SpriteRenderer>().sprite = tilemap.GetSprite(cellPosition);
                 newTileDrop.GetComponent<Item>().item = world[blockPressedCoords.x, blockPressedCoords.y].item;
 
@@ -666,8 +670,8 @@ public class WorldGeneration : MonoBehaviour
             }
         }
     }
-    
-    public void SetBlockOnMap(float distanceToBreak, ItemScriptableObject inputObject)
+
+    public bool SetBlockOnMap(float distanceToBreak, ItemScriptableObject inputObject)
     {
         Vector3 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector3Int cellPosition = tilemap.WorldToCell(worldPoint);
@@ -677,7 +681,9 @@ public class WorldGeneration : MonoBehaviour
         {
             Debug.Log($"{inputObject.itemName}");
             world[cellPosition.x, cellPosition.y] = blocks.GetBlock(inputObject.itemName);
+            return true;
         }
+        return false;
     }
     public bool IsBlockOnCursor()
     {
@@ -706,7 +712,7 @@ public class WorldGeneration : MonoBehaviour
 
     public void TpObjectOnSurface(GameObject obj, int x)
     {
-        for(int i = worldHeight - 1; i >= 0; i--)
+        for (int i = worldHeight - 1; i >= 0; i--)
         {
             if (world[x, i] != null)
             {
@@ -722,16 +728,16 @@ public class WorldGeneration : MonoBehaviour
         int baseWidth = 20;
         int baseHeight = 10;
 
-        for(int i = worldHeight - 1; i >= 0; i--)
+        for (int i = worldHeight - 1; i >= 0; i--)
         {
-            if (world[worldWidth/2, i] != null)
+            if (world[worldWidth / 2, i] != null)
             {
                 floorHeight = i;
                 break;
             }
         }
 
-        for(int x = worldWidth/2; x < worldWidth/2 + baseWidth; x++)
+        for (int x = worldWidth / 2; x < worldWidth / 2 + baseWidth; x++)
         {
             world[x, floorHeight] = blocks.GetBlock("lead");
             fgWorld[x, floorHeight] = null;
@@ -748,7 +754,7 @@ public class WorldGeneration : MonoBehaviour
                 currHeight--;
             }
 
-            for(int y = floorHeight + 1; y < worldHeight - 1; y++)
+            for (int y = floorHeight + 1; y < worldHeight - 1; y++)
             {
                 world[x, y] = null;
                 bgWorld[x, y] = null;
@@ -758,15 +764,15 @@ public class WorldGeneration : MonoBehaviour
             world[x, floorHeight + baseHeight] = blocks.GetBlock("lead");
         }
 
-        for(int y = floorHeight; y < floorHeight + baseHeight; y++)
+        for (int y = floorHeight; y < floorHeight + baseHeight; y++)
         {
-            world[worldWidth/2, y] = blocks.GetBlock("lead");
-            world[worldWidth/2 + baseWidth - 1, y] = blocks.GetBlock("lead");
+            world[worldWidth / 2, y] = blocks.GetBlock("lead");
+            world[worldWidth / 2 + baseWidth - 1, y] = blocks.GetBlock("lead");
         }
 
-        for(int x = worldWidth/2; x < worldWidth/2 + baseWidth; x++)
+        for (int x = worldWidth / 2; x < worldWidth / 2 + baseWidth; x++)
         {
-            for(int y = floorHeight; y < floorHeight + baseHeight; y++)
+            for (int y = floorHeight; y < floorHeight + baseHeight; y++)
             {
                 bgWorld[x, y] = blocks.GetBlock("lead");
             }
@@ -778,7 +784,7 @@ public class WorldGeneration : MonoBehaviour
         int leftBorderX = cellPosition.x;
         int leftBorderTop = cellPosition.y;
         int leftBorderDown = cellPosition.y;
-        while(leftBorderX >= 0)
+        while (leftBorderX >= 0)
         {
             if (world[leftBorderX, cellPosition.y] != null && world[leftBorderX, cellPosition.y].CheckByName("lead"))
             {
@@ -832,10 +838,10 @@ public class WorldGeneration : MonoBehaviour
             return null;
 
         int roofY = Mathf.Min(leftBorderTop, rightBorderTop);
-        while(roofY >= 0)
+        while (roofY >= 0)
         {
             int currX = leftBorderX;
-            while(currX < rightBorderX && world[currX, roofY] != null && world[currX, roofY].CheckByName("lead"))
+            while (currX < rightBorderX && world[currX, roofY] != null && world[currX, roofY].CheckByName("lead"))
             {
                 currX++;
             }
@@ -877,7 +883,7 @@ public class WorldGeneration : MonoBehaviour
 
     public void SetRoom(Room room)
     {
-        for(int x = room.GetLeftDownCorner().x; x <= room.GetRightUpCorner().x; x++)
+        for (int x = room.GetLeftDownCorner().x; x <= room.GetRightUpCorner().x; x++)
         {
             world[x, room.GetLeftDownCorner().y].setImportance(true);
             world[x, room.GetRightUpCorner().y].setImportance(true);
@@ -932,7 +938,7 @@ public class WorldGeneration : MonoBehaviour
         Player = GameObject.FindGameObjectWithTag("Player");
 
         Load();
-        if(world == null)
+        if (world == null)
         {
             seed = UnityEngine.Random.Range(0.05f, 0.15f);
             Debug.Log(seed);
@@ -1004,7 +1010,7 @@ public class WorldGeneration : MonoBehaviour
             //lightMap = RenderLight(lightMap, prevPlayerPositionX, prevPlayerPositionY, 15, true);
             lightMap = RenderLight(lightMap, playerPositionX, playerPositionY, 15, false);
         }
-        
+
         prevRenderLeftBorder = renderLeftBorder;
         prevRenderRightBorder = renderRightBorder;
         prevRenderDownBorder = renderDownBorder;
@@ -1013,10 +1019,21 @@ public class WorldGeneration : MonoBehaviour
         prevPlayerPositionX = playerPositionX;
         prevPlayerPositionY = playerPositionY;
 
-        if (Input.GetKey(KeyCode.Mouse0))
+        for (int i = 0; i < QuickslotPanel.childCount; i++)
         {
-            BreakBlock(5);
+            if (QuickslotPanel.GetChild(i).GetComponent<InventorySlot>().item != null)
+            {
+                if (QuickslotPanel.GetChild(i).GetComponent<Image>().sprite == selectedSprite)
+                {
+                    if (QuickslotPanel.GetChild(i).GetComponent<InventorySlot>().item.itemName == "kirk")
+                    {
+                        if (Input.GetKey(KeyCode.Mouse0))
+                        {
+                            BreakBlock(5);
+                        }
+                    }
+                }
+            }
         }
-
     }
 }

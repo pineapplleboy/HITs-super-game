@@ -23,6 +23,8 @@ public class InventoryManager : MonoBehaviour
     private GameObject player;
     public TMP_Text wallet;
     public GameObject stoneBricks;
+    public GameObject aluminiumBricks;
+    public GameObject leadBricks;
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -118,6 +120,34 @@ public class InventoryManager : MonoBehaviour
             player.GetComponent<PlayerStats>().money -= 1;
             wallet.text = player.GetComponent<PlayerStats>().money.ToString();
             Item block = stoneBricks.GetComponent<Item>();
+            AddItem(block.item, block.amount);
+        }
+        else
+        {
+            Debug.Log("¬€ ¡≈ƒÕ€…");
+        }
+    }
+    public void BuyAluminiumBricks()
+    {
+        if (player.GetComponent<PlayerStats>().money >= 1)
+        {
+            player.GetComponent<PlayerStats>().money -= 1;
+            wallet.text = player.GetComponent<PlayerStats>().money.ToString();
+            Item block = aluminiumBricks.GetComponent<Item>();
+            AddItem(block.item, block.amount);
+        }
+        else
+        {
+            Debug.Log("¬€ ¡≈ƒÕ€…");
+        }
+    }
+    public void BuyLeadBricks()
+    {
+        if (player.GetComponent<PlayerStats>().money >= 1)
+        {
+            player.GetComponent<PlayerStats>().money -= 1;
+            wallet.text = player.GetComponent<PlayerStats>().money.ToString();
+            Item block = leadBricks.GetComponent<Item>();
             AddItem(block.item, block.amount);
         }
         else
