@@ -636,6 +636,7 @@ public class WorldGeneration : MonoBehaviour
             }
         }
     }
+    
     public void SetBlockOnMap(float distanceToBreak, ItemScriptableObject inputObject)
     {
         Vector3 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -647,6 +648,12 @@ public class WorldGeneration : MonoBehaviour
             Debug.Log($"{inputObject.itemName}");
             world[cellPosition.x, cellPosition.y] = blocks.GetBlock(inputObject.itemName);
         }
+    }
+    public bool IsBlockOnCursor()
+    {
+        Vector3 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3Int cellPosition = tilemap.WorldToCell(worldPoint);
+        return world[cellPosition.x, cellPosition.y] != null;
     }
 
     public int[,] SetDayLight(int[,] light, Block[,] map)

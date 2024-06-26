@@ -89,14 +89,20 @@ public class QuickslotInventory : MonoBehaviour
                     }
                     else if (quickslotParent.GetChild(currentQuickslotID).GetComponent<InventorySlot>().amount < 1)
                     {
-                        quickslotParent.GetChild(currentQuickslotID).GetComponentInChildren<DragAndDropItem>().NullifySlotData();
-                        GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>().SetBlockOnMap(5, quickslotParent.GetChild(currentQuickslotID).GetComponent<InventorySlot>().item);
+                        if (!GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>().IsBlockOnCursor())
+                        {
+                            quickslotParent.GetChild(currentQuickslotID).GetComponentInChildren<DragAndDropItem>().NullifySlotData();
+                            GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>().SetBlockOnMap(5, quickslotParent.GetChild(currentQuickslotID).GetComponent<InventorySlot>().item);
+                        }
                     }
                     else
                     {
-                        quickslotParent.GetChild(currentQuickslotID).GetComponent<InventorySlot>().amount--;
-                        quickslotParent.GetChild(currentQuickslotID).GetComponent<InventorySlot>().itemAmountText.text = quickslotParent.GetChild(currentQuickslotID).GetComponent<InventorySlot>().amount.ToString();
-                        GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>().SetBlockOnMap(5, quickslotParent.GetChild(currentQuickslotID).GetComponent<InventorySlot>().item);
+                        if (!GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>().IsBlockOnCursor())
+                        {
+                            quickslotParent.GetChild(currentQuickslotID).GetComponent<InventorySlot>().amount--;
+                            quickslotParent.GetChild(currentQuickslotID).GetComponent<InventorySlot>().itemAmountText.text = quickslotParent.GetChild(currentQuickslotID).GetComponent<InventorySlot>().amount.ToString();
+                            GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>().SetBlockOnMap(5, quickslotParent.GetChild(currentQuickslotID).GetComponent<InventorySlot>().item);
+                        }
                     }
                 }
             }
