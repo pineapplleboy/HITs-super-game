@@ -76,7 +76,7 @@ public class GrapplingHook : MonoBehaviour
             brokeRope = false;
         }
 
-        if (Input.GetKey(KeyCode.T) && !isHooked)
+        if (Input.GetKey(KeyCode.T) && needToDraw == 0)
         {
             isHooked = false;
             target = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
