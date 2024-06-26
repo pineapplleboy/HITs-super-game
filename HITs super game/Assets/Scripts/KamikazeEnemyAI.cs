@@ -21,6 +21,18 @@ public class KamikazeEnemyAI : MonoBehaviour
     private float flipTime = 0.2f;
     private float currentFlipTime = 0;
 
+    private float sleepTime = 0f;
+
+    private float goBackJumpingCd = 1f;
+    private float currentGoBackJumpingCd = 0f;
+
+    private float jumpCooldown = 0.3f;
+    private float currentJumpTime = 0;
+
+    private int stepCounter = 0;
+
+    private bool nearWall = false;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
@@ -30,16 +42,31 @@ public class KamikazeEnemyAI : MonoBehaviour
 
     void Update()
     {
-        Move();
-        Flip();
-        if (!onGround)
+        sleepTime -= Time.deltaTime;
+        currentGoBackJumpingCd -= Time.deltaTime;
+
+        if (sleepTime > 0) return;
+
+        if (stepCounter == 0)
         {
-            speed = 3;
+            Move();
+            Flip();
         }
         else
         {
-            speed = 6;
+            GoBackAndJump();
         }
+
+        if (!onGround)
+        {
+            speed = 4;
+        }
+        else
+        {
+            speed = 8;
+        }
+
+        currentJumpTime -= Time.deltaTime;
         //transform.position = Vector2.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
     }
 
@@ -52,6 +79,15 @@ public class KamikazeEnemyAI : MonoBehaviour
             Destroy(gameObject);
         }
 
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+
+        if (collision.collider.tag == "Ground" || collision.collider.tag == "Platform")
+        {
+            onGround = true;
+        }
 
         if (collision.transform.name == "Tilemap")
         {
@@ -59,14 +95,49 @@ public class KamikazeEnemyAI : MonoBehaviour
             {
                 Vector2 hitPoint = contactPoint.point;
 
-                if (Mathf.Abs(hitPoint.y - transform.position.y) > 0)
+                if (hitPoint.y - transform.position.y > -0.3)
                 {
-                    Jump();
-                    break;
+                    if (currentGoBackJumpingCd <= 0)
+                    {
+                        currentGoBackJumpingCd = goBackJumpingCd;
+                        stepCounter = 10;
+                    }
+                    else
+                    {
+                        nearWall = true;
+                    }
+
+                    onGround = false;
+                    return;
                 }
 
             }
+        }
 
+        nearWall = false;
+    }
+
+    private void GoBackAndJump()
+    {
+        stepCounter--;
+        float moveX;
+
+        if (isFacedRight)
+        {
+            moveX = -1;
+        }
+        else
+        {
+            moveX = 1;
+        }
+
+        Vector2 move = new Vector2(moveX * (speed), rb.velocity.y);
+
+        rb.velocity = move;
+
+        if (stepCounter == 0)
+        {
+            Jump();
         }
     }
 
@@ -78,14 +149,6 @@ public class KamikazeEnemyAI : MonoBehaviour
             onGround = false;
         }
 
-    }
-
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        if (collision.collider.tag == "Ground" || collision.collider.tag == "Platform")
-        {
-            onGround = true;
-        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -116,7 +179,7 @@ public class KamikazeEnemyAI : MonoBehaviour
 
         Vector2 move = new Vector2(moveX * (speed), rb.velocity.y);
 
-        rb.velocity = move;
+        if (!((nearWall && isFacedRight && moveX == 1) || (nearWall && !isFacedRight && moveX == -1))) rb.velocity = move;
 
         if (Mathf.Abs(playerPosition.x - transform.position.x) < 10 && playerPosition.y > transform.position.y + 2)
         {
@@ -149,5 +212,10 @@ public class KamikazeEnemyAI : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, 180, 0);
             currentFlipTime = 0;
         }
+    }
+
+    public void Sleep(float newSleepingTime)
+    {
+        sleepTime = newSleepingTime;
     }
 }

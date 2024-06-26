@@ -17,7 +17,7 @@ public class Enemy : MonoBehaviour
     {
         currentHealth = maxHealth;
 
-        damageResistance = new List<int>() { 10, 0, 0 };
+        //damageResistance = new List<int>() { 10, 0, 0 };
 
         rb = GetComponent<Rigidbody2D>();
 
@@ -31,6 +31,16 @@ public class Enemy : MonoBehaviour
             Spawner.currentNearEnemies--;
             Destroy(gameObject);
         }
+    }
+
+    public void SetHp(int health)
+    {
+        maxHealth = health;
+    }
+
+    public void SetDamageResistance(List<int> res)
+    {
+        damageResistance = res;
     }
 
     public void TakeDamage(int damage, int typeOfDamage)

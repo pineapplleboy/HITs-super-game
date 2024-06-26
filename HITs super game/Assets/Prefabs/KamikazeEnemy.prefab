@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2011299249724194771}
   - component: {fileID: -7510704676369147552}
   - component: {fileID: 6807746384039905069}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: KamikazeEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
