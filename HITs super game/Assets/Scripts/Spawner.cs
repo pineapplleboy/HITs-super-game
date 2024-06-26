@@ -7,11 +7,19 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     public GameObject[] enemies;
+    private List<int> enemiesSpawnProbability;
+
+    private List<int> enemiesMinHp;
+    private List<int> enemiesMaxHp;
+
+    private List<List<int>> enemiesResistance;
+
     private int randEnemy;
+    private int randEnemyValue;
     private Vector2 spawnPosition;
 
     public static int spawnRate = 3;
-    private int maxNearEnemies = 15;
+    private int maxNearEnemies = 1;
 
     public static int currentNearEnemies = 0;
 
@@ -30,6 +38,14 @@ public class Spawner : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
 
         world = GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>();
+
+        enemiesMinHp = new List<int>() { 100, 100, 100, 100 };
+        enemiesMaxHp = new List<int>() { 100, 100, 100, 100 };
+
+        enemiesResistance = new List<List<int>>() { new List<int>() { 10, 0, 0 }, new List<int>() { 10, 0, 0 }, 
+            new List<int>() { 10, 0, 0 }, new List<int>() { 10, 0, 0 } };
+
+        enemiesSpawnProbability = new List<int>() { 0, 0, 100, 0 };
     }
 
     void Update()
@@ -58,14 +74,32 @@ public class Spawner : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        randEnemy = Random.Range(0, enemies.Length);
-        //randEnemy = 3;
+        //randEnemy = Random.Range(0, enemies.Length);
+        //randEnemy = 1;
+
+        randEnemyValue = Random.Range(1, 101);
+        int currentSum = 0;
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            currentSum += enemiesSpawnProbability[i];
+            if (randEnemyValue <= currentSum)
+            {
+                randEnemy = i;
+                break;
+            }
+        }
+        //randEnemy = 1;
+
         //spawnPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         spawnPosition = GeneratePosition();
 
         if (!world.IsBlock((int)spawnPosition.x, (int)spawnPosition.y))
         {
-            Instantiate(enemies[randEnemy], spawnPosition, Quaternion.identity);
+            Enemy newEnemy = enemies[randEnemy].GetComponent<Enemy>();
+            newEnemy.SetHp(Random.Range(enemiesMinHp[randEnemy], enemiesMaxHp[randEnemy] + 1));
+            newEnemy.SetDamageResistance(enemiesResistance[randEnemy]);
+            
+            Instantiate(newEnemy, spawnPosition, Quaternion.identity);
             currentNearEnemies++;
             timer = 0f;
         }

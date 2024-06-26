@@ -12,7 +12,7 @@ public class FlyingEnemy : MonoBehaviour
     public int jumpForce = 500;
     public static float slowRate = 1;
 
-    public int damage = 100;
+    public int damage = 1;
 
     private bool isFacedRight = true;
 
@@ -32,6 +32,9 @@ public class FlyingEnemy : MonoBehaviour
 
     private bool nearPlayer = false;
 
+    private float currentAttackCd = 0f;
+    private float attackCd = 0.1f;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
@@ -41,10 +44,29 @@ public class FlyingEnemy : MonoBehaviour
     void Update()
     {
         sleepTime -= Time.deltaTime;
+        currentAttackCd -= Time.deltaTime;
         if (sleepTime > 0) return;
 
         Move();
         Flip();
+
+        Collider2D[] hitPlayer = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+
+        if (hitPlayer.Length > 0 && currentAttackCd <= 0)
+        {
+            Attack(hitPlayer);
+        }
+
+    }
+
+    private void Attack(Collider2D[] hitPlayer)
+    {
+        currentAttackCd = attackCd;
+        foreach (Collider2D npc in hitPlayer)
+        {
+            PlayerStats hittedNpc = npc.GetComponent<PlayerStats>();
+            hittedNpc.TakeDamage(1, 0);
+        }
 
     }
 

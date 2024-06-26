@@ -42,11 +42,12 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
+        Time.fixedDeltaTime = Time.timeScale * 0.01f;
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -67,7 +68,7 @@ public class PlayerMovement : MonoBehaviour
 
         float moveX = 0;
 
-        if (!GrapplingHook.isHooked)
+        if (!GrapplingHook.isHooked && GrapplingHook.needToDraw == 0 && !Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.LeftArrow))
         {
             moveX = Input.GetAxis("Horizontal");
         }
@@ -210,7 +211,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     Vector2 hitPoint = contactPoint.point;
 
-                    if (hitPoint.y - transform.position.y > 0)
+                    if (hitPoint.y - transform.position.y > -0.3)
                     {
                         if ((lastDirection == 1 && Input.GetKey(KeyCode.D)) || (lastDirection == -1 && Input.GetKey(KeyCode.A)))
                         {
@@ -221,6 +222,8 @@ public class PlayerMovement : MonoBehaviour
                             blockMoving = false;
                         }
 
+                        acceleration = 1;
+                        timeOfWalking = 0f;
 
                         onGround = false;
                         return;

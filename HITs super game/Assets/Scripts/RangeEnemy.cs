@@ -38,6 +38,13 @@ public class RangeEnemy : MonoBehaviour
     public GameObject bullet;
     public Transform shotPoint;
 
+    private float goBackJumpingCd = 1f;
+    private float currentGoBackJumpingCd = 0f;
+
+    private int stepCounter = 0;
+
+    private bool nearWall = false;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
@@ -48,10 +55,19 @@ public class RangeEnemy : MonoBehaviour
     void Update()
     {
         sleepTime -= Time.deltaTime;
+        currentGoBackJumpingCd -= Time.deltaTime;
         currentCd -= Time.deltaTime;
         if (sleepTime > 0) return;
-        
-        Flip();
+
+        if (stepCounter == 0)
+        {
+            Flip();
+        }
+        else
+        {
+            GoBackAndJump();
+        }
+
         if (!onGround)
         {
             speed = 3;
@@ -72,8 +88,37 @@ public class RangeEnemy : MonoBehaviour
         else if (currentCd <= 0)
         {
             isShooting = false;
-            Move();
+
+            if (stepCounter == 0)
+            {
+                Move();
+            }
+            
             anim.SetBool("isRunning", true);
+        }
+    }
+
+    private void GoBackAndJump()
+    {
+        stepCounter--;
+        float moveX;
+
+        if (isFacedRight)
+        {
+            moveX = -1;
+        }
+        else
+        {
+            moveX = 1;
+        }
+
+        Vector2 move = new Vector2(moveX * (speed), rb.velocity.y);
+
+        rb.velocity = move;
+
+        if (stepCounter == 0)
+        {
+            Jump();
         }
     }
 
@@ -85,29 +130,32 @@ public class RangeEnemy : MonoBehaviour
             onGround = true;
         }
 
-        if (collision.gameObject.tag == "Player")
-        {
-            //PlayerStats.TakeDamage(damage, 0);
-            //Destroy(gameObject);
-        }
-
-        if (isShooting) return;
-
         if (collision.transform.name == "Tilemap")
         {
             foreach (ContactPoint2D contactPoint in collision.contacts)
             {
                 Vector2 hitPoint = contactPoint.point;
 
-                if (hitPoint.y - transform.position.y > 0)
+                if (hitPoint.y - transform.position.y > -0.3)
                 {
-                    Jump();
-                    break;
+                    if (currentGoBackJumpingCd <= 0)
+                    {
+                        currentGoBackJumpingCd = goBackJumpingCd;
+                        stepCounter = 10;
+                    }
+                    else
+                    {
+                        nearWall = true;
+                    }
+
+                    onGround = false;
+                    return;
                 }
 
             }
-
         }
+
+        nearWall = false;
     }
 
     private void Jump()
@@ -138,16 +186,18 @@ public class RangeEnemy : MonoBehaviour
         {
             isFacedRight = true;
             moveX = 1;
+            anim.SetBool("isRunning", true);
         }
         else
         {
             isFacedRight = false;
             moveX = -1;
+            anim.SetBool("isRunning", true);
         }
 
         Vector2 move = new Vector2(moveX * (speed), rb.velocity.y);
 
-        rb.velocity = move;
+        if (!((nearWall && isFacedRight && moveX == 1) || (nearWall && !isFacedRight && moveX == -1))) rb.velocity = move;
 
         if (Mathf.Abs(playerPosition.x - transform.position.x) < 10 && playerPosition.y > transform.position.y + 2)
         {

@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -34,6 +35,7 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 0;
         onPause = true;
         PauseMenuObj.SetActive(true);
+        GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>().Save();
     }
 
     public void Resume()

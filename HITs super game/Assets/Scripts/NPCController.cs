@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.U2D.Aseprite;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NPCController : MonoBehaviour
 {
-    [SerializeField] Camera cam;
-    [SerializeField] GameObject ChoosingRoomUI;
+    private Camera cam;
+    private GameObject ChoosingRoomUI;
 
     private bool isChoosingRoom = false;
     private int currRoom = 0;
@@ -14,7 +15,9 @@ public class NPCController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        cam = Camera.main;
+        ChoosingRoomUI = GameObject.Find("ChooseRoomObj").transform.Find("ChooseRoomPanel").gameObject;
+        ChoosingRoomUI.SetActive(false);
     }
 
     // Update is called once per frame
@@ -34,6 +37,17 @@ public class NPCController : MonoBehaviour
         isChoosingRoom = true;
 
         ChoosingRoomUI.SetActive(true);
+        ChoosingRoomUI.transform.Find("Left").GetComponentInChildren<Button>().onClick.RemoveAllListeners();
+        ChoosingRoomUI.transform.Find("Left").GetComponentInChildren<Button>().onClick.AddListener(LeftRoom);
+
+        ChoosingRoomUI.transform.Find("Right").GetComponentInChildren<Button>().onClick.RemoveAllListeners();
+        ChoosingRoomUI.transform.Find("Right").GetComponentInChildren<Button>().onClick.AddListener(RightRoom);
+
+        ChoosingRoomUI.transform.Find("Stop").GetComponentInChildren<Button>().onClick.RemoveAllListeners();
+        ChoosingRoomUI.transform.Find("Stop").GetComponentInChildren<Button>().onClick.AddListener(StopChoosingRoom);
+
+        ChoosingRoomUI.transform.Find("Confirm").GetComponentInChildren<Button>().onClick.RemoveAllListeners();
+        ChoosingRoomUI.transform.Find("Confirm").GetComponentInChildren<Button>().onClick.AddListener(ConfirmRoom);
         Time.timeScale = 0;
 
         currRoom = 0;
@@ -48,6 +62,15 @@ public class NPCController : MonoBehaviour
 
         ChoosingRoomUI.SetActive(false);
         Time.timeScale = 1;
+    }
+
+    public void ConfirmRoom()
+    {
+        if (!Base.getRoomByID(currRoom).CheckNPC())
+        {
+            Base.SetNpc(currRoom, this.gameObject);
+            StopChoosingRoom();
+        }
     }
 
     void ShowRoom()
