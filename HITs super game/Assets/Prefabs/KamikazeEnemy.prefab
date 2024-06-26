@@ -173,9 +173,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7183952577230aa43aa785665b63f5be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 1000
+  maxHealth: 100
   currentHealth: 0
-  damageResistance: 
+  damageResistance: 0a0000000000000000000000
 --- !u!114 &-7510704676369147552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,7 +189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  jumpForce: 500
+  jumpForce: 1120
   damage: 100
 --- !u!95 &6807746384039905069
 Animator:

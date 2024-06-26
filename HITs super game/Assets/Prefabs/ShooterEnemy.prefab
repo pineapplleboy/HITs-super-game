@@ -190,7 +190,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 8
-  jumpForce: 560
+  jumpForce: 1120
   damage: 10
   cooldown: 1
   bullet: {fileID: 7460344354476866813, guid: cda0050e6738f5d43821cb8024ed83f4, type: 3}
