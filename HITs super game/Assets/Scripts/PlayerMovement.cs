@@ -48,7 +48,27 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        float moveX = Input.GetAxis("Horizontal");
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            GrapplingHook.isHooked = false;
+            GrapplingHook.brokeRope = true;
+        }
+
+        if (GrapplingHook.isHooked)
+        {
+            rb.gravityScale = 0;
+        }
+        else
+        {
+            rb.gravityScale = 10;
+        }
+
+        float moveX = 0;
+
+        if (!GrapplingHook.isHooked)
+        {
+            moveX = Input.GetAxis("Horizontal");
+        }
 
         if (Input.GetKey(KeyCode.A))
         {
@@ -66,7 +86,7 @@ public class PlayerMovement : MonoBehaviour
             lastDirection = 0;
         }
 
-        if(Input.GetKeyDown(KeyCode.Space) && onGround && currentJumpCd <= 0)
+        if (Input.GetKeyDown(KeyCode.Space) && onGround && currentJumpCd <= 0)
         {
             rb.AddForce(Vector2.up * (jumpForce * slowRate));
             currentJumpCd = jumpCd;

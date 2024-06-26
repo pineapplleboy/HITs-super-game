@@ -103,11 +103,11 @@ public class LaserGun : MonoBehaviour
             PlayerMovement.isShooting = false;
             if (PlayerMovement.isFacedRight)
             {
-                transform.rotation = Quaternion.Euler(0f, 0f, 90f);
+                transform.rotation = Quaternion.Euler(0f, 0f, -90f);
             }
             else
             {
-                transform.rotation = Quaternion.Euler(0f, 0f, -90f);
+                transform.rotation = Quaternion.Euler(0f, 0f, 90f);
             }
         }
 

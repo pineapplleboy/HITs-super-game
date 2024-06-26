@@ -18793,7 +18793,8 @@ MonoBehaviour:
   dist: 10
   mask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
+  player: {fileID: 0}
 --- !u!114 &4773982703944540370
 MonoBehaviour:
   m_ObjectHideFlags: 0

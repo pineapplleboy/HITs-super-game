@@ -225,6 +225,10 @@ public class RangeEnemy : MonoBehaviour
     {
         Vector2 difference = player.position - transform.position;
         RaycastHit2D hitInfo = Physics2D.Raycast(shotPoint.position, difference);
-        return hitInfo.transform.name == "Player";
+        if (hitInfo)
+        {
+            return hitInfo.transform.name == "Player";
+        }
+        return false;
     }
 }
