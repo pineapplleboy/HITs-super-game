@@ -193,6 +193,13 @@ public class GrapplingHook : MonoBehaviour
             catchToPlayer = false;
         }
 
+        if (CheckDist(ropeDrawCoord, transform.position) > 50)
+        {
+            needToDraw = 0;
+            line.enabled = false;
+            catchToPlayer = false;
+        }
+
     }
 
     void MovePlayer(Vector2 endPos)
