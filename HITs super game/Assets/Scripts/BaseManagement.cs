@@ -11,6 +11,8 @@ public class Room
     Vector2Int rightUpCorner;
     Vector2Int center;
 
+    private bool isWithNPC = false;
+
     public Room(Vector2Int leftDownCorner, Vector2Int rightUpCorner)
     {
         this.leftDownCorner = leftDownCorner;
@@ -32,6 +34,16 @@ public class Room
     public Vector2Int GetCenter()
     {
         return center;
+    }
+
+    public void SetNpc()
+    {
+        isWithNPC = true;
+    }
+
+    public bool CheckNPC()
+    {
+        return isWithNPC;
     }
 }
 
@@ -82,6 +94,16 @@ public static class Base
     public static Room getRoomByID(int id)
     {
         return rooms[id];
+    }
+
+    public static void SetNpc(int id, GameObject NPC)
+    {
+        rooms[id].SetNpc();
+        NPC.transform.position = new Vector3(rooms[id].GetCenter().x, rooms[id].GetCenter().y, NPC.transform.position.z);
+        NPC.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+        NPC.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
+        NPC.GetComponent<BoxCollider2D>().isTrigger = false;
+        NPC.transform.Find("cage").gameObject.SetActive(false);
     }
 }
 

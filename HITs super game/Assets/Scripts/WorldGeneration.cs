@@ -87,6 +87,7 @@ public class WorldGeneration : MonoBehaviour
     public Block[,] bgWorld;
     public Block[,] fgWorld;
     public int[,] lightMap;
+
     public GameObject tileDrop;
     private int[] maxHeights;
 
@@ -114,6 +115,35 @@ public class WorldGeneration : MonoBehaviour
 
     private float blockPressedTime;
     private Vector3Int blockPressedCoords;
+
+    private string saveKey = "mainSave";
+
+    private SaveData.World GetSaveSnapshot()
+    {
+        var data = new SaveData.World()
+        {
+            fgWorld = fgWorld,
+            bgWorld = bgWorld,
+            world = world,
+            lightMap = lightMap,
+        };
+
+        return data;
+    }
+
+    public void Save()
+    {
+        SaveManager.Save(saveKey, GetSaveSnapshot());
+    }
+
+    public void Load()
+    {
+        var data = SaveManager.Load<SaveData.World>(saveKey);
+        fgWorld = data.fgWorld;
+        bgWorld = data.bgWorld;
+        world = data.world;
+        lightMap = data.lightMap;
+    }
 
     public bool IsBlock(int x, int y)
     {
@@ -894,20 +924,26 @@ public class WorldGeneration : MonoBehaviour
     {
         Player = GameObject.FindGameObjectWithTag("Player");
 
-        seed = UnityEngine.Random.Range(0.05f, 0.15f);
-        Debug.Log(seed);
+        Load();
+        if(world == null)
+        {
+            seed = UnityEngine.Random.Range(0.05f, 0.15f);
+            Debug.Log(seed);
 
-        world = GenerateArray(worldWidth, worldHeight, true);
-        //world = PerlinNoiseSmooth(world, seed, 100);
-        world = RandomWalkTopSmoothed(world, seed, 10);
-        bgWorld = CreateBGWall(world);
-        maxHeights = GetMaxHeights(world);
-        //world = PerlinNoiseCave(world, maxHeights, seed * 1.4f);
-        world = SmoothMooreCellularAutomata(world, seed, 50, true, 10);
-        world = OresGeneration(world, seed);
-        fgWorld = TreesGeneration(world);
-        lightMap = new int[worldWidth, worldHeight];
-        lightMap = SetDayLight(lightMap, bgWorld);
+            world = GenerateArray(worldWidth, worldHeight, true);
+            //world = PerlinNoiseSmooth(world, seed, 100);
+            world = RandomWalkTopSmoothed(world, seed, 10);
+            bgWorld = CreateBGWall(world);
+            maxHeights = GetMaxHeights(world);
+            //world = PerlinNoiseCave(world, maxHeights, seed * 1.4f);
+            world = SmoothMooreCellularAutomata(world, seed, 50, true, 10);
+            world = OresGeneration(world, seed);
+            fgWorld = TreesGeneration(world);
+            lightMap = new int[worldWidth, worldHeight];
+            lightMap = SetDayLight(lightMap, bgWorld);
+
+            GenerateBase();
+        }
 
         TpObjectOnSurface(Player, worldWidth / 2);
         TpObjectOnSurface(GameObject.FindGameObjectWithTag("NPC"), worldWidth / 2 - 10);
@@ -922,8 +958,6 @@ public class WorldGeneration : MonoBehaviour
         prevRenderRightBorder = Mathf.Clamp(playerChunkX + renderDistance, 0, worldWidth / chunkSize);
         prevRenderDownBorder = Mathf.Clamp(playerChunkY - renderDistance, 0, worldHeight / chunkSize);
         prevRenderUpBorder = Mathf.Clamp(playerChunkY + renderDistance, 0, worldHeight / chunkSize);
-
-        GenerateBase();
     }
 
     private void Update()
