@@ -7000,6 +7000,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 456721557680944087, guid: b32cc45d5f33a3e4b8295ff2080c65c2, type: 3}
+      propertyPath: mask.m_Bits
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: 6265646340121695844, guid: b32cc45d5f33a3e4b8295ff2080c65c2, type: 3}
+      propertyPath: mask.m_Bits
+      value: 119
+      objectReference: {fileID: 0}
     - target: {fileID: 6557715642759713162, guid: b32cc45d5f33a3e4b8295ff2080c65c2, type: 3}
       propertyPath: m_LocalScale.x
       value: 5
@@ -14199,6 +14207,9 @@ MonoBehaviour:
   lineRenderer: {fileID: 8806499715724648536}
   baseDamage: 50
   laserCooldown: 0.5
+  mask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!222 &2150699494745792544
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -16986,6 +16997,9 @@ MonoBehaviour:
   firePoint: {fileID: 2161114676778608187}
   baseDamage: 50
   laserCooldown: 0.5
+  mask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &3629525493605436896
 GameObject:
   m_ObjectHideFlags: 0

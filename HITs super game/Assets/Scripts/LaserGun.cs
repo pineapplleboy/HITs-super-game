@@ -30,6 +30,8 @@ public class LaserGun : MonoBehaviour
     private bool isShooting = false;
     private float necessaryIntellectAmount = 10f;
 
+    public LayerMask mask;
+
     private void Start()
     {
         lineRenderer.startWidth = laserWidth;
@@ -138,6 +140,7 @@ public class LaserGun : MonoBehaviour
         Vector2 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
 
         hitInfo = Physics2D.Raycast(firePoint.position, difference);
+        //hitInfo = Physics2D.Raycast(firePoint.position, difference, 100000, mask);
 
         if (hitInfo)
         {

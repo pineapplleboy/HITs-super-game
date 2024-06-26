@@ -52,9 +52,10 @@ public class PlayerMovement : MonoBehaviour
         {
             GrapplingHook.isHooked = false;
             GrapplingHook.brokeRope = true;
+            GrapplingHook.needToDraw = 0;
         }
 
-        if (GrapplingHook.isHooked)
+        if (GrapplingHook.isHooked && GrapplingHook.stopMoving)
         {
             rb.gravityScale = 0;
         }

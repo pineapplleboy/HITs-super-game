@@ -1,6 +1,7 @@
 using Microsoft.Win32.SafeHandles;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.AssetImporters;
 using UnityEngine;
@@ -21,7 +22,19 @@ public class GrapplingHook : MonoBehaviour
     private float speed = 45;
     private Vector2 endHookPos;
 
+    private bool ropeDrawen = false;
+    public static bool stopMoving = false;
+    private Vector2 ropeDrawCoord;
+
     public static bool brokeRope = false;
+
+    public static int needToDraw = 0;
+
+    private bool ropeBack = false;
+    private Vector2 positionWhenThrowen;
+    private bool catchToPlayer = false;
+
+    private List<float> delta = new List<float>() { 0, 0 };
 
     private void Start()
     {
@@ -36,9 +49,25 @@ public class GrapplingHook : MonoBehaviour
 
     private void Update()
     {
-        if (isHooked)
+        stopMoving = ropeDrawen;
+        if (isHooked && ropeDrawen)
         {
             MovePlayer(endHookPos);
+            needToDraw = 0;
+        }
+        else if (isHooked && needToDraw == 1)
+        {
+            DrawHook();
+        }
+        else if (needToDraw == 2)
+        {
+            HookBack();
+        }
+        else
+        {
+            needToDraw = 0;
+            ropeDrawen = false;
+            brokeRope = true;
         }
 
         if (brokeRope)
@@ -47,7 +76,7 @@ public class GrapplingHook : MonoBehaviour
             brokeRope = false;
         }
 
-        if (Input.GetKey(KeyCode.T))
+        if (Input.GetKey(KeyCode.T) && !isHooked)
         {
             isHooked = false;
             target = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
@@ -58,28 +87,25 @@ public class GrapplingHook : MonoBehaviour
             if (raycast)
             {
                 isHooked = true;
-                DrawHook(transform.position, raycast.point, true);
+                endHookPos = GetEndCoord(transform.position, raycast.point, true);
+                ropeDrawCoord = transform.position;
+                needToDraw = 1;
+                delta = CalculateDelta(transform.position, raycast.point);
             }
 
             else
             {
-                DrawHook(transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                endHookPos = GetEndCoord(transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                needToDraw = 2;
+                delta = CalculateDelta(transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                ropeDrawCoord = transform.position;
+                positionWhenThrowen = transform.position;
             }
-        }
-
-        else
-        {
-            
         }
     }
 
-    void DrawHook(Vector2 startPos, Vector2 endPos, bool reach = false)
+    Vector2 GetEndCoord(Vector2 startPos, Vector2 endPos, bool reach = false)
     {
-        line.enabled = true;
-        line.SetPosition(0, transform.position);
-
-        Vector2 currentHookPosition = new Vector2(startPos.x, startPos.y);
-
         if (!reach)
         {
             float k = dist / Mathf.Sqrt(Mathf.Pow(endPos.x - startPos.x, 2) + Mathf.Pow(endPos.y - startPos.y, 2));
@@ -91,42 +117,94 @@ public class GrapplingHook : MonoBehaviour
             endPos.y = newY;
         }
 
-        while (currentHookPosition.x < endPos.x)
-        {
-            currentHookPosition.x += 0.1f;
-            currentHookPosition.y += 0.1f;
+        return endPos;
+    }
 
-            line.SetPosition(1, currentHookPosition);
+    List<float> CalculateDelta(Vector2 startPos, Vector2 endPos)
+    {
+        List <float> res = new List<float>() { 0, 0 };
+
+        float gipo = Mathf.Sqrt(Mathf.Pow(endPos.x - startPos.x, 2) + Mathf.Pow(endPos.y - startPos.y, 2));
+
+        res[0] = (endPos.x - startPos.x) / 20;
+        res[1] = (endPos.y - startPos.y) / 20;
+        return res;
+    }
+
+    List<float> CalculatRopeBackToPlayerDelta(Vector2 startPos)
+    {
+        List<float> res = new List<float>() { 0, 0 };
+
+        float gipo = Mathf.Sqrt(Mathf.Pow(player.position.x - startPos.x, 2) + Mathf.Pow(player.position.y - startPos.y, 2));
+
+        res[0] = (player.position.x - startPos.x) / 10;
+        res[1] = (player.position.y - startPos.y) / 10;
+        return res;
+    }
+
+    void DrawHook()
+    {
+        line.enabled = true;
+        line.SetPosition(0, transform.position);
+        line.SetPosition(1, ropeDrawCoord);
+
+        if (CheckDist(ropeDrawCoord, endHookPos) < 1.5)
+        {
+            ropeDrawen = true;
         }
 
-        line.SetPosition(1, endPos);
-
-        if (!reach)
-        {
-            HookBack();
-        }
-        else
-        {
-            endHookPos = endPos;
-        }
+        ropeDrawCoord.x += delta[0];
+        ropeDrawCoord.y += delta[1];
     }
 
     void HookBack()
     {
+        line.enabled = true;
+        line.SetPosition(0, transform.position);
+        line.SetPosition(1, ropeDrawCoord);
+
+        if (CheckDist(ropeDrawCoord, endHookPos) < 1.5)
+        {
+            ropeBack = true;
+        }
+
+        if (!ropeBack)
+        {
+            ropeDrawCoord.x += delta[0];
+            ropeDrawCoord.y += delta[1];
+        }
+        else
+        {
+            ropeDrawCoord.x -= delta[0];
+            ropeDrawCoord.y -= delta[1];
+        }
+
+        if (ropeBack && CheckDist(ropeDrawCoord, positionWhenThrowen) < 1.5)
+        {
+            ropeBack = false;
+            catchToPlayer = true;
+            delta = CalculatRopeBackToPlayerDelta(positionWhenThrowen);
+        }
+        
+        if (catchToPlayer && CheckDist(ropeDrawCoord, transform.position) < 1.5)
+        {
+            needToDraw = 0;
+            line.enabled = false;
+            catchToPlayer = false;
+        }
 
     }
 
     void MovePlayer(Vector2 endPos)
     {
-        if (CheckDist() < 1.5) return;
+        if (CheckDist(player.transform.position, endHookPos) < 1.5) return;
         player.transform.position = Vector2.MoveTowards(player.position, endPos, speed * Time.deltaTime);
         line.SetPosition(0, transform.position);
+        line.SetPosition(1, endPos);
     }
 
-    float CheckDist()
+    float CheckDist(Vector2 fistVec, Vector2 secVec)
     {
-        return Mathf.Sqrt(Mathf.Pow(endHookPos.x - player.transform.position.x, 2) + Mathf.Pow(endHookPos.y - player.transform.position.y, 2));
+        return Mathf.Sqrt(Mathf.Pow(secVec.x - fistVec.x, 2) + Mathf.Pow(secVec.y - fistVec.y, 2));
     }
-
-
 }
