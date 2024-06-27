@@ -34,6 +34,8 @@ public class Spawner : MonoBehaviour
 
     private void Start()
     {
+        currentNearEnemies = 0;
+
         listOfAttackEnemies = new List<int>(enemies.Length) { 0 };
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
 
