@@ -2756,6 +2756,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1206238975}
     m_Modifications:
+    - target: {fileID: 1810954200239178581, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4090133910230367299, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -3817,6 +3821,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1206238975}
     m_Modifications:
+    - target: {fileID: 1810954200239178581, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4090133910230367299, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -4451,6 +4459,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1206238975}
     m_Modifications:
+    - target: {fileID: 1810954200239178581, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4090133910230367299, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -6444,7 +6456,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   quickslotParent: {fileID: 1206238975}
-  inventoryManager: {fileID: 0}
   currentQuickslotID: 0
   selectedSprite: {fileID: 84297082, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
   notSelectedSprite: {fileID: -141033759, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
@@ -7071,6 +7082,10 @@ PrefabInstance:
       propertyPath: itemAmountText
       value: 
       objectReference: {fileID: 317036236}
+    - target: {fileID: 1810954200239178581, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4090133910230367299, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -8332,6 +8347,7 @@ MonoBehaviour:
   tileDrop: {fileID: 8958508500892218161, guid: 7f2a5410ac004424695106b947d7eea4, type: 3}
   QuickslotPanel: {fileID: 1206238975}
   selectedSprite: {fileID: 84297082, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
+  computer: {fileID: 6370657900808303188, guid: 74f0df1957eb3a64e9f1434d01acba27, type: 3}
 --- !u!156049354 &1629439162
 Grid:
   m_ObjectHideFlags: 0
@@ -8788,6 +8804,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1206238975}
     m_Modifications:
+    - target: {fileID: 1810954200239178581, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4090133910230367299, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
       propertyPath: m_Sprite
       value: 
