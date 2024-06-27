@@ -4,6 +4,34 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+[System.Serializable]
+public class SingleSlot
+{
+    public string item;
+    public int amount;
+
+    public SingleSlot()
+    {
+        item = null;
+        amount = 0;
+    }
+
+    public SingleSlot(InventorySlot slot)
+    {
+        if(slot.item != null)
+        {
+            this.item = slot.item.itemName;
+            this.amount = slot.amount;
+        }
+        else
+        {
+            item = null;
+            amount = 0;
+        }
+    }
+}
+
 public class InventorySlot : MonoBehaviour
 {
     public bool isShop = false;

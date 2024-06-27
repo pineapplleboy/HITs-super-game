@@ -50,7 +50,7 @@ public class PlayerMovement : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    void FixedUpdate()
+    void Update()
     {
         if (!LaserGun.isActive && !Gun.isActive) isShooting = false;
 
@@ -203,7 +203,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     Vector2 hitPoint = contactPoint.point;
 
-                    if (hitPoint.y - transform.position.y > -0.7)
+                    if (hitPoint.y - transform.position.y > -0.7 && (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A)))
                     {
                         boostFound = true;
                         break;

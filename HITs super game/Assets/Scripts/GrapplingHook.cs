@@ -83,6 +83,8 @@ public class GrapplingHook : MonoBehaviour
 
         if (Input.GetKey(KeyCode.T) && needToDraw == 0 && currentCd <= 0)
         {
+            ropeDrawen = false;
+
             currentCd = hookCd;
             isHooked = false;
             target = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
@@ -132,8 +134,8 @@ public class GrapplingHook : MonoBehaviour
 
         float gipo = Mathf.Sqrt(Mathf.Pow(endPos.x - startPos.x, 2) + Mathf.Pow(endPos.y - startPos.y, 2));
 
-        res[0] = (endPos.x - startPos.x) / 20;
-        res[1] = (endPos.y - startPos.y) / 20;
+        res[0] = (endPos.x - startPos.x) / 50;
+        res[1] = (endPos.y - startPos.y) / 50;
         return res;
     }
 

@@ -27,6 +27,89 @@ public class InventoryManager : MonoBehaviour
     public GameObject aluminiumBricks;
     public GameObject leadBricks;
     private bool isNear = false;
+
+    private string saveKey = "mainSaveInventory";
+
+    public ItemScriptableObject[] items;
+
+    private ItemScriptableObject FindItemByName(string name)
+    {
+        foreach (var item in items)
+        {
+            if (item.itemName == name)
+                return item;
+        }
+
+        return null;
+    }
+
+    private SaveData.Inventory GetSaveSnapshot()
+    {
+        List<SingleSlot> newSlots = new List<SingleSlot>();
+        foreach(InventorySlot slot in slots)
+        {
+            newSlots.Add(new SingleSlot(slot));
+        }
+
+        List<SingleSlot> newQuickSlots = new List<SingleSlot>();
+        foreach (InventorySlot slot in quickSlots)
+        {
+            newQuickSlots.Add(new SingleSlot(slot));
+        }
+
+        var data = new SaveData.Inventory()
+        {
+            slots = newSlots,
+            quickSlots = newQuickSlots,
+        };
+
+        return data;
+    }
+    public void Save()
+    {
+        SaveManager.Save(saveKey, GetSaveSnapshot());
+    }
+
+    public void Load()
+    {
+        var data = SaveManager.Load<SaveData.Inventory>(saveKey);
+
+        for(int i = 0; i < slots.Count; ++i)
+        {
+            if (data.slots[i] != null && data.slots[i].item != null)
+            {
+                slots[i].item = FindItemByName(data.slots[i].item);
+                slots[i].amount = data.slots[i].amount;
+                slots[i].isEmpty = false;
+                slots[i].iconGO.GetComponent<Image>().sprite = FindItemByName(data.slots[i].item).icon;
+                slots[i].itemAmountText.text = slots[i].amount.ToString();
+                slots[i].iconGO.GetComponent<Image>().color = new Color(1, 1, 1, 1);
+            }
+        }
+
+        for (int i = 0; i < quickSlots.Count; ++i)
+        {
+            if (data.quickSlots[i] != null && data.quickSlots[i].item != null)
+            {
+                quickSlots[i].iconGO.GetComponent<Image>().sprite = FindItemByName(data.quickSlots[i].item).icon;
+                quickSlots[i].item = FindItemByName(data.quickSlots[i].item);
+                quickSlots[i].amount = data.quickSlots[i].amount;
+                quickSlots[i].isEmpty = false;
+                quickSlots[i].itemAmountText.text = quickSlots[i].amount.ToString();
+                quickSlots[i].iconGO.GetComponent<Image>().color = new Color(1, 1, 1, 1);
+            }
+            else
+            {
+                quickSlots[i].iconGO.GetComponent<Image>().sprite = null;
+                quickSlots[i].item = null;
+                quickSlots[i].amount = 0;
+                quickSlots[i].isEmpty = true;
+                quickSlots[i].itemAmountText.text = "";
+                quickSlots[i].iconGO.GetComponent<Image>().color = new Color(0, 0, 0, 255);
+            }
+        }
+    }
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -46,6 +129,7 @@ public class InventoryManager : MonoBehaviour
         }
         Panel.SetActive(false);
         ShopPanel.SetActive(false);
+        Load();
     }
 
     void Update()
@@ -114,7 +198,7 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("бш аедмши");
+            Debug.Log("О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫");
         }
     }
     public void BuyGun()
@@ -128,7 +212,7 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("бш аедмши");
+            Debug.Log("О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫");
         }
     }
     public void BuyStoneBricks()
@@ -142,7 +226,7 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("бш аедмши");
+            Debug.Log("О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫");
         }
     }
     public void BuyAluminiumBricks()
@@ -156,7 +240,7 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("бш аедмши");
+            Debug.Log("О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫");
         }
     }
     public void BuyLeadBricks()
@@ -170,7 +254,7 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("бш аедмши");
+            Debug.Log("О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫");
         }
     }
     public void BuyLaserGun()
@@ -184,7 +268,7 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("бш аедмши");
+            Debug.Log("О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫");
         }
     }
     public void AddItem(ItemScriptableObject _item, int _amount)

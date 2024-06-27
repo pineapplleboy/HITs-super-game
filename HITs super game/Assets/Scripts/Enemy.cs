@@ -1,5 +1,7 @@
+using Newtonsoft.Json.Bson;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -12,6 +14,13 @@ public class Enemy : MonoBehaviour
     public List<int> damageResistance; // type = { 0 - melee, 1 - range, 2 - intelligence }
 
     private Transform player;
+
+    private bool died = false;
+    private float dieTime = 0f;
+
+    private int enemyIndex;
+
+    private bool onRaid = false;
 
     void Start()
     {
@@ -26,9 +35,20 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
+        if (died)
+        {
+            dieTime += Time.deltaTime;
+
+            if (dieTime >= 2)
+            {
+                Destroy(gameObject);
+            }
+        }
+
         if (IsFarAway())
         {
             Spawner.currentNearEnemies--;
+            Spawner.allSpawnedEnemies.RemoveAt(enemyIndex);
             Destroy(gameObject);
         }
     }
@@ -36,11 +56,21 @@ public class Enemy : MonoBehaviour
     public void SetHp(int health)
     {
         maxHealth = health;
+
+        if (onRaid)
+        {
+            maxHealth = (int)(maxHealth * 1.2);
+        }
     }
 
     public void SetDamageResistance(List<int> res)
     {
         damageResistance = res;
+    }
+
+    public void SetOnRaid()
+    {
+        onRaid = true;
     }
 
     public void TakeDamage(int damage, int typeOfDamage)
@@ -76,7 +106,9 @@ public class Enemy : MonoBehaviour
     {
         Spawner.currentNearEnemies--;
         GetComponent<Collider2D>().enabled = false;
-        enabled = false;  
+        died = true;
+
+        Spawner.allSpawnedEnemies.RemoveAt(enemyIndex);
     }
 
     private bool IsFarAway()
@@ -84,4 +116,10 @@ public class Enemy : MonoBehaviour
         return Mathf.Sqrt(Mathf.Pow(transform.position.x - player.position.x, 2) + 
             Mathf.Pow(transform.position.y - player.position.y, 2)) > 400;
     }
+
+    public void SetIndex(int index)
+    {
+        enemyIndex = index;
+    }
+
 }

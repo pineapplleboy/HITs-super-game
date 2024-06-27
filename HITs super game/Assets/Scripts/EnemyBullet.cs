@@ -39,11 +39,19 @@ public class EnemyBullet : MonoBehaviour
             player.TakeDamage(CalculateDamage(), 1);
         }
 
+
+        if (collision.name == "Tilemap" || collision.tag == "Player")
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    void OnTriggerStay2D(Collider2D collision)
+    {
         if (collision.name == "Tilemap" || collision.name == "Player")
         {
             Destroy(gameObject);
         }
-
     }
 
     int CalculateDamage()

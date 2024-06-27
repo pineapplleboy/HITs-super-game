@@ -3893,6 +3893,8 @@ MonoBehaviour:
   - {fileID: 1870344505190257690, guid: d43923932d6c3054b9bd8dab01e1aae5, type: 3}
   - {fileID: 1870344505190257690, guid: 15b52bc44fc54dd4cbc3ca835aece875, type: 3}
   - {fileID: 1870344505190257690, guid: 60dfa1226c7fe1649baf83a87149d83c, type: 3}
+  raidEnemies:
+  - {fileID: 1870344505190257690, guid: ae42f8bcbd27528418c7a2e99d1b004e, type: 3}
 --- !u!4 &716512071
 Transform:
   m_ObjectHideFlags: 0
@@ -7741,6 +7743,20 @@ MonoBehaviour:
   stoneBricks: {fileID: 7931007952951430306, guid: 41fb63a67a78ff14490db86aabf5395a, type: 3}
   aluminiumBricks: {fileID: 7931007952951430306, guid: df26fcc44c01c014a9e497d31a8d8e6f, type: 3}
   leadBricks: {fileID: 7931007952951430306, guid: 44112c0f8941f03488b510672bfec151, type: 3}
+  items:
+  - {fileID: 11400000, guid: efaa9255395c1d04488083beffcd2281, type: 2}
+  - {fileID: 11400000, guid: e54b24c49d925294b9c4de003cebacc6, type: 2}
+  - {fileID: 11400000, guid: c807a0992ac3e8f4680a5aba3de4e6c3, type: 2}
+  - {fileID: 11400000, guid: 2deb40bf76fc24a47b950663b34e1ab4, type: 2}
+  - {fileID: 11400000, guid: 89796dd509d155c489c3b73dd4f4904c, type: 2}
+  - {fileID: 11400000, guid: 02b8b61d3aa69fd4f9a83600aca219ae, type: 2}
+  - {fileID: 11400000, guid: 3dd5b61e83a5e9f44a9ba2d6932f17ca, type: 2}
+  - {fileID: 11400000, guid: b3e0d35f68409af47b95e52240a85486, type: 2}
+  - {fileID: 11400000, guid: 6b028e9c8d81eb34ea8734eb7a6f325e, type: 2}
+  - {fileID: 11400000, guid: 392c668ce631a2b4f86da82b5c33d073, type: 2}
+  - {fileID: 11400000, guid: fcb8f78a9a74e3442af2c2bd2ce3f42a, type: 2}
+  - {fileID: 11400000, guid: 002c6ca3fe1d2e240ada5870cd349b64, type: 2}
+  - {fileID: 11400000, guid: b177b7ea1048acb4ba4a56f2f9808b5e, type: 2}
 --- !u!224 &1489572844 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7000103710696812474, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
@@ -8180,79 +8196,66 @@ MonoBehaviour:
     - name: cobblestone
       tile: {fileID: 11400000, guid: 176e2780ff972524fbd86c78ed644db6, type: 2}
       timeToBreak: 0.1
-      lightLvl: 0
       item: {fileID: 11400000, guid: c807a0992ac3e8f4680a5aba3de4e6c3, type: 2}
       icon: {fileID: 1373156484, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
     - name: dirt
       tile: {fileID: 11400000, guid: abb6c0693b6a7c84fa6f724c10cee3d1, type: 2}
       timeToBreak: 0.1
-      lightLvl: 0
       item: {fileID: 11400000, guid: 2deb40bf76fc24a47b950663b34e1ab4, type: 2}
       icon: {fileID: 403524440, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
     - name: aluminum
       tile: {fileID: 11400000, guid: f7004465f974b1245a7835022356e138, type: 2}
       timeToBreak: 0.1
-      lightLvl: 0
       item: {fileID: 11400000, guid: efaa9255395c1d04488083beffcd2281, type: 2}
       icon: {fileID: -1997327415, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
     - name: lead
       tile: {fileID: 11400000, guid: 1e0c2e5b7b74a174484fcf9440122845, type: 2}
       timeToBreak: 0.1
-      lightLvl: 0
       item: {fileID: 11400000, guid: 02b8b61d3aa69fd4f9a83600aca219ae, type: 2}
       icon: {fileID: -301507201, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
     - name: uranus
       tile: {fileID: 11400000, guid: 6866e5ebcd1ca8c4696080cccd082500, type: 2}
       timeToBreak: 0.1
-      lightLvl: 0
       item: {fileID: 11400000, guid: 392c668ce631a2b4f86da82b5c33d073, type: 2}
       icon: {fileID: -293530752, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
     - name: zink
       tile: {fileID: 11400000, guid: 85a87350f50dd8343869e410628e022b, type: 2}
       timeToBreak: 0.1
-      lightLvl: 0
       item: {fileID: 11400000, guid: fcb8f78a9a74e3442af2c2bd2ce3f42a, type: 2}
       icon: {fileID: 391304829, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
     - name: tree_1
       tile: {fileID: 11400000, guid: 2808af5b3b355ea418394ee13e60bdb9, type: 2}
       timeToBreak: 0.1
-      lightLvl: 0
       item: {fileID: 0}
       icon: {fileID: 0}
     - name: tree_2
       tile: {fileID: 11400000, guid: b1d1d09ea9cedef4eb56bbd2a0d932d0, type: 2}
       timeToBreak: 0.1
-      lightLvl: 0
       item: {fileID: 0}
       icon: {fileID: 0}
     - name: tree_3
       tile: {fileID: 11400000, guid: fa6aa32911ce4bf4099e017a91230dc7, type: 2}
       timeToBreak: 0.1
-      lightLvl: 0
       item: {fileID: 0}
       icon: {fileID: 0}
     - name: tree_4
       tile: {fileID: 11400000, guid: 42e63c2c4ae19ba4e9337c46ec7c84e2, type: 2}
       timeToBreak: 0.1
-      lightLvl: 0
       item: {fileID: 0}
       icon: {fileID: 0}
     - name: stone_bricks
       tile: {fileID: 11400000, guid: b0c7578b356c2e647b029ebaf6c86c49, type: 2}
       timeToBreak: 0.1
-      lightLvl: 0
       item: {fileID: 11400000, guid: b3e0d35f68409af47b95e52240a85486, type: 2}
       icon: {fileID: -903343890, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
     - name: aluminum_bricks
       tile: {fileID: 11400000, guid: afe12d2f93b589746b45da0f55152905, type: 2}
       timeToBreak: 0.1
-      lightLvl: 0
       item: {fileID: 11400000, guid: e54b24c49d925294b9c4de003cebacc6, type: 2}
       icon: {fileID: 2011450129, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
     - name: lead_bricks
       tile: {fileID: 11400000, guid: 2c87c2d69f213b746bcef52ee8e71c8d, type: 2}
       timeToBreak: 0.1
-      lightLvl: 0
       item: {fileID: 11400000, guid: 3dd5b61e83a5e9f44a9ba2d6932f17ca, type: 2}
       icon: {fileID: 452481324, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
   tilemap: {fileID: 1672563625}
@@ -13472,6 +13475,7 @@ MonoBehaviour:
   stoneBricks: {fileID: 0}
   aluminiumBricks: {fileID: 0}
   leadBricks: {fileID: 0}
+  items: []
 --- !u!114 &2561839588435243027
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14586,6 +14590,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilemap: {fileID: 1672563625}
   HomeIndicator: {fileID: 6909371446270299066}
+  NPCPrefab: {fileID: 5196811881295766247, guid: 2fcfbe245c32241418170face58d9e27, type: 3}
 --- !u!114 &4769605644511814818
 MonoBehaviour:
   m_ObjectHideFlags: 0

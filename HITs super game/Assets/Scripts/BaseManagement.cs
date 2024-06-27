@@ -1,17 +1,20 @@
+using SaveData;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Tilemaps;
 
+[System.Serializable]
 public class Room
 {
-    Vector2Int leftDownCorner;
-    Vector2Int rightUpCorner;
-    Vector2Int center;
+    [SerializeField] public Vector2Int leftDownCorner;
+    [SerializeField] public Vector2Int rightUpCorner;
+    [SerializeField] public Vector2Int center;
 
-    private bool isWithNPC = false;
+    [SerializeField] public bool isWithNPC = false;
 
     public Room(Vector2Int leftDownCorner, Vector2Int rightUpCorner)
     {
@@ -50,6 +53,16 @@ public class Room
 public static class Base
 {
     private static List<Room> rooms = new List<Room>();
+
+    public static List<Room> GetRooms()
+    {
+        return rooms;
+    }
+
+    public static void SetRooms(List<Room> newRooms)
+    {
+        rooms = newRooms;
+    }
 
     public static void AddRoom(Vector3Int cellPosition)
     {
@@ -111,12 +124,49 @@ public class BaseManagement : MonoBehaviour
 {
     [SerializeField] private Tilemap tilemap;
     [SerializeField] private GameObject HomeIndicator;
+    [SerializeField] private GameObject NPCPrefab;
     private bool homeModOn = false;
+    private string saveKey = "mainSaveBase";
+
+    private SaveData.Base GetSaveSnapshot()
+    {
+        var data = new SaveData.Base()
+        {
+            rooms = Base.GetRooms(),
+        };
+
+        return data;
+    }
+
+    public void Save()
+    {
+        SaveManager.Save(saveKey, GetSaveSnapshot());
+    }
+
+    public void Load()
+    {
+        var data = SaveManager.Load<SaveData.Base>(saveKey);
+        Base.SetRooms(data.rooms);
+
+        for(int i = 0; i < Base.GetRooms().Count; i++)
+        {
+            if (Base.getRoomByID(i).CheckNPC())
+            {
+                GameObject npc = Instantiate(NPCPrefab);
+                Base.SetNpc(i, npc);
+            }
+        }
+    }
 
     public void ChangeSetHomeMod()
     {
         homeModOn = !homeModOn;
         HomeIndicator.SetActive(homeModOn);
+    }
+
+    private void Start()
+    {
+        Load();
     }
 
     void Update()
