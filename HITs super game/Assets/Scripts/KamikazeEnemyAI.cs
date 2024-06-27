@@ -95,7 +95,7 @@ public class KamikazeEnemyAI : MonoBehaviour
             {
                 Vector2 hitPoint = contactPoint.point;
 
-                if (hitPoint.y - transform.position.y > -0.3)
+                if (hitPoint.y - transform.position.y > -0.95)
                 {
                     if (currentGoBackJumpingCd <= 0)
                     {

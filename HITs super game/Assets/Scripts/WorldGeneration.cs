@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -79,7 +80,7 @@ public class WorldGeneration : MonoBehaviour
     [SerializeField] Tilemap bgTilemap;
     [SerializeField] Tilemap fgTilemap;
 
-    [SerializeField] int worldWidth;
+    [SerializeField] public int worldWidth;
     [SerializeField] int worldHeight;
     [SerializeField] int chunkSize;
     [SerializeField] int renderDistance;
@@ -720,6 +721,21 @@ public class WorldGeneration : MonoBehaviour
                 return;
             }
         }
+    }
+
+    public int GetFloorHeight()
+    {
+        int floorHeight = 0;
+        for (int i = worldHeight - 1; i >= 0; i--)
+        {
+            if (world[worldWidth / 2, i] != null)
+            {
+                floorHeight = i;
+                break;
+            }
+        }
+
+        return floorHeight;
     }
 
     public void GenerateBase()

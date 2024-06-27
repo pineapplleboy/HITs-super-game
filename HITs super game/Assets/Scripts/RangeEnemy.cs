@@ -45,6 +45,8 @@ public class RangeEnemy : MonoBehaviour
 
     private bool nearWall = false;
 
+    public LayerMask mask;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
@@ -136,7 +138,7 @@ public class RangeEnemy : MonoBehaviour
             {
                 Vector2 hitPoint = contactPoint.point;
 
-                if (hitPoint.y - transform.position.y > -0.3)
+                if (hitPoint.y - transform.position.y > -0.95)
                 {
                     if (currentGoBackJumpingCd <= 0)
                     {
@@ -262,7 +264,6 @@ public class RangeEnemy : MonoBehaviour
         }
         currentCd = cooldown;
 
-        PlayerMovement.isShooting = true;
         Instantiate(bullet, shotPoint.position, Quaternion.Euler(0f, 0f, rotZ));
     }
 
@@ -274,7 +275,7 @@ public class RangeEnemy : MonoBehaviour
     private bool CheckReach()
     {
         Vector2 difference = player.position - transform.position;
-        RaycastHit2D hitInfo = Physics2D.Raycast(shotPoint.position, difference);
+        RaycastHit2D hitInfo = Physics2D.Raycast(shotPoint.position, difference, 100000, mask);
         if (hitInfo)
         {
             return hitInfo.transform.name == "Player";

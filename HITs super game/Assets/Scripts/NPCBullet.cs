@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBullet : MonoBehaviour
+public class NPCBullet : MonoBehaviour
 {
     public float speed = 20f;
     public Rigidbody2D rb;
@@ -14,11 +14,12 @@ public class EnemyBullet : MonoBehaviour
 
     private float currentLifeTime = 0f;
 
-    private int gunDamage = 50;
+    private int gunDamage;
 
     private void Start()
     {
         rb.velocity = transform.right * speed;
+        gunDamage = NpcAI.damage;
     }
 
     void Update()
@@ -33,25 +34,17 @@ public class EnemyBullet : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        PlayerStats player = collision.GetComponent<PlayerStats>();
-        if (player != null)
+        Enemy enemy = collision.GetComponent<Enemy>();
+        if (enemy != null)
         {
-            player.TakeDamage(CalculateDamage(), 1);
+            enemy.TakeDamage(CalculateDamage(), 1);
         }
 
-
-        if (collision.name == "Tilemap" || collision.tag == "Player")
-        {
-            Destroy(gameObject);
-        }
-    }
-
-    void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.name == "Tilemap" || collision.name == "Player")
+        if (collision.tag == "Enemy" || collision.tag == "KamikazeEnemy" || collision.tag == "Cage")
         {
             Destroy(gameObject);
         }
+
     }
 
     int CalculateDamage()

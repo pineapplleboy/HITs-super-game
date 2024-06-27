@@ -203,7 +203,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     Vector2 hitPoint = contactPoint.point;
 
-                    if (hitPoint.y - transform.position.y > -0.7)
+                    if (hitPoint.y - transform.position.y > -0.7 && (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A)))
                     {
                         boostFound = true;
                         break;

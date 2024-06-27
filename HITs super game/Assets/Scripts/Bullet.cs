@@ -41,11 +41,21 @@ public class Bullet : MonoBehaviour
             enemy.TakeDamage(CalculateDamage(), 1);
         }
 
-        if (collision.name != "Player")
+        if (collision.name != "Player" && collision.tag != "NPC")
         {
             Destroy(gameObject);
         }
         
+    }
+
+    void OnTriggerStay2D(Collider2D collision)
+    {
+
+        if (collision.name != "Player" && collision.tag != "NPC")
+        {
+            Destroy(gameObject);
+        }
+
     }
 
     int CalculateDamage()

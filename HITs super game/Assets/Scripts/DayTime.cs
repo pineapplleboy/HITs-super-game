@@ -73,7 +73,7 @@ public class DayTime : MonoBehaviour
 
             if (daysCounter % raidFrequency == 0) Spawner.isAttack = true;
 
-            Debug.Log("night" + " " + GetTime());
+            // Debug.Log("night" + " " + GetTime());
 
         }
         else if (!isDay && currentTime >= nightTime)
@@ -85,7 +85,7 @@ public class DayTime : MonoBehaviour
 
             Spawner.isAttack = false;
 
-            Debug.Log("day" + " " + GetTime());
+            // Debug.Log("day" + " " + GetTime());
 
         }
     }

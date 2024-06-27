@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Bson;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,11 @@ public class Enemy : MonoBehaviour
 
     private Transform player;
 
+    private bool died = false;
+    private float dieTime = 0f;
+
+    private int enemyIndex;
+
     void Start()
     {
         currentHealth = maxHealth;
@@ -26,9 +32,20 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
+        if (died)
+        {
+            dieTime += Time.deltaTime;
+
+            if (dieTime >= 2)
+            {
+                Destroy(gameObject);
+            }
+        }
+
         if (IsFarAway())
         {
             Spawner.currentNearEnemies--;
+            Spawner.allSpawnedEnemies.RemoveAt(enemyIndex);
             Destroy(gameObject);
         }
     }
@@ -76,7 +93,9 @@ public class Enemy : MonoBehaviour
     {
         Spawner.currentNearEnemies--;
         GetComponent<Collider2D>().enabled = false;
-        enabled = false;  
+        died = true;
+
+        Spawner.allSpawnedEnemies.RemoveAt(enemyIndex);
     }
 
     private bool IsFarAway()
@@ -84,4 +103,10 @@ public class Enemy : MonoBehaviour
         return Mathf.Sqrt(Mathf.Pow(transform.position.x - player.position.x, 2) + 
             Mathf.Pow(transform.position.y - player.position.y, 2)) > 400;
     }
+
+    public void SetIndex(int index)
+    {
+        enemyIndex = index;
+    }
+
 }

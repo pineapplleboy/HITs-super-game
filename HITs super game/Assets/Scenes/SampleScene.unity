@@ -13437,7 +13437,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19b35787124aec04ab25e1553fbd5112, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Panel: {fileID: 0}
+  Panel: {fileID: 140991688}
   InventoryPanel: {fileID: 883954949}
   QuickslotPanel: {fileID: 1206238975}
   slots: []
