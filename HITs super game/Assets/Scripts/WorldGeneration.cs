@@ -947,6 +947,9 @@ public class WorldGeneration : MonoBehaviour
         if (cellPosition.x < leftBorderX || cellPosition.x > rightBorderX || cellPosition.y < floorY || cellPosition.y > roofY)
             return null;
 
+        if (rightBorderX - leftBorderX < 10 || roofY - floorY < 5)
+            return null;
+
         Debug.Log(leftBorderX + " " + leftBorderDown + " " + leftBorderTop + " " + rightBorderX + " " + rightBorderDown + " " + rightBorderTop + " " + roofY + " " + floorY);
 
         return new Vector2Int[] { new Vector2Int(leftBorderX, floorY), new Vector2Int(rightBorderX, roofY) };
