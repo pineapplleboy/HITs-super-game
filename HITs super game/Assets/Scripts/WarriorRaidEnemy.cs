@@ -1,3 +1,4 @@
+using SaveData;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -40,11 +41,20 @@ public class WarriorRaidEnemy : MonoBehaviour
 
     private bool nearWall = false;
 
+    private float hitBlockCd = 0.3f;
+    private float currentHitBlockCd = 0f;
+
+    private int blockDamage = 5;
+
+    private WorldGeneration world;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+
+        world = GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>();
     }
 
     void FixedUpdate()
@@ -52,6 +62,7 @@ public class WarriorRaidEnemy : MonoBehaviour
         sleepTime -= Time.deltaTime;
         currentGoBackJumpingCd -= Time.deltaTime;
         currentAttackCd -= Time.deltaTime;
+        currentHitBlockCd -= Time.deltaTime;
 
         if (sleepTime > 0) return;
 
@@ -111,6 +122,8 @@ public class WarriorRaidEnemy : MonoBehaviour
                         nearWall = true;
                     }
 
+                    HitWall(hitPoint);
+
                     onGround = false;
                     return;
                 }
@@ -119,6 +132,40 @@ public class WarriorRaidEnemy : MonoBehaviour
         }
 
         nearWall = false;
+    }
+
+    private void HitWall(Vector2 hitPoint)
+    {
+        if (currentHitBlockCd > 0) return;
+
+        currentHitBlockCd = hitBlockCd;
+        if (isFacedRight)
+        {
+            hitPoint.x += 1;
+        }
+        else
+        {
+            hitPoint.x -= 1f;
+            hitPoint.y -= 1f;
+        }
+
+        WorldBlock block = world.GetBlock((int)(hitPoint.x), (int)(hitPoint.y));
+
+        if (block == null)
+        {
+            hitPoint.y += 1f;
+        }
+
+        if (block != null)
+        {
+            block.TakeDamage(1);
+            Debug.Log(block.GetHealth());
+            if (block.GetHealth() <= 0)
+            {
+                world.EnemyBreakBlock(hitPoint);
+            }
+        }
+        
     }
 
     private void GoBackAndJump()

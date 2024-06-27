@@ -26,8 +26,11 @@ public class PauseMenu : MonoBehaviour
 
     public void Restart()
     {
-        SceneManager.LoadScene("SampleScene");
+        GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>().Save();
+        GameObject.Find("BaseManager").GetComponent<BaseManagement>().Save();
+        GameObject.Find("MainCanvas").GetComponent<InventoryManager>().Save();
         Time.timeScale = 1;
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void Stop()
@@ -35,9 +38,6 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 0;
         onPause = true;
         PauseMenuObj.SetActive(true);
-        GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>().Save();
-        GameObject.Find("BaseManager").GetComponent<BaseManagement>().Save();
-        GameObject.Find("MainCanvas").GetComponent<InventoryManager>().Save();
     }
 
     public void Resume()

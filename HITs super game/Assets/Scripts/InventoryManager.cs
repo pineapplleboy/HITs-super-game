@@ -202,6 +202,7 @@ public class InventoryManager : MonoBehaviour
         else
         {
             Debug.Log("�� ������");
+            Guide.ShowMessage("������������ �����");
         }
     }
     public void BuyGun()
@@ -216,6 +217,7 @@ public class InventoryManager : MonoBehaviour
         else
         {
             Debug.Log("�� ������");
+            Guide.ShowMessage("������������ �����");
         }
     }
     public void BuyStoneBricks()
@@ -230,6 +232,7 @@ public class InventoryManager : MonoBehaviour
         else
         {
             Debug.Log("�� ������");
+            Guide.ShowMessage("������������ �����");
         }
     }
     public void BuyAluminiumBricks()
@@ -244,6 +247,7 @@ public class InventoryManager : MonoBehaviour
         else
         {
             Debug.Log("�� ������");
+            Guide.ShowMessage("������������ �����");
         }
     }
     public void BuyLeadBricks()
@@ -258,6 +262,7 @@ public class InventoryManager : MonoBehaviour
         else
         {
             Debug.Log("�� ������");
+            Guide.ShowMessage("������������ �����");
         }
     }
     public void BuyLaserGun()
@@ -272,6 +277,7 @@ public class InventoryManager : MonoBehaviour
         else
         {
             Debug.Log("�� ������");
+            Guide.ShowMessage("������������ �����");
         }
     }
     public void UpgradeKirk()

@@ -41,6 +41,8 @@ public class Spawner : MonoBehaviour
 
     private WorldGeneration world;
 
+    private Vector2 computerCoord;
+
     private void Start()
     {
         currentNearEnemies = 0;
@@ -65,12 +67,15 @@ public class Spawner : MonoBehaviour
     void Update()
     {
         timer += Time.deltaTime;
+
+        computerCoord = new Vector2(world.worldWidth / 2 + 20 / 2, world.GetFloorHeight() / 2);
+
         if (!isAttack)
         {
             if (timer >= spawnCd && currentNearEnemies < maxNearEnemies)
             {
 
-                if (CheckDistance(new Vector2(world.worldWidth / 2 + 20 / 2, world.GetFloorHeight() / 2), player.transform.position) > 100)
+                if (CheckDistance(computerCoord, player.transform.position) > 100)
                 {
                     //SpawnEnemy();
                     SpawnRaidEnemy();
@@ -80,14 +85,19 @@ public class Spawner : MonoBehaviour
         }
         else
         {
-            AttackMode();
+            SickoMode();
         }
         
     }
 
-    private void AttackMode()
+    private void SickoMode()
     {
+        if (timer >= raidSpawnCd && currentNearEnemies < raidMaxNearEnemies)
+        {
 
+            SpawnRaidEnemy();
+
+        }
     }
 
     private void SpawnRaidEnemy()
@@ -106,6 +116,7 @@ public class Spawner : MonoBehaviour
         //randEnemy = 1;
 
         //spawnPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //spawnPosition = GenerateRaidPosition();
         spawnPosition = GeneratePosition();
 
         if (!world.IsBlock((int)spawnPosition.x, (int)spawnPosition.y))
@@ -161,6 +172,36 @@ public class Spawner : MonoBehaviour
             timer = 0f;
         }
         
+    }
+
+    private Vector2 GenerateRaidPosition()
+    {
+        float deltaX = Random.Range(40, 60);
+        float deltaY = Random.Range(0, 20);
+        
+        float positionX, positionY;
+
+        if (Random.Range(0, 2) == 0)
+        {
+            positionX = computerCoord.x + deltaX;
+        }
+        else
+        {
+            positionX = computerCoord.x - deltaX;
+        }
+
+        if (Random.Range(0, 2) == 0)
+        {
+            positionY = computerCoord.y - deltaY;
+        }
+        else
+        {
+            positionY = computerCoord.y + deltaY;
+        }
+
+        Vector2 position = new Vector2(positionX, positionY);
+
+        return position;
     }
 
     private Vector2 GeneratePosition()
