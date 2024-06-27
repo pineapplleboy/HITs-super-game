@@ -195,6 +195,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if(collision.collider.tag == "Ground" || collision.collider.tag == "Platform")
         {
+            boostFound = false;
 
             if (collision.transform.name == "Tilemap")
             {
@@ -222,8 +223,6 @@ public class PlayerMovement : MonoBehaviour
                     }
 
                 }
-
-                boostFound = false;
 
                 foreach (ContactPoint2D contactPoint in collision.contacts)
                 {
