@@ -74,7 +74,7 @@ public class InventoryManager : MonoBehaviour
 
         for(int i = 0; i < slots.Count; ++i)
         {
-            if (data.slots[i].item != null)
+            if (data.slots[i] != null && data.slots[i].item != null)
             {
                 slots[i].item = FindItemByName(data.slots[i].item);
                 slots[i].amount = data.slots[i].amount;
@@ -87,14 +87,23 @@ public class InventoryManager : MonoBehaviour
 
         for (int i = 0; i < quickSlots.Count; ++i)
         {
-            if (data.quickSlots[i].item != null)
+            if (data.quickSlots[i] != null && data.quickSlots[i].item != null)
             {
+                quickSlots[i].iconGO.GetComponent<Image>().sprite = FindItemByName(data.quickSlots[i].item).icon;
                 quickSlots[i].item = FindItemByName(data.quickSlots[i].item);
                 quickSlots[i].amount = data.quickSlots[i].amount;
                 quickSlots[i].isEmpty = false;
-                quickSlots[i].iconGO.GetComponent<Image>().sprite = FindItemByName(data.quickSlots[i].item).icon;
                 quickSlots[i].itemAmountText.text = quickSlots[i].amount.ToString();
                 quickSlots[i].iconGO.GetComponent<Image>().color = new Color(1, 1, 1, 1);
+            }
+            else
+            {
+                quickSlots[i].iconGO.GetComponent<Image>().sprite = null;
+                quickSlots[i].item = null;
+                quickSlots[i].amount = 0;
+                quickSlots[i].isEmpty = true;
+                quickSlots[i].itemAmountText.text = "";
+                quickSlots[i].iconGO.GetComponent<Image>().color = new Color(0, 0, 0, 255);
             }
         }
     }
