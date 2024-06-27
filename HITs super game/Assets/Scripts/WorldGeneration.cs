@@ -17,17 +17,30 @@ public class WorldBlock
     [SerializeField] public string name;
     [SerializeField] public float timeToBreak;
     [SerializeField] public bool isImportantForBase = false;
+    [SerializeField] public int health;
 
     public WorldBlock()
     {
         name = null;
         timeToBreak = 0;
+        health = 0;
     }
 
     public WorldBlock(Block block)
     {
         this.name = block.name;
         this.timeToBreak = block.timeToBreak;
+        this.health = block.health;
+    }
+
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+    }
+
+    public int GetHealth()
+    {
+        return health;
     }
 
     public bool getImportance()
@@ -58,6 +71,7 @@ public class Block
     [SerializeField] public float timeToBreak;
     [SerializeField] public ItemScriptableObject item;
     [SerializeField] private Sprite icon;
+    [SerializeField] public int health;
 
     public Block(Block block)
     {
@@ -66,6 +80,7 @@ public class Block
         this.timeToBreak = block.timeToBreak;
         this.item = block.item;
         this.icon = block.icon;
+        this.health = block.health;
     }
 }
 
@@ -168,6 +183,11 @@ public class WorldGeneration : MonoBehaviour
         bgWorld = data.bgWorld;
         world = data.world;
         lightMap = data.lightMap;
+    }
+
+    public WorldBlock GetBlock(int x, int y)
+    {
+        return world[x, y];
     }
 
     public bool IsBlock(int x, int y)
@@ -679,6 +699,27 @@ public class WorldGeneration : MonoBehaviour
         }
 
         return maxHeights;
+    }
+
+    public void EnemyBreakBlock(Vector2 worldPoint)
+    {
+        Vector3Int cellPosition = tilemap.WorldToCell(worldPoint);
+
+        if (world[cellPosition.x, cellPosition.y] != null)
+        {
+            //GameObject newTileDrop = Instantiate(tileDrop, new Vector2(cellPosition.x, cellPosition.y + 1), Quaternion.identity);
+            //newTileDrop.GetComponent<SpriteRenderer>().sprite = tilemap.GetSprite(cellPosition);
+            //newTileDrop.GetComponent<Item>().item = blocks.GetBlock(world[cellPosition.x, cellPosition.y].name).item;
+
+            if (world[cellPosition.x, cellPosition.y].getImportance())
+            {
+                DestroyRoom(cellPosition.x, cellPosition.y);
+            }
+
+            world[cellPosition.x, cellPosition.y] = null;
+        }
+
+        Render();
     }
 
     public void BreakBlock(float distanceToBreak)
