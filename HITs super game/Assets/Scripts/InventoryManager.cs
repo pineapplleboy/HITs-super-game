@@ -5,6 +5,7 @@ using static UnityEditor.Progress;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using System.Transactions;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -25,6 +26,7 @@ public class InventoryManager : MonoBehaviour
     public GameObject stoneBricks;
     public GameObject aluminiumBricks;
     public GameObject leadBricks;
+    private bool isNear = false;
 
     private string saveKey = "mainSaveInventory";
 
@@ -144,17 +146,29 @@ public class InventoryManager : MonoBehaviour
                 Panel.SetActive(false);
             }
         }
-        if (Input.GetKeyDown(KeyCode.B))
+        if (isNear)
         {
-            shopIsOpened = !shopIsOpened;
-            if (shopIsOpened)
+            if (Input.GetKeyDown(KeyCode.B))
             {
-                ShopPanel.SetActive(true);
+                shopIsOpened = !shopIsOpened;
+                if (shopIsOpened)
+                {
+                    ShopPanel.SetActive(true);
+                }
+                else
+                {
+                    ShopPanel.SetActive(false);
+                }
             }
-            else
-            {
-                ShopPanel.SetActive(false);
-            }
+        }
+    }
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("COMPUTER"))
+        {
+            isNear = false;
+            ShopPanel.SetActive(false);
+            shopIsOpened = false;
         }
     }
     private void OnTriggerEnter2D(Collider2D other)
@@ -168,6 +182,10 @@ public class InventoryManager : MonoBehaviour
                 Destroy(other.gameObject);
             }
         }
+        if (other.gameObject.CompareTag("COMPUTER"))
+        {
+            isNear = true;
+        }
     }
     public void BuySword()
     {
@@ -180,7 +198,8 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("бш аедмши");
+            Debug.Log("О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫");
+            Guide.ShowMessage("О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫");
         }
     }
     public void BuyGun()
@@ -194,7 +213,8 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("бш аедмши");
+            Debug.Log("О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫");
+            Guide.ShowMessage("О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫");
         }
     }
     public void BuyStoneBricks()
@@ -208,7 +228,8 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("бш аедмши");
+            Debug.Log("О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫");
+            Guide.ShowMessage("О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫");
         }
     }
     public void BuyAluminiumBricks()
@@ -222,7 +243,8 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("бш аедмши");
+            Debug.Log("О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫");
+            Guide.ShowMessage("О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫");
         }
     }
     public void BuyLeadBricks()
@@ -236,7 +258,8 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("бш аедмши");
+            Debug.Log("О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫");
+            Guide.ShowMessage("О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫");
         }
     }
     public void BuyLaserGun()
@@ -250,7 +273,8 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("бш аедмши");
+            Debug.Log("О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫");
+            Guide.ShowMessage("О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫");
         }
     }
     public void AddItem(ItemScriptableObject _item, int _amount)

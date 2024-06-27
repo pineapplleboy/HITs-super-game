@@ -154,6 +154,7 @@ public class WorldGeneration : MonoBehaviour
     private float blockPressedTime;
     private Vector3Int blockPressedCoords;
 
+    public GameObject computer;
     private string[] bricks = new string[]{"lead_bricks", "stone_bricks", "aluminum_bricks"};
 
     private string saveKey = "mainSave";
@@ -747,7 +748,7 @@ public class WorldGeneration : MonoBehaviour
 
             if (world[blockPressedCoords.x, blockPressedCoords.y] != null && blockPressedTime >= world[blockPressedCoords.x, blockPressedCoords.y].GetTimeToBreak())
             {
-                GameObject newTileDrop = Instantiate(tileDrop, new Vector2(blockPressedCoords.x, blockPressedCoords.y + 1), Quaternion.identity);
+                GameObject newTileDrop = Instantiate(tileDrop, new Vector2(blockPressedCoords.x + 0.5f, blockPressedCoords.y + 1), Quaternion.identity);
                 newTileDrop.GetComponent<SpriteRenderer>().sprite = tilemap.GetSprite(cellPosition);
                 newTileDrop.GetComponent<Item>().item = blocks.GetBlock(world[blockPressedCoords.x, blockPressedCoords.y].name).item;
 
@@ -888,6 +889,7 @@ public class WorldGeneration : MonoBehaviour
                 bgWorld[x, y] = new WorldBlock(blocks.GetBlock("lead_bricks"));
             }
         }
+        Instantiate(computer, new Vector2(worldWidth / 2 + baseWidth / 2, floorHeight + 2), Quaternion.identity);
         Render();
     }
 
@@ -986,6 +988,9 @@ public class WorldGeneration : MonoBehaviour
             return null;
 
         if (cellPosition.x < leftBorderX || cellPosition.x > rightBorderX || cellPosition.y < floorY || cellPosition.y > roofY)
+            return null;
+
+        if (rightBorderX - leftBorderX < 10 || roofY - floorY < 5)
             return null;
 
         Debug.Log(leftBorderX + " " + leftBorderDown + " " + leftBorderTop + " " + rightBorderX + " " + rightBorderDown + " " + rightBorderTop + " " + roofY + " " + floorY);

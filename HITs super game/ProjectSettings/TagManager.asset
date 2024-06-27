@@ -13,6 +13,8 @@ TagManager:
   - NPC
   - Enemy
   - ChooseRoomPanel
+  - COMPUTER
+  - Guide
   layers:
   - Default
   - TransparentFX
@@ -26,7 +28,7 @@ TagManager:
   - Block
   - TileDrop
   - NPC
-  - Cage
+  - PostProcessing
   - 
   - 
   - 

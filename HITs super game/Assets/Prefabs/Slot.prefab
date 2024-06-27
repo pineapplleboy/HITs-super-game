@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dc25aa571df702f40aab5a27b3228a5f, type: 2}
   m_sharedMaterial: {fileID: -5121348228734868292, guid: dc25aa571df702f40aab5a27b3228a5f, type: 2}
@@ -187,6 +187,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   oldSlot: {fileID: 1138404699657228311}
   wallet: {fileID: 0}
+  sword: {fileID: 0}
+  gun: {fileID: 0}
+  laserGun: {fileID: 0}
 --- !u!114 &704833322544201731
 MonoBehaviour:
   m_ObjectHideFlags: 0

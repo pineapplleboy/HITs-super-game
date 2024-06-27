@@ -8,7 +8,6 @@ using UnityEngine.UI;
 public class QuickslotInventory : MonoBehaviour
 {
     public Transform quickslotParent;
-    public InventoryManager inventoryManager;
     public int currentQuickslotID = 0;
     public Sprite selectedSprite;
     public Sprite notSelectedSprite;
@@ -16,6 +15,11 @@ public class QuickslotInventory : MonoBehaviour
     public GameObject gun;
     public GameObject laserGun;
 
+    private void Start()
+    {
+        quickslotParent.GetChild(0).GetComponent<Image>().sprite = selectedSprite;
+        Check();
+    }
     void Update()
     {
         float mw = Input.GetAxis("Mouse ScrollWheel");
@@ -61,10 +65,6 @@ public class QuickslotInventory : MonoBehaviour
                         quickslotParent.GetChild(currentQuickslotID).GetComponent<Image>().sprite = selectedSprite;
 
                         Check();
-                    }
-                    else
-                    {
-                        quickslotParent.GetChild(currentQuickslotID).GetComponent<Image>().sprite = notSelectedSprite;
                     }
                 }
                 else
