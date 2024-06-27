@@ -55,7 +55,10 @@ public class DragAndDropItem : MonoBehaviour, IPointerDownHandler, IPointerUpHan
         transform.position = oldSlot.transform.position;
         if (eventData.pointerCurrentRaycast.gameObject.name == "UIPanel")
         {
-            DropAndThrowItem();
+            if (oldSlot.item.itemName != "kirk")
+            {
+                DropAndThrowItem();
+            }
         }
         else if (eventData.pointerCurrentRaycast.gameObject.transform.parent.parent.GetComponent<InventorySlot>() != null)
         {
@@ -96,7 +99,8 @@ public class DragAndDropItem : MonoBehaviour, IPointerDownHandler, IPointerUpHan
         {
             newSlot.item = oldSlot.item;
             newSlot.amount = oldSlot.amount;
-            if (oldSlot.isEmpty == false && oldSlot.item != item)
+            int maxSum = amount + oldSlot.amount;
+            if (oldSlot.isEmpty == false && oldSlot.item != item || oldSlot.isEmpty == false && maxSum >= newSlot.item.maximumAmount || oldSlot.isEmpty == false && maxSum >= oldSlot.item.maximumAmount)
             {
                 newSlot.SetIcon(oldSlot.iconGO.GetComponent<Image>().sprite);
                 newSlot.itemAmountText.text = oldSlot.amount.ToString();
@@ -122,7 +126,7 @@ public class DragAndDropItem : MonoBehaviour, IPointerDownHandler, IPointerUpHan
 
             oldSlot.item = item;
             oldSlot.amount = amount;
-            if (isEmpty == false && oldSlot.item.itemName != newSlot.item.itemName)
+            if (isEmpty == false && oldSlot.item.itemName != newSlot.item.itemName || isEmpty == false && maxSum >= newSlot.item.maximumAmount/* || isEmpty == false && amount + newSlot.amount >= 64*/)
             {
                 oldSlot.SetIcon(tempIcon);
                 oldSlot.itemAmountText.text = amount.ToString();

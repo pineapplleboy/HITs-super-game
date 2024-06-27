@@ -286,9 +286,9 @@ public class InventoryManager : MonoBehaviour
         Debug.Log("YURA");
         if (kirka.item.level == 1)
         {
-            if (player.GetComponent<PlayerStats>().money >= 1)
+            if (player.GetComponent<PlayerStats>().money >= 300)
             {
-                player.GetComponent<PlayerStats>().money -= 1;
+                player.GetComponent<PlayerStats>().money -= 300;
                 wallet.text = player.GetComponent<PlayerStats>().money.ToString();
                 kirka.item.level += 1;
                 costText.text = "1000";
@@ -300,9 +300,9 @@ public class InventoryManager : MonoBehaviour
         }
         else if (kirka.item.level == 2)
         {
-            if (player.GetComponent<PlayerStats>().money >= 1)
+            if (player.GetComponent<PlayerStats>().money >= 1000)
             {
-                player.GetComponent<PlayerStats>().money -= 1;
+                player.GetComponent<PlayerStats>().money -= 1000;
                 wallet.text = player.GetComponent<PlayerStats>().money.ToString();
                 kirka.item.level += 1;
                 costText.text = "2000";
@@ -314,9 +314,9 @@ public class InventoryManager : MonoBehaviour
         }
         else if (kirka.item.level == 3)
         {
-            if (player.GetComponent<PlayerStats>().money >= 2)
+            if (player.GetComponent<PlayerStats>().money >= 2000)
             {
-                player.GetComponent<PlayerStats>().money -= 2;
+                player.GetComponent<PlayerStats>().money -= 2000;
                 wallet.text = player.GetComponent<PlayerStats>().money.ToString();
                 kirka.item.level += 1;
                 upgradeButton.SetActive(false);
