@@ -40,6 +40,9 @@ public class PlayerMovement : MonoBehaviour
     private float jumpCd = 0.3f;
     private float currentJumpCd = 0f;
 
+    private float jumpBoost = 1f;
+    private bool boostFound = false;
+
     void Start()
     {
         Time.fixedDeltaTime = Time.timeScale * 0.01f;
@@ -49,6 +52,11 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!LaserGun.isActive && !Gun.isActive) isShooting = false;
+
+        if (boostFound) jumpBoost = 1.3f;
+        else jumpBoost = 1f;
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             GrapplingHook.isHooked = false;
@@ -91,7 +99,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && onGround && currentJumpCd <= 0)
         {
-            rb.AddForce(Vector2.up * (jumpForce * slowRate));
+            rb.AddForce(Vector2.up * (jumpForce * slowRate * jumpBoost));
             currentJumpCd = jumpCd;
             onGround = false;
         }
@@ -169,8 +177,6 @@ public class PlayerMovement : MonoBehaviour
         lastMovingDirection = moveX;
 
         Flip();
-
-        //Debug.Log(blockMoving);
     }
 
     private void Flip()
@@ -196,13 +202,10 @@ public class PlayerMovement : MonoBehaviour
                 {
                     Vector2 hitPoint = contactPoint.point;
 
-                    //Debug.Log(hitPoint.x + " " + transform.position.x);
-
-                    if (hitPoint.y - transform.position.y <= -0.5)
+                    if (hitPoint.y - transform.position.y > -0.7)
                     {
-                        onGround = true;
-                        blockMoving = false;
-                        return;
+                        boostFound = true;
+                        break;
                     }
 
                 }
@@ -211,7 +214,22 @@ public class PlayerMovement : MonoBehaviour
                 {
                     Vector2 hitPoint = contactPoint.point;
 
-                    if (hitPoint.y - transform.position.y > -0.3)
+                    if (hitPoint.y - transform.position.y <= -0.95)
+                    {
+                        onGround = true;
+                        blockMoving = false;
+                        return;
+                    }
+
+                }
+
+                boostFound = false;
+
+                foreach (ContactPoint2D contactPoint in collision.contacts)
+                {
+                    Vector2 hitPoint = contactPoint.point;
+
+                    if (hitPoint.y - transform.position.y > -0.95)
                     {
                         if ((lastDirection == 1 && Input.GetKey(KeyCode.D)) || (lastDirection == -1 && Input.GetKey(KeyCode.A)))
                         {
