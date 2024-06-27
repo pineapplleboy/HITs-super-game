@@ -120,6 +120,7 @@ public class WorldGeneration : MonoBehaviour
     private float blockPressedTime;
     private Vector3Int blockPressedCoords;
 
+    public GameObject computer;
     private string saveKey = "mainSave";
 
     private SaveData.World GetSaveSnapshot()
@@ -657,7 +658,7 @@ public class WorldGeneration : MonoBehaviour
 
             if (world[blockPressedCoords.x, blockPressedCoords.y] != null && blockPressedTime >= world[blockPressedCoords.x, blockPressedCoords.y].GetTimeToBreak())
             {
-                GameObject newTileDrop = Instantiate(tileDrop, new Vector2(blockPressedCoords.x, blockPressedCoords.y + 1), Quaternion.identity);
+                GameObject newTileDrop = Instantiate(tileDrop, new Vector2(blockPressedCoords.x + 0.5f, blockPressedCoords.y + 1), Quaternion.identity);
                 newTileDrop.GetComponent<SpriteRenderer>().sprite = tilemap.GetSprite(cellPosition);
                 newTileDrop.GetComponent<Item>().item = world[blockPressedCoords.x, blockPressedCoords.y].item;
 
@@ -777,6 +778,7 @@ public class WorldGeneration : MonoBehaviour
                 bgWorld[x, y] = blocks.GetBlock("lead");
             }
         }
+        Instantiate(computer, new Vector2(worldWidth / 2 + baseWidth / 2, floorHeight + 2), Quaternion.identity);
     }
 
     public Vector2Int[] CheckPlaceForRoom(Vector3Int cellPosition)

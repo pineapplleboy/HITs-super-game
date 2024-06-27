@@ -5,6 +5,7 @@ using static UnityEditor.Progress;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using System.Transactions;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -25,6 +26,7 @@ public class InventoryManager : MonoBehaviour
     public GameObject stoneBricks;
     public GameObject aluminiumBricks;
     public GameObject leadBricks;
+    private bool isNear = false;
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -60,17 +62,29 @@ public class InventoryManager : MonoBehaviour
                 Panel.SetActive(false);
             }
         }
-        if (Input.GetKeyDown(KeyCode.B))
+        if (isNear)
         {
-            shopIsOpened = !shopIsOpened;
-            if (shopIsOpened)
+            if (Input.GetKeyDown(KeyCode.B))
             {
-                ShopPanel.SetActive(true);
+                shopIsOpened = !shopIsOpened;
+                if (shopIsOpened)
+                {
+                    ShopPanel.SetActive(true);
+                }
+                else
+                {
+                    ShopPanel.SetActive(false);
+                }
             }
-            else
-            {
-                ShopPanel.SetActive(false);
-            }
+        }
+    }
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("COMPUTER"))
+        {
+            isNear = false;
+            ShopPanel.SetActive(false);
+            shopIsOpened = false;
         }
     }
     private void OnTriggerEnter2D(Collider2D other)
@@ -83,6 +97,10 @@ public class InventoryManager : MonoBehaviour
                 AddItem(itemPickup.item, itemPickup.amount);
                 Destroy(other.gameObject);
             }
+        }
+        if (other.gameObject.CompareTag("COMPUTER"))
+        {
+            isNear = true;
         }
     }
     public void BuySword()

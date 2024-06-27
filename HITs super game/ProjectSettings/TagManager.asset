@@ -13,6 +13,7 @@ TagManager:
   - NPC
   - Enemy
   - ChooseRoomPanel
+  - COMPUTER
   layers:
   - Default
   - TransparentFX
