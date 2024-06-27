@@ -275,6 +275,8 @@ public class WorldGeneration : MonoBehaviour
                 ClearTileMap(tilemap, bgTilemap, fgTilemap, i, j, chunkSize);
             }
         }
+
+        Render();
     }
 
     public void RenderMap(int chunkX, int chunkY, int chunkSize)
