@@ -189,7 +189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  jumpForce: 1120
+  jumpForce: 1500
   damage: 100
 --- !u!95 &6807746384039905069
 Animator:
