@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using Unity.Mathematics;
@@ -10,25 +11,22 @@ using UnityEngine.Tilemaps;
 using UnityEngine.UI;
 
 [System.Serializable]
-public class Block
+public class WorldBlock
 {
     [SerializeField] public string name;
-    [SerializeField] public TileBase tile;
-    [SerializeField] private float timeToBreak;
-    [SerializeField] private int lightLvl = 15;
-    [SerializeField] public ItemScriptableObject item;
-    [SerializeField] private Sprite icon;
-    private bool isImportantForBase;
+    [SerializeField] public float timeToBreak;
+    [SerializeField] public bool isImportantForBase = false;
 
-    public Block(Block block)
+    public WorldBlock()
+    {
+        name = null;
+        timeToBreak = 0;
+    }
+
+    public WorldBlock(Block block)
     {
         this.name = block.name;
-        this.tile = block.tile;
         this.timeToBreak = block.timeToBreak;
-        this.lightLvl = block.lightLvl;
-        this.item = block.item;
-        this.icon = block.icon;
-        isImportantForBase = false;
     }
 
     public bool getImportance()
@@ -40,16 +38,33 @@ public class Block
     {
         isImportantForBase = importance;
     }
-
     public float GetTimeToBreak()
     {
         return timeToBreak;
     }
-
     public bool CheckByName(string name)
     {
         if (this.name == name) return true;
         return false;
+    }
+}
+
+[System.Serializable]
+public class Block
+{
+    [SerializeField] public string name;
+    [SerializeField] public TileBase tile;
+    [SerializeField] public float timeToBreak;
+    [SerializeField] public ItemScriptableObject item;
+    [SerializeField] private Sprite icon;
+
+    public Block(Block block)
+    {
+        this.name = block.name;
+        this.tile = block.tile;
+        this.timeToBreak = block.timeToBreak;
+        this.item = block.item;
+        this.icon = block.icon;
     }
 }
 
@@ -84,9 +99,9 @@ public class WorldGeneration : MonoBehaviour
     [SerializeField] int chunkSize;
     [SerializeField] int renderDistance;
 
-    public Block[,] world;
-    public Block[,] bgWorld;
-    public Block[,] fgWorld;
+    public WorldBlock[,] world;
+    public WorldBlock[,] bgWorld;
+    public WorldBlock[,] fgWorld;
     public int[,] lightMap;
 
     public GameObject tileDrop;
@@ -97,6 +112,9 @@ public class WorldGeneration : MonoBehaviour
 
     private int playerChunkX;
     private int playerChunkY;
+
+    private int prevPlayerChunkX;
+    private int prevPlayerChunkY;
 
     private int playerPositionX;
     private int playerPositionY;
@@ -119,6 +137,8 @@ public class WorldGeneration : MonoBehaviour
 
     private float blockPressedTime;
     private Vector3Int blockPressedCoords;
+
+    private string[] bricks = new string[]{"lead_bricks", "stone_bricks", "aluminum_bricks"};
 
     private string saveKey = "mainSave";
 
@@ -154,9 +174,9 @@ public class WorldGeneration : MonoBehaviour
         return world[x, y] != null;
     }
 
-    public Block[,] GenerateArray(int width, int height, bool empty)
+    public WorldBlock[,] GenerateArray(int width, int height, bool empty)
     {
-        Block[,] map = new Block[width, height];
+        WorldBlock[,] map = new WorldBlock[width, height];
 
         for (int x = 0; x < map.GetUpperBound(0); x++)
         {
@@ -169,7 +189,7 @@ public class WorldGeneration : MonoBehaviour
                 }
                 else
                 {
-                    map[x, y] = blocks.GetBlock("cobblestone");
+                    map[x, y] = new WorldBlock(blocks.GetBlock("cobblestone"));
                 }
             }
         }
@@ -267,7 +287,7 @@ public class WorldGeneration : MonoBehaviour
 
                 if (world[x, y] != null)
                 {
-                    tilemap.SetTile(new Vector3Int(x, y, 0), world[x, y].tile);
+                    tilemap.SetTile(new Vector3Int(x, y, 0), blocks.GetBlock(world[x, y].name).tile);
                     tilemap.SetColor(new Vector3Int(x, y, 0), new Color(lightMap[x, y] / 15.0f, lightMap[x, y] / 15.0f, lightMap[x, y] / 15.0f));
                 }
 
@@ -278,7 +298,7 @@ public class WorldGeneration : MonoBehaviour
 
                 if (bgWorld[x, y] != null)
                 {
-                    bgTilemap.SetTile(new Vector3Int(x, y, 0), bgWorld[x, y].tile);
+                    bgTilemap.SetTile(new Vector3Int(x, y, 0), blocks.GetBlock(bgWorld[x, y].name).tile);
                     bgTilemap.SetColor(new Vector3Int(x, y, 0), new Color(lightMap[x, y] / 15.0f, lightMap[x, y] / 15.0f, lightMap[x, y] / 15.0f));
                 }
 
@@ -289,7 +309,7 @@ public class WorldGeneration : MonoBehaviour
 
                 if (fgWorld[x, y] != null)
                 {
-                    fgTilemap.SetTile(new Vector3Int(x, y, 0), fgWorld[x, y].tile);
+                    fgTilemap.SetTile(new Vector3Int(x, y, 0), blocks.GetBlock(fgWorld[x, y].name).tile);
                     fgTilemap.SetColor(new Vector3Int(x, y, 0), new Color(lightMap[x, y] / 15.0f, lightMap[x, y] / 15.0f, lightMap[x, y] / 15.0f));
                 }
 
@@ -301,9 +321,34 @@ public class WorldGeneration : MonoBehaviour
         }
     }
 
-    public Block[,] CreateBGWall(Block[,] world)
+    public void RenderLightWorld(int plPosX, int plPosY)
     {
-        Block[,] bgWorld = new Block[world.GetUpperBound(0), world.GetUpperBound(1)];
+        for (int x = plPosX - 16; x < plPosX + 16; x++)
+        {
+            for (int y = plPosY - 16; y < plPosY + 16; y++)
+            {
+
+                if (world[x, y] != null)
+                {
+                    tilemap.SetColor(new Vector3Int(x, y, 0), new Color(lightMap[x, y] / 15.0f, lightMap[x, y] / 15.0f, lightMap[x, y] / 15.0f));
+                }
+
+                if (bgWorld[x, y] != null)
+                {
+                    bgTilemap.SetColor(new Vector3Int(x, y, 0), new Color(lightMap[x, y] / 15.0f, lightMap[x, y] / 15.0f, lightMap[x, y] / 15.0f));
+                }
+
+                if (fgWorld[x, y] != null)
+                {
+                    fgTilemap.SetColor(new Vector3Int(x, y, 0), new Color(lightMap[x, y] / 15.0f, lightMap[x, y] / 15.0f, lightMap[x, y] / 15.0f));
+                }
+            }
+        }
+    }
+
+    public WorldBlock[,] CreateBGWall(WorldBlock[,] world)
+    {
+        WorldBlock[,] bgWorld = new WorldBlock[world.GetUpperBound(0), world.GetUpperBound(1)];
 
         for (int i = 0; i < world.GetUpperBound(0); ++i)
         {
@@ -312,7 +357,7 @@ public class WorldGeneration : MonoBehaviour
 
                 if (world[i, j] != null)
                 {
-                    bgWorld[i, j] = blocks.GetBlock("cobblestone");
+                    bgWorld[i, j] = new WorldBlock(blocks.GetBlock("cobblestone"));
                 }
             }
         }
@@ -333,9 +378,10 @@ public class WorldGeneration : MonoBehaviour
         }
     }
 
-    public void SetBlock(Block[,] map, Block block, int x, int y)
+    public void SetBlock(WorldBlock[,] map, Block block, int x, int y)
     {
-        map[x, y] = block;
+        map[x, y] = new WorldBlock(block);
+        Render();
     }
 
     //public void UpdateMap(int[,] map, Tilemap tilemap, int chunkX, int chunkY, int chunkSize)
@@ -353,7 +399,7 @@ public class WorldGeneration : MonoBehaviour
     //    }
     //}
 
-    public Block[,] PerlinNoise(Block[,] map, float seed)
+    public WorldBlock[,] PerlinNoise(WorldBlock[,] map, float seed)
     {
         int newPoint;
         float reduction = 0.5f;
@@ -366,7 +412,7 @@ public class WorldGeneration : MonoBehaviour
 
             for (int y = newPoint; y >= 0; y--)
             {
-                map[x, y] = blocks.GetBlock("cobblestone");
+                map[x, y] = new WorldBlock(blocks.GetBlock("cobblestone"));
             }
         }
         return map;
@@ -412,7 +458,7 @@ public class WorldGeneration : MonoBehaviour
     //    return map;
     //}
 
-    public Block[,] RandomWalkTopSmoothed(Block[,] map, float seed, int minSectionWidth)
+    public WorldBlock[,] RandomWalkTopSmoothed(WorldBlock[,] map, float seed, int minSectionWidth)
     {
         System.Random rand = new System.Random(seed.GetHashCode());
 
@@ -439,14 +485,14 @@ public class WorldGeneration : MonoBehaviour
 
             for (int y = lastHeight; y >= 0; y--)
             {
-                map[x, y] = blocks.GetBlock("cobblestone");
+                map[x, y] = new WorldBlock(blocks.GetBlock("cobblestone"));
             }
         }
 
         return map;
     }
 
-    public Block[,] PerlinNoiseCave(Block[,] map, int[] maxHeights, float modifier)
+    public WorldBlock[,] PerlinNoiseCave(WorldBlock[,] map, int[] maxHeights, float modifier)
     {
         int newPoint;
         for (int x = 0; x < map.GetUpperBound(0); x++)
@@ -454,13 +500,13 @@ public class WorldGeneration : MonoBehaviour
             for (int y = 0; y < maxHeights[x] - 30; y++)
             {
                 newPoint = Mathf.RoundToInt(Mathf.PerlinNoise(x * modifier, y * modifier));
-                map[x, y] = newPoint == 1 ? blocks.GetBlock("cobblestone") : null;
+                map[x, y] = newPoint == 1 ? new WorldBlock(blocks.GetBlock("cobblestone")) : null;
             }
         }
         return map;
     }
 
-    int GetMooreSurroundingTiles(Block[,] map, int x, int y, bool edgesAreWalls)
+    int GetMooreSurroundingTiles(WorldBlock[,] map, int x, int y, bool edgesAreWalls)
     {
         int tileCount = 0;
 
@@ -480,7 +526,7 @@ public class WorldGeneration : MonoBehaviour
         return tileCount;
     }
 
-    public Block[,] SmoothMooreCellularAutomata(Block[,] map, float seed, int fillPercent, bool edgesAreWalls, int smoothCount)
+    public WorldBlock[,] SmoothMooreCellularAutomata(WorldBlock[,] map, float seed, int fillPercent, bool edgesAreWalls, int smoothCount)
     {
         System.Random rand = new System.Random(seed.GetHashCode());
 
@@ -490,11 +536,11 @@ public class WorldGeneration : MonoBehaviour
             {
                 if (edgesAreWalls && (x == 0 || x == map.GetUpperBound(0) - 1 || y == 0 || y == map.GetUpperBound(1) / 2 - 31))
                 {
-                    map[x, y] = map[x, y] = blocks.GetBlock("cobblestone");
+                    map[x, y] = map[x, y] = new WorldBlock(blocks.GetBlock("cobblestone"));
                 }
                 else
                 {
-                    map[x, y] = (rand.Next(0, 100) < fillPercent) ? map[x, y] = blocks.GetBlock("cobblestone") : null;
+                    map[x, y] = (rand.Next(0, 100) < fillPercent) ? map[x, y] = new WorldBlock(blocks.GetBlock("cobblestone")) : null;
                 }
             }
         }
@@ -509,11 +555,11 @@ public class WorldGeneration : MonoBehaviour
 
                     if (edgesAreWalls && (x == 0 || x == (map.GetUpperBound(0) - 1) || y == 0 || y == (map.GetUpperBound(1) / 2 - 31)))
                     {
-                        map[x, y] = blocks.GetBlock("cobblestone");
+                        map[x, y] = new WorldBlock(blocks.GetBlock("cobblestone"));
                     }
                     else if (surroundingTiles > 4)
                     {
-                        map[x, y] = blocks.GetBlock("cobblestone");
+                        map[x, y] = new WorldBlock(blocks.GetBlock("cobblestone"));
                     }
                     else if (surroundingTiles < 4)
                     {
@@ -526,7 +572,7 @@ public class WorldGeneration : MonoBehaviour
         return map;
     }
 
-    public Block[,] OresGeneration(Block[,] map, float seed)
+    public WorldBlock[,] OresGeneration(WorldBlock[,] map, float seed)
     {
         float[] frequencies = new float[4] { 10, 8, 2, 8 };
         float[] oreSeeds = new float[4]
@@ -547,35 +593,35 @@ public class WorldGeneration : MonoBehaviour
 
                     if (y > maxHeights[x] - 30 && oreNoise > 0.3)
                     {
-                        map[x, y] = blocks.GetBlock("dirt");
+                        map[x, y] = new WorldBlock(blocks.GetBlock("dirt"));
                     }
                     else if (oreNoise > 0.9)
                     {
-                        map[x, y] = blocks.GetBlock("dirt");
+                        map[x, y] = new WorldBlock(blocks.GetBlock("dirt"));
                     }
 
                     oreNoise = Mathf.PerlinNoise((x / frequencies[0]) + oreSeeds[0], (y / frequencies[0]) + oreSeeds[0]);
                     if (y < maxHeights[x] - 15 && oreNoise > 0.8)
                     {
-                        map[x, y] = blocks.GetBlock("lead");
+                        map[x, y] = new WorldBlock(blocks.GetBlock("lead"));
                     }
 
                     oreNoise = Mathf.PerlinNoise((x / frequencies[1]) + oreSeeds[1], (y / frequencies[1]) + oreSeeds[1]);
                     if (y < maxHeights[x] - 30 && oreNoise > 0.8)
                     {
-                        map[x, y] = blocks.GetBlock("aluminum");
+                        map[x, y] = new WorldBlock(blocks.GetBlock("aluminum"));
                     }
 
                     oreNoise = Mathf.PerlinNoise((x / frequencies[2]) + oreSeeds[2], (y / frequencies[2]) + oreSeeds[2]);
                     if (y < maxHeights[x] - 30 && oreNoise > 0.9)
                     {
-                        map[x, y] = blocks.GetBlock("uranus");
+                        map[x, y] = new WorldBlock(blocks.GetBlock("uranus"));
                     }
 
                     oreNoise = Mathf.PerlinNoise((x / frequencies[3]) + oreSeeds[3], (y / frequencies[3]) + oreSeeds[3]);
                     if (y < maxHeights[x] - 30 && oreNoise > 0.8)
                     {
-                        map[x, y] = blocks.GetBlock("zink");
+                        map[x, y] = new WorldBlock(blocks.GetBlock("zink"));
                     }
                 }
             }
@@ -584,9 +630,9 @@ public class WorldGeneration : MonoBehaviour
         return map;
     }
 
-    public Block[,] TreesGeneration(Block[,] map)
+    public WorldBlock[,] TreesGeneration(WorldBlock[,] map)
     {
-        Block[,] fgMap = new Block[map.GetUpperBound(0), map.GetUpperBound(1)];
+        WorldBlock[,] fgMap = new WorldBlock[map.GetUpperBound(0), map.GetUpperBound(1)];
 
         for (int x = 0; x < fgMap.GetLength(0); x++)
         {
@@ -599,19 +645,19 @@ public class WorldGeneration : MonoBehaviour
                 }
 
                 int treeHeight = UnityEngine.Random.Range(0, 4);
-                fgMap[x, maxY + 1] = blocks.GetBlock("tree_4");
+                fgMap[x, maxY + 1] = new WorldBlock(blocks.GetBlock("tree_4"));
                 for (int i = 0; i < treeHeight; i++)
                 {
-                    fgMap[x, maxY + i + 2] = UnityEngine.Random.Range(0, 100) > 50 ? blocks.GetBlock("tree_3") : blocks.GetBlock("tree_2");
+                    fgMap[x, maxY + i + 2] = UnityEngine.Random.Range(0, 100) > 50 ? new WorldBlock(blocks.GetBlock("tree_3")) : new WorldBlock(blocks.GetBlock("tree_2"));
                 }
-                fgMap[x, maxY + treeHeight + 2] = blocks.GetBlock("tree_1");
+                fgMap[x, maxY + treeHeight + 2] = new WorldBlock(blocks.GetBlock("tree_1"));
             }
         }
 
         return fgMap;
     }
 
-    public int[] GetMaxHeights(Block[,] map)
+    public int[] GetMaxHeights(WorldBlock[,] map)
     {
         int[] maxHeights = new int[map.GetUpperBound(0)];
         for (int x = 0; x < map.GetUpperBound(0); ++x)
@@ -659,7 +705,7 @@ public class WorldGeneration : MonoBehaviour
             {
                 GameObject newTileDrop = Instantiate(tileDrop, new Vector2(blockPressedCoords.x, blockPressedCoords.y + 1), Quaternion.identity);
                 newTileDrop.GetComponent<SpriteRenderer>().sprite = tilemap.GetSprite(cellPosition);
-                newTileDrop.GetComponent<Item>().item = world[blockPressedCoords.x, blockPressedCoords.y].item;
+                newTileDrop.GetComponent<Item>().item = blocks.GetBlock(world[blockPressedCoords.x, blockPressedCoords.y].name).item;
 
                 if (world[blockPressedCoords.x, blockPressedCoords.y].getImportance())
                 {
@@ -669,6 +715,8 @@ public class WorldGeneration : MonoBehaviour
                 world[blockPressedCoords.x, blockPressedCoords.y] = null;
             }
         }
+
+        Render();
     }
 
     public bool SetBlockOnMap(float distanceToBreak, ItemScriptableObject inputObject)
@@ -680,9 +728,12 @@ public class WorldGeneration : MonoBehaviour
         if (Vector3.Distance(Player.transform.position, cellPosition) <= distanceToBreak)
         {
             Debug.Log($"{inputObject.itemName}");
-            world[cellPosition.x, cellPosition.y] = blocks.GetBlock(inputObject.itemName);
+            world[cellPosition.x, cellPosition.y] = new WorldBlock(blocks.GetBlock(inputObject.itemName));
+            Render();
             return true;
         }
+
+        Render();
         return false;
     }
     public bool IsBlockOnCursor()
@@ -692,7 +743,7 @@ public class WorldGeneration : MonoBehaviour
         return world[cellPosition.x, cellPosition.y] != null;
     }
 
-    public int[,] SetDayLight(int[,] light, Block[,] map)
+    public int[,] SetDayLight(int[,] light, WorldBlock[,] map)
     {
         for (int x = 0; x < map.GetUpperBound(0); x++)
         {
@@ -707,6 +758,7 @@ public class WorldGeneration : MonoBehaviour
             }
         }
 
+        Render();
         return light;
     }
 
@@ -739,7 +791,7 @@ public class WorldGeneration : MonoBehaviour
 
         for (int x = worldWidth / 2; x < worldWidth / 2 + baseWidth; x++)
         {
-            world[x, floorHeight] = blocks.GetBlock("lead");
+            world[x, floorHeight] = new WorldBlock(blocks.GetBlock("lead_bricks"));
             fgWorld[x, floorHeight] = null;
             bgWorld[x, floorHeight] = null;
 
@@ -747,7 +799,7 @@ public class WorldGeneration : MonoBehaviour
 
             while (world[x, currHeight] == null)
             {
-                world[x, currHeight] = blocks.GetBlock("lead");
+                world[x, currHeight] = new WorldBlock(blocks.GetBlock("lead_bricks"));
                 bgWorld[x, currHeight] = null;
                 fgWorld[x, currHeight] = null;
 
@@ -761,22 +813,23 @@ public class WorldGeneration : MonoBehaviour
                 fgWorld[x, y] = null;
             }
 
-            world[x, floorHeight + baseHeight] = blocks.GetBlock("lead");
+            world[x, floorHeight + baseHeight] = new WorldBlock(blocks.GetBlock("lead_bricks"));
         }
 
         for (int y = floorHeight; y < floorHeight + baseHeight; y++)
         {
-            world[worldWidth / 2, y] = blocks.GetBlock("lead");
-            world[worldWidth / 2 + baseWidth - 1, y] = blocks.GetBlock("lead");
+            world[worldWidth / 2, y] = new WorldBlock(blocks.GetBlock("lead_bricks"));
+            world[worldWidth / 2 + baseWidth - 1, y] = new WorldBlock(blocks.GetBlock("lead_bricks"));
         }
 
         for (int x = worldWidth / 2; x < worldWidth / 2 + baseWidth; x++)
         {
             for (int y = floorHeight; y < floorHeight + baseHeight; y++)
             {
-                bgWorld[x, y] = blocks.GetBlock("lead");
+                bgWorld[x, y] = new WorldBlock(blocks.GetBlock("lead_bricks"));
             }
         }
+        Render();
     }
 
     public Vector2Int[] CheckPlaceForRoom(Vector3Int cellPosition)
@@ -786,15 +839,15 @@ public class WorldGeneration : MonoBehaviour
         int leftBorderDown = cellPosition.y;
         while (leftBorderX >= 0)
         {
-            if (world[leftBorderX, cellPosition.y] != null && world[leftBorderX, cellPosition.y].CheckByName("lead"))
+            if (world[leftBorderX, cellPosition.y] != null && bricks.Any(brick => world[leftBorderX, cellPosition.y].CheckByName(brick)))
             {
-                while (world[leftBorderX, leftBorderTop] != null && world[leftBorderX, leftBorderTop].CheckByName("lead"))
+                while (world[leftBorderX, leftBorderTop] != null && bricks.Any(brick => world[leftBorderX, leftBorderTop].CheckByName(brick)))
                 {
                     leftBorderTop++;
                 }
                 leftBorderTop--;
 
-                while (world[leftBorderX, leftBorderDown] != null && world[leftBorderX, leftBorderDown].CheckByName("lead"))
+                while (world[leftBorderX, leftBorderDown] != null && bricks.Any(brick => world[leftBorderX, leftBorderDown].CheckByName(brick)))
                 {
                     leftBorderDown--;
                 }
@@ -814,15 +867,15 @@ public class WorldGeneration : MonoBehaviour
         int rightBorderDown = cellPosition.y;
         while (rightBorderX < worldWidth)
         {
-            if (world[rightBorderX, cellPosition.y] != null && world[rightBorderX, cellPosition.y].CheckByName("lead"))
+            if (world[rightBorderX, cellPosition.y] != null && bricks.Any(brick => world[rightBorderX, cellPosition.y].CheckByName(brick)))
             {
-                while (world[rightBorderX, rightBorderTop] != null && world[rightBorderX, rightBorderTop].CheckByName("lead"))
+                while (world[rightBorderX, rightBorderTop] != null && bricks.Any(brick => world[rightBorderX, rightBorderTop].CheckByName(brick)))
                 {
                     rightBorderTop++;
                 }
                 rightBorderTop--;
 
-                while (world[rightBorderX, rightBorderDown] != null && world[rightBorderX, rightBorderDown].CheckByName("lead"))
+                while (world[rightBorderX, rightBorderDown] != null && bricks.Any(brick => world[rightBorderX, rightBorderDown].CheckByName(brick)))
                 {
                     rightBorderDown--;
                 }
@@ -841,7 +894,7 @@ public class WorldGeneration : MonoBehaviour
         while (roofY >= 0)
         {
             int currX = leftBorderX;
-            while (currX < rightBorderX && world[currX, roofY] != null && world[currX, roofY].CheckByName("lead"))
+            while (currX < rightBorderX && world[currX, roofY] != null && bricks.Any(brick => world[currX, roofY].CheckByName(brick)))
             {
                 currX++;
             }
@@ -859,7 +912,7 @@ public class WorldGeneration : MonoBehaviour
         while (floorY < worldHeight)
         {
             int currX = leftBorderX;
-            while (currX < rightBorderX && world[currX, floorY] != null && world[currX, floorY].CheckByName("lead"))
+            while (currX < rightBorderX && world[currX, floorY] != null && bricks.Any(brick => world[currX, floorY].CheckByName(brick)))
             {
                 currX++;
             }
@@ -899,9 +952,10 @@ public class WorldGeneration : MonoBehaviour
         {
             for (int y = room.GetLeftDownCorner().y; y <= room.GetRightUpCorner().y; y++)
             {
-                bgWorld[x, y] = new Block(blocks.GetBlock("lead"));
+                bgWorld[x, y] = new WorldBlock(blocks.GetBlock("lead"));
             }
         }
+        Render();
     }
 
     public void DestroyRoom(int blockX, int blockY)
@@ -931,6 +985,53 @@ public class WorldGeneration : MonoBehaviour
         }
 
         Base.DestroyRoom(room);
+        Render();
+    }
+
+    private void RenderAllMapLight()
+    {
+        for(int x = 0; x < worldWidth - 1; x++)
+        {
+            for(int y = 0; y < worldHeight - 1; y++)
+            {
+                if (world[x, y] != null)
+                {
+                    tilemap.SetColor(new Vector3Int(x, y, 0), new Color(lightMap[x, y] / 15.0f, lightMap[x, y] / 15.0f, lightMap[x, y] / 15.0f));
+                }
+
+                if (bgWorld[x, y] != null)
+                {
+                    bgTilemap.SetColor(new Vector3Int(x, y, 0), new Color(lightMap[x, y] / 15.0f, lightMap[x, y] / 15.0f, lightMap[x, y] / 15.0f));
+                }
+
+                if (fgWorld[x, y] != null)
+                {
+                    fgTilemap.SetColor(new Vector3Int(x, y, 0), new Color(lightMap[x, y] / 15.0f, lightMap[x, y] / 15.0f, lightMap[x, y] / 15.0f));
+                }
+            }
+        }
+    }
+
+    private void Render()
+    {
+        for (int i = renderLeftBorder; i < renderRightBorder; ++i)
+        {
+            for (int j = renderDownBorder; j < renderUpBorder; ++j)
+            {
+                RenderMap(i, j, chunkSize);
+            }
+        }
+
+        for (int i = prevRenderLeftBorder; i < prevRenderRightBorder; ++i)
+        {
+            for (int j = prevRenderDownBorder; j < prevRenderUpBorder; ++j)
+            {
+                if (i < renderLeftBorder || i >= renderRightBorder || j < renderDownBorder || j >= renderUpBorder)
+                {
+                    ClearTileMap(tilemap, bgTilemap, fgTilemap, i, j, chunkSize);
+                }
+            }
+        }
     }
 
     private void Start()
@@ -964,6 +1065,12 @@ public class WorldGeneration : MonoBehaviour
         playerChunkX = Mathf.Clamp((int)Player.transform.position.x / chunkSize, 0, worldWidth / chunkSize);
         playerChunkY = Mathf.Clamp((int)Player.transform.position.y / chunkSize, 0, worldHeight / chunkSize);
 
+        prevPlayerChunkX = playerChunkX;
+        prevPlayerChunkY = playerChunkY;
+
+        RenderAllMapLight();
+        Render();
+
         prevPlayerPositionX = (int)Player.transform.position.x;
         prevPlayerPositionY = (int)Player.transform.position.y;
 
@@ -986,29 +1093,16 @@ public class WorldGeneration : MonoBehaviour
         renderDownBorder = Mathf.Clamp(playerChunkY - renderDistance, 0, worldHeight / chunkSize);
         renderUpBorder = Mathf.Clamp(playerChunkY + renderDistance, 0, worldHeight / chunkSize);
 
-        for (int i = renderLeftBorder; i < renderRightBorder; ++i)
+        if(prevPlayerChunkX != playerChunkX || prevPlayerChunkY != playerChunkY)
         {
-            for (int j = renderDownBorder; j < renderUpBorder; ++j)
-            {
-                RenderMap(i, j, chunkSize);
-            }
-        }
-
-        for (int i = prevRenderLeftBorder; i < prevRenderRightBorder; ++i)
-        {
-            for (int j = prevRenderDownBorder; j < prevRenderUpBorder; ++j)
-            {
-                if (i < renderLeftBorder || i >= renderRightBorder || j < renderDownBorder || j >= renderUpBorder)
-                {
-                    ClearTileMap(tilemap, bgTilemap, fgTilemap, i, j, chunkSize);
-                }
-            }
+            Render();
         }
 
         if (prevPlayerPositionX != playerPositionX || prevPlayerPositionY != playerPositionY)
         {
             //lightMap = RenderLight(lightMap, prevPlayerPositionX, prevPlayerPositionY, 15, true);
             lightMap = RenderLight(lightMap, playerPositionX, playerPositionY, 15, false);
+            RenderLightWorld(playerPositionX, playerPositionY);
         }
 
         prevRenderLeftBorder = renderLeftBorder;
@@ -1019,6 +1113,8 @@ public class WorldGeneration : MonoBehaviour
         prevPlayerPositionX = playerPositionX;
         prevPlayerPositionY = playerPositionY;
 
+        prevPlayerChunkX = playerChunkX;
+        prevPlayerChunkY = playerChunkY;
         for (int i = 0; i < QuickslotPanel.childCount; i++)
         {
             if (QuickslotPanel.GetChild(i).GetComponent<InventorySlot>().item != null)
