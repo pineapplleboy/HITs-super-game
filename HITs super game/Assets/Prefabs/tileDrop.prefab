@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -6277057754550825831}
   - component: {fileID: 4354447941591537873}
   - component: {fileID: 247932936764515324}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: tileDrop
   m_TagString: Item
   m_Icon: {fileID: 0}

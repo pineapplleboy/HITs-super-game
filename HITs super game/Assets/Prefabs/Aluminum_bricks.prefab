@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -2699870698230141420}
   - component: {fileID: 7088436106615031757}
   - component: {fileID: -8563968651238045632}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Aluminum_bricks
   m_TagString: Item
   m_Icon: {fileID: 0}
