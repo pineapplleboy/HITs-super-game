@@ -50,7 +50,7 @@ public class PlayerMovement : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    void FixedUpdate()
+    void Update()
     {
         if (!LaserGun.isActive && !Gun.isActive) isShooting = false;
 

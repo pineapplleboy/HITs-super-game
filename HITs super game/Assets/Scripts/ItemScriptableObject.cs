@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum ItemType { Weapon, Block}
+[System.Serializable]
 public class ItemScriptableObject : ScriptableObject
 {
     public ItemType itemType;
