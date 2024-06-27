@@ -9,6 +9,9 @@ public class Spawner : MonoBehaviour
     public GameObject[] enemies;
     private List<int> enemiesSpawnProbability;
 
+    public GameObject[] raidEnemies;
+    private List<int> raidEnemiesSpawnProbability;
+
     public static List<Enemy> allSpawnedEnemies;
 
     private List<int> enemiesMinHp;
@@ -22,6 +25,10 @@ public class Spawner : MonoBehaviour
 
     public static int spawnRate = 3;
     private int maxNearEnemies = 1;
+    private int raidMaxNearEnemies = 15;
+
+    private float spawnCd = 3f;
+    private float raidSpawnCd = 1.5f;
 
     public static int currentNearEnemies = 0;
 
@@ -50,6 +57,7 @@ public class Spawner : MonoBehaviour
             new List<int>() { 10, 0, 0 }, new List<int>() { 10, 0, 0 } };
 
         enemiesSpawnProbability = new List<int>() { 0, 100, 100, 0 };
+        raidEnemiesSpawnProbability = new List<int>() { 0, 100, 100, 0 };
 
         allSpawnedEnemies = new List<Enemy>();
     }
@@ -59,12 +67,13 @@ public class Spawner : MonoBehaviour
         timer += Time.deltaTime;
         if (!isAttack)
         {
-            if (timer >= 3 && currentNearEnemies < maxNearEnemies)
+            if (timer >= spawnCd && currentNearEnemies < maxNearEnemies)
             {
 
                 if (CheckDistance(new Vector2(world.worldWidth / 2 + 20 / 2, world.GetFloorHeight() / 2), player.transform.position) > 100)
                 {
-                    SpawnEnemy();
+                    //SpawnEnemy();
+                    SpawnRaidEnemy();
                 }
 
             }
@@ -78,6 +87,42 @@ public class Spawner : MonoBehaviour
 
     private void AttackMode()
     {
+
+    }
+
+    private void SpawnRaidEnemy()
+    {
+        randEnemyValue = Random.Range(1, 101);
+        int currentSum = 0;
+        for (int i = 0; i < raidEnemies.Length; i++)
+        {
+            currentSum += raidEnemiesSpawnProbability[i];
+            if (randEnemyValue <= currentSum)
+            {
+                randEnemy = i;
+                break;
+            }
+        }
+        //randEnemy = 1;
+
+        //spawnPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        spawnPosition = GeneratePosition();
+
+        if (!world.IsBlock((int)spawnPosition.x, (int)spawnPosition.y))
+        {
+            Enemy newEnemy = raidEnemies[randEnemy].GetComponent<Enemy>();
+            newEnemy.SetOnRaid();
+
+            newEnemy.SetHp(Random.Range(enemiesMinHp[randEnemy], enemiesMaxHp[randEnemy] + 1));
+            newEnemy.SetDamageResistance(enemiesResistance[randEnemy]);
+
+            newEnemy.SetIndex(allSpawnedEnemies.Count);
+
+            allSpawnedEnemies.Add(Instantiate(newEnemy, spawnPosition, Quaternion.identity));
+
+            currentNearEnemies++;
+            timer = 0f;
+        }
 
     }
 

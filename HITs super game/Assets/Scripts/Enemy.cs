@@ -1,6 +1,7 @@
 using Newtonsoft.Json.Bson;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -18,6 +19,8 @@ public class Enemy : MonoBehaviour
     private float dieTime = 0f;
 
     private int enemyIndex;
+
+    private bool onRaid = false;
 
     void Start()
     {
@@ -53,11 +56,21 @@ public class Enemy : MonoBehaviour
     public void SetHp(int health)
     {
         maxHealth = health;
+
+        if (onRaid)
+        {
+            maxHealth = (int)(maxHealth * 1.2);
+        }
     }
 
     public void SetDamageResistance(List<int> res)
     {
         damageResistance = res;
+    }
+
+    public void SetOnRaid()
+    {
+        onRaid = true;
     }
 
     public void TakeDamage(int damage, int typeOfDamage)
