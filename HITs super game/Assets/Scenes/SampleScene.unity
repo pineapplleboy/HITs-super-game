@@ -245,6 +245,14 @@ PrefabInstance:
       value: SlotShop
       objectReference: {fileID: 0}
     - target: {fileID: 6097972921770845100, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
+      propertyPath: gun
+      value: 
+      objectReference: {fileID: 8584160901709831962}
+    - target: {fileID: 6097972921770845100, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
+      propertyPath: sword
+      value: 
+      objectReference: {fileID: 8891460473735949763}
+    - target: {fileID: 6097972921770845100, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
       propertyPath: wallet
       value: 
       objectReference: {fileID: 2083592444}
@@ -252,6 +260,10 @@ PrefabInstance:
       propertyPath: oldSlot
       value: 
       objectReference: {fileID: 1640369490}
+    - target: {fileID: 6097972921770845100, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
+      propertyPath: laserGun
+      value: 
+      objectReference: {fileID: 7034506667010986654}
     - target: {fileID: 7000103710696812474, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2757,9 +2769,21 @@ PrefabInstance:
       value: SlotShop (2)
       objectReference: {fileID: 0}
     - target: {fileID: 6097972921770845100, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
+      propertyPath: gun
+      value: 
+      objectReference: {fileID: 8584160901709831962}
+    - target: {fileID: 6097972921770845100, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
+      propertyPath: sword
+      value: 
+      objectReference: {fileID: 8891460473735949763}
+    - target: {fileID: 6097972921770845100, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
       propertyPath: wallet
       value: 
       objectReference: {fileID: 2083592444}
+    - target: {fileID: 6097972921770845100, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
+      propertyPath: laserGun
+      value: 
+      objectReference: {fileID: 7034506667010986654}
     - target: {fileID: 7000103710696812474, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3727,9 +3751,21 @@ PrefabInstance:
       value: SlotShop (5)
       objectReference: {fileID: 0}
     - target: {fileID: 6097972921770845100, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
+      propertyPath: gun
+      value: 
+      objectReference: {fileID: 8584160901709831962}
+    - target: {fileID: 6097972921770845100, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
+      propertyPath: sword
+      value: 
+      objectReference: {fileID: 8891460473735949763}
+    - target: {fileID: 6097972921770845100, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
       propertyPath: wallet
       value: 
       objectReference: {fileID: 2083592444}
+    - target: {fileID: 6097972921770845100, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
+      propertyPath: laserGun
+      value: 
+      objectReference: {fileID: 7034506667010986654}
     - target: {fileID: 7000103710696812474, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -4347,9 +4383,21 @@ PrefabInstance:
       value: SlotShop (3)
       objectReference: {fileID: 0}
     - target: {fileID: 6097972921770845100, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
+      propertyPath: gun
+      value: 
+      objectReference: {fileID: 8584160901709831962}
+    - target: {fileID: 6097972921770845100, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
+      propertyPath: sword
+      value: 
+      objectReference: {fileID: 8891460473735949763}
+    - target: {fileID: 6097972921770845100, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
       propertyPath: wallet
       value: 
       objectReference: {fileID: 2083592444}
+    - target: {fileID: 6097972921770845100, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
+      propertyPath: laserGun
+      value: 
+      objectReference: {fileID: 7034506667010986654}
     - target: {fileID: 7000103710696812474, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -6955,9 +7003,21 @@ PrefabInstance:
       value: SlotShop (1)
       objectReference: {fileID: 0}
     - target: {fileID: 6097972921770845100, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
+      propertyPath: gun
+      value: 
+      objectReference: {fileID: 8584160901709831962}
+    - target: {fileID: 6097972921770845100, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
+      propertyPath: sword
+      value: 
+      objectReference: {fileID: 8891460473735949763}
+    - target: {fileID: 6097972921770845100, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
       propertyPath: wallet
       value: 
       objectReference: {fileID: 2083592444}
+    - target: {fileID: 6097972921770845100, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
+      propertyPath: laserGun
+      value: 
+      objectReference: {fileID: 7034506667010986654}
     - target: {fileID: 7000103710696812474, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -8659,9 +8719,21 @@ PrefabInstance:
       value: SlotShop (4)
       objectReference: {fileID: 0}
     - target: {fileID: 6097972921770845100, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
+      propertyPath: gun
+      value: 
+      objectReference: {fileID: 8584160901709831962}
+    - target: {fileID: 6097972921770845100, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
+      propertyPath: sword
+      value: 
+      objectReference: {fileID: 8891460473735949763}
+    - target: {fileID: 6097972921770845100, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
       propertyPath: wallet
       value: 
       objectReference: {fileID: 2083592444}
+    - target: {fileID: 6097972921770845100, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
+      propertyPath: laserGun
+      value: 
+      objectReference: {fileID: 7034506667010986654}
     - target: {fileID: 7000103710696812474, guid: e85ef0c8bdcc3aa40899b8cca9f4b731, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

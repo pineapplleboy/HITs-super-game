@@ -13,6 +13,9 @@ public class DragAndDropItem : MonoBehaviour, IPointerDownHandler, IPointerUpHan
     public TMP_Text wallet;
     private bool isFacingRight;
     private float throwForce = 10f;
+    public GameObject sword;
+    public GameObject gun;
+    public GameObject laserGun;
 
     private void Start()
     {
@@ -148,6 +151,16 @@ public class DragAndDropItem : MonoBehaviour, IPointerDownHandler, IPointerUpHan
         isFacingRight = PlayerMovement.isFacedRight;
 
         GameObject itemObject = Instantiate(oldSlot.item.itemPrefab, player.position + Vector3.up + player.right * 1.8f, Quaternion.identity);
+        if (oldSlot.item.itemType.ToString() == "Weapon")
+        {
+            SwordAttack.isActive = false;
+            Gun.isActive = false;
+            LaserGun.isActive = false;
+            LaserDamage.isActive = false;
+            laserGun.SetActive(false);
+            sword.SetActive(false);
+            gun.SetActive(false);
+        }
         itemObject.GetComponent<Item>().amount = oldSlot.amount;
 
         Rigidbody2D rb = itemObject.GetComponent<Rigidbody2D>();

@@ -19,7 +19,7 @@ public class QuickslotInventory : MonoBehaviour
     void Update()
     {
         float mw = Input.GetAxis("Mouse ScrollWheel");
-        if (mw > 0.1)
+        if (mw < -0.1)
         {
             quickslotParent.GetChild(currentQuickslotID).GetComponent<Image>().sprite = notSelectedSprite;
    
@@ -35,7 +35,7 @@ public class QuickslotInventory : MonoBehaviour
             Check();
 
         }
-        if (mw < -0.1)
+        if (mw > 0.1)
         {
             quickslotParent.GetChild(currentQuickslotID).GetComponent<Image>().sprite = notSelectedSprite;
             if (currentQuickslotID <= 0)
@@ -153,6 +153,16 @@ public class QuickslotInventory : MonoBehaviour
                     LaserDamage.isActive = true;
 
                     laserGun.SetActive(true);
+                    sword.SetActive(false);
+                    gun.SetActive(false);
+                }
+                else
+                {
+                    SwordAttack.isActive = false;
+                    Gun.isActive = false;
+                    LaserGun.isActive = false;
+                    LaserDamage.isActive = false;
+                    laserGun.SetActive(false);
                     sword.SetActive(false);
                     gun.SetActive(false);
                 }
