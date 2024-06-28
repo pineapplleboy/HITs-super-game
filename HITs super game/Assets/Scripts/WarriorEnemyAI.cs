@@ -49,7 +49,7 @@ public class WarriorEnemyAI : MonoBehaviour
         anim = GetComponent<Animator>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         sleepTime -= Time.deltaTime;
         currentGoBackJumpingCd -= Time.deltaTime;
