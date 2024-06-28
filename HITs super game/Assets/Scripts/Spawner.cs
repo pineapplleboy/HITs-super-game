@@ -41,6 +41,8 @@ public class Spawner : MonoBehaviour
 
     private WorldGeneration world;
 
+    private COMPUTER computer;
+
     private Vector2 computerCoord;
 
     private void Start()
@@ -68,7 +70,8 @@ public class Spawner : MonoBehaviour
     {
         timer += Time.deltaTime;
 
-        computerCoord = new Vector2(world.worldWidth / 2 + 20 / 2, world.GetFloorHeight() / 2);
+        //computerCoord = new Vector2(world.worldWidth / 2 + 20 / 2, world.GetFloorHeight() / 2);
+        computerCoord = GameObject.FindGameObjectWithTag("COMPUTER").GetComponent<COMPUTER>().transform.position;
 
         if (!isAttack)
         {
@@ -116,8 +119,8 @@ public class Spawner : MonoBehaviour
         //randEnemy = 1;
 
         //spawnPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //spawnPosition = GenerateRaidPosition();
-        spawnPosition = GeneratePosition();
+        spawnPosition = GenerateRaidPosition();
+        //spawnPosition = GeneratePosition();
 
         if (!world.IsBlock((int)spawnPosition.x, (int)spawnPosition.y))
         {
@@ -177,7 +180,7 @@ public class Spawner : MonoBehaviour
     private Vector2 GenerateRaidPosition()
     {
         float deltaX = Random.Range(40, 60);
-        float deltaY = Random.Range(0, 20);
+        float deltaY = Random.Range(0, 10);
         
         float positionX, positionY;
 
@@ -190,14 +193,7 @@ public class Spawner : MonoBehaviour
             positionX = computerCoord.x - deltaX;
         }
 
-        if (Random.Range(0, 2) == 0)
-        {
-            positionY = computerCoord.y - deltaY;
-        }
-        else
-        {
-            positionY = computerCoord.y + deltaY;
-        }
+        positionY = computerCoord.y + deltaY;
 
         Vector2 position = new Vector2(positionX, positionY);
 
