@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class COMPUTER : MonoBehaviour
 {
-    private int health = 5000;
-    private int startHealth = 5000;
+    private int health = 2000;
+    private int startHealth = 2000;
 
     private void Start()
     {
@@ -32,7 +34,8 @@ public class COMPUTER : MonoBehaviour
 
     void ThisIsTheEnd()
     {
-        Debug.Log("OH NO U DEAD");
-        Guide.ShowMessage("OH NO U DEAD");
+        GameObject.Find("MainCanvas").transform.Find("DiedPanel").gameObject.SetActive(true);
+        GameObject.FindGameObjectWithTag("Info").GetComponent<Text>().text = $"Вы пережили {DayTime.daysCounter} дней, {DayTime.raidsCounter} рейдов";
+        Time.timeScale = 0;
     }
 }

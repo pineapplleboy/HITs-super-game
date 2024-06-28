@@ -15,7 +15,7 @@ MonoBehaviour:
   itemType: 0
   itemPrefab: {fileID: 6573914249929306734, guid: 7410595da95ab2e469141cf35650369a, type: 3}
   itemName: kirk
-  icon: {fileID: 484658470, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
+  icon: {fileID: 1951820351, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
   maximumAmount: 1
   level: 1
   itemDescription: 
