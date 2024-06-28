@@ -198,8 +198,7 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("�� ������");
-            Guide.ShowMessage("������������ �����");
+            Guide.ShowMessage("Недостаточно денег");
         }
     }
     public void BuyGun()
@@ -213,8 +212,7 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("�� ������");
-            Guide.ShowMessage("������������ �����");
+            Guide.ShowMessage("Недостаточно денег");
         }
     }
     public void BuyStoneBricks()
@@ -228,8 +226,7 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("�� ������");
-            Guide.ShowMessage("������������ �����");
+            Guide.ShowMessage("Недостаточно денег");
         }
     }
     public void BuyAluminiumBricks()
@@ -243,8 +240,7 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("�� ������");
-            Guide.ShowMessage("������������ �����");
+            Guide.ShowMessage("Недостаточно денег");
         }
     }
     public void BuyLeadBricks()
@@ -258,8 +254,7 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("�� ������");
-            Guide.ShowMessage("������������ �����");
+            Guide.ShowMessage("Недостаточно денег");
         }
     }
     public void BuyLaserGun()
@@ -273,8 +268,7 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("�� ������");
-            Guide.ShowMessage("������������ �����");
+            Guide.ShowMessage("Недостаточно денег");
         }
     }
     public void AddItem(ItemScriptableObject _item, int _amount)

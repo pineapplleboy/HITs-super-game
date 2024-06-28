@@ -991,7 +991,11 @@ public class WorldGeneration : MonoBehaviour
             return null;
 
         if (rightBorderX - leftBorderX < 10 || roofY - floorY < 5)
+        {
+            Guide.ShowMessage("Комната слишком маленькая");
             return null;
+        }
+
 
         Debug.Log(leftBorderX + " " + leftBorderDown + " " + leftBorderTop + " " + rightBorderX + " " + rightBorderDown + " " + rightBorderTop + " " + roofY + " " + floorY);
 
