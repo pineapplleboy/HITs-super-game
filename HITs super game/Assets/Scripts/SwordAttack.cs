@@ -72,7 +72,7 @@ public class SwordAttack : MonoBehaviour
         {
             Enemy hittedEnemy = enemy.GetComponent<Enemy>();
             hittedEnemy.TakeDamage(CurrentDamage(), 0);
-            hittedEnemy.PushAway(attackPoint.position, 12500f);
+            //hittedEnemy.PushAway(attackPoint.position, 12500f);
         }
     }
 
@@ -90,6 +90,6 @@ public class SwordAttack : MonoBehaviour
     private int CurrentDamage()
     {
         int boostDamage = (int) (damage * (swingTime / maxSwingTime));
-        return (int) Random.Range(damage * 0.75f, damage * 1.25f + 1) + boostDamage;
+        return (int) ((Random.Range(damage * 0.75f, damage * 1.25f + 1) + boostDamage) * PermanentStatsBoost.damageBoost);
     }
 }

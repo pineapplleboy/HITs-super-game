@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEditor;
 using UnityEngine;
 
@@ -16,6 +17,8 @@ public class PlayerMovement : MonoBehaviour
     private bool onGround = false;
     private bool mustAutoJump = false;
     public static bool isFacedRight = true;
+
+    public static bool canShootHook = false;
 
     [SerializeField] int speed = 1;
     [SerializeField] int jumpForce = 1;
@@ -48,6 +51,10 @@ public class PlayerMovement : MonoBehaviour
 
     private WorldGeneration world;
 
+    [SerializeField] AudioSource StepSound;
+    [SerializeField] AudioClip[] Steps;
+    private float stepsSoundTime;
+
     void Start()
     {
         Time.fixedDeltaTime = Time.timeScale * 0.01f;
@@ -59,6 +66,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        canShootHook = onGround;
+
         if (!LaserGun.isActive && !Gun.isActive) isShooting = false;
 
         if (boostFound) jumpBoost = 1.3f;
@@ -71,7 +80,7 @@ public class PlayerMovement : MonoBehaviour
             rb.gravityScale = 0;
             rb.position = new Vector2(rb.position.x, rb.position.y + 3f);
         }
-        else
+        else if (!(GrapplingHook.isHooked && GrapplingHook.ropeDrawen))
         {
             rb.gravityScale = 10;
         }
@@ -132,6 +141,16 @@ public class PlayerMovement : MonoBehaviour
 
         if(moveX != 0){
             animator.SetBool("isRunning", true);
+            if (stepsSoundTime <= 0)
+            {
+                StepSound.clip = Steps[UnityEngine.Random.Range(0, Steps.Length)];
+                stepsSoundTime = StepSound.clip.length + 0.3f;
+                StepSound.Play();
+            }
+            else
+            {
+                stepsSoundTime -= Time.deltaTime;
+            }
         }
         else
         {
@@ -154,7 +173,16 @@ public class PlayerMovement : MonoBehaviour
 
         if (currentDashCD <= 0 && Input.GetKey(KeyCode.LeftShift) && moveX != 0)
         {
-            move = new Vector2(moveX * (speed * 20 * slowRate * acceleration), rb.velocity.y);
+            if (moveX > 0)
+            {
+                move = new Vector2(300, rb.velocity.y);
+            }
+            else
+            {
+                move = new Vector2(-300, rb.velocity.y);
+            }
+            //move = new Vector2(moveX * (speed * 20 * slowRate * acceleration), rb.velocity.y);
+            
             currentDashCD = dashCooldown;
             acceleration = 2f;
             timeOfWalking = 10f;

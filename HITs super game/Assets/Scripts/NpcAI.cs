@@ -21,6 +21,8 @@ public class NpcAI : MonoBehaviour
         if (Spawner.allSpawnedEnemies.Count <= 0) return;
         targetEnemy = FindEnemy();
 
+        if (targetEnemy == null) return;
+
         Flip();
 
         if (currentCd <= 0 && GetDistance(transform.position, targetEnemy.transform.position) < 30 && !GetComponent<NPCController>().isInCage)

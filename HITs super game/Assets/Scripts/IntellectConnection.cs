@@ -37,7 +37,22 @@ public class IntellectConnection : MonoBehaviour
             {
                 NextTarget(hitEnemies);
             }
+
+            if (ExplosionScript.readyToAttack)
+            {
+                DrawTarget();
+            }
         }
+    }
+
+    private void DrawTarget()
+    {
+
+    }
+
+    private void DeleteTarget()
+    {
+
     }
 
     private void OnDrawGizmosSelected()
@@ -53,6 +68,7 @@ public class IntellectConnection : MonoBehaviour
 
     private void NextTarget(Collider2D[] hitEnemies)
     {
+        DeleteTarget();
         foreach (Collider2D enemy in hitEnemies)
         {
             if (enemy != hittedEnemy)

@@ -140,6 +140,8 @@ public class Enemy : MonoBehaviour
 
     void Die()
     {
+        GameObject.Find("DeadSound").GetComponent<AudioSource>().Play();
+
         Spawner.currentNearEnemies--;
         GetComponent<Collider2D>().enabled = false;
         died = true;
@@ -153,11 +155,12 @@ public class Enemy : MonoBehaviour
     {
         if (onRaid)
         {
-            return Mathf.Min(Mathf.Sqrt(Mathf.Pow(transform.position.x - player.position.x, 2) +
-            Mathf.Pow(transform.position.y - player.position.y, 2)),
+            //return Mathf.Min(Mathf.Sqrt(Mathf.Pow(transform.position.x - player.position.x, 2) +
+            //Mathf.Pow(transform.position.y - player.position.y, 2)),
 
-            Mathf.Sqrt(Mathf.Pow(computer.transform.position.x - player.position.x, 2) +
-            Mathf.Pow(computer.transform.position.y - player.position.y, 2))) > 150;
+            //Mathf.Sqrt(Mathf.Pow(computer.transform.position.x - player.position.x, 2) +
+            //Mathf.Pow(computer.transform.position.y - player.position.y, 2))) > 150;
+            return false;
         }
 
         return Mathf.Sqrt(Mathf.Pow(transform.position.x - player.position.x, 2) + 

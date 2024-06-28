@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +15,10 @@ public class QuickslotInventory : MonoBehaviour
     public GameObject sword;
     public GameObject gun;
     public GameObject laserGun;
+
+    public AudioSource auido;
+    public AudioClip cock;
+    public AudioClip laser;
 
     private void Start()
     {
@@ -133,6 +138,9 @@ public class QuickslotInventory : MonoBehaviour
                     gun.SetActive(true);
                     sword.SetActive(false);
                     laserGun.SetActive(false);
+
+                    auido.clip = cock;
+                    auido.Play();
                 }
                 else if (quickslotParent.GetChild(currentQuickslotID).GetComponent<InventorySlot>().item.itemName.ToString() == "Sword")
                 {
@@ -155,6 +163,9 @@ public class QuickslotInventory : MonoBehaviour
                     laserGun.SetActive(true);
                     sword.SetActive(false);
                     gun.SetActive(false);
+
+                    auido.clip = laser;
+                    auido.Play();
                 }
                 else
                 {

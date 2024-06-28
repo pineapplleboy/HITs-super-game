@@ -19,6 +19,9 @@ public class Gun : MonoBehaviour
 
     public static bool isActive = false;
 
+    public AudioSource Shot;
+    public AudioClip ShotSound;
+
     void Update()
     {
         if (!isActive) return;
@@ -26,21 +29,26 @@ public class Gun : MonoBehaviour
         Vector2 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
         float rotZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
 
-        if (amountOfBullets > 0 && Input.GetMouseButton(0)) {
-            transform.rotation = Quaternion.Euler(0f, 0f, rotZ + offset);
-        }
-        else
-        {
-            PlayerMovement.isShooting = false;
-            if (PlayerMovement.isFacedRight)
-            {
-                transform.rotation = Quaternion.Euler(0f, 0f, 90f);
-            }
-            else
-            {
-                transform.rotation = Quaternion.Euler(0f, 0f, -90f);
-            }
-        }
+        //if (amountOfBullets > 0 && Input.GetMouseButton(0)) {
+        //    if (PlayerMovement.isFacedRight)
+        //        transform.rotation = Quaternion.Euler(0f, 0f, rotZ + offset);
+        //    else
+        //        transform.rotation = Quaternion.Euler(180f, 0f, rotZ);
+        //}
+        //else
+        //{
+        //    PlayerMovement.isShooting = false;
+        //    if (PlayerMovement.isFacedRight)
+        //    {
+        //        transform.rotation = Quaternion.Euler(0f, 0f, -90f);
+        //    }
+        //    else
+        //    {
+        //        transform.rotation = Quaternion.Euler(180f, 0f, 90f);
+        //    }
+        //}
+
+        ChangePosition();
 
         if (currentShotTime <= 0)
         {
@@ -50,6 +58,9 @@ public class Gun : MonoBehaviour
                 amountOfBullets--;
                 Instantiate(bullet, shotPoint.position, Quaternion.Euler(0f, 0f, rotZ));
                 currentShotTime = shotSpeed;
+
+                Shot.clip = ShotSound;
+                Shot.Play();
 
                 if (Camera.main.ScreenToWorldPoint(Input.mousePosition).x >= transform.position.x)
                 {
@@ -65,7 +76,31 @@ public class Gun : MonoBehaviour
         {
             currentShotTime -= Time.deltaTime;
         }
+    }
 
-        
+    void ChangePosition()
+    {
+        Vector2 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+        float rotZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
+
+        if (Input.GetMouseButton(0))
+        {
+            if (PlayerMovement.isFacedRight)
+                transform.rotation = Quaternion.Euler(0f, 0f, rotZ - 90);
+            else
+                transform.rotation = Quaternion.Euler(0f, 180f, 90 - rotZ);
+        }
+        else
+        {
+            PlayerMovement.isShooting = false;
+            if (PlayerMovement.isFacedRight)
+            {
+                transform.rotation = Quaternion.Euler(0f, 0f, -90f);
+            }
+            else
+            {
+                transform.rotation = Quaternion.Euler(180f, 0f, 90f);
+            }
+        }
     }
 }

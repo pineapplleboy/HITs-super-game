@@ -39,6 +39,8 @@ public class GrapplingHook : MonoBehaviour
     private float hookCd = 0.5f;
     private float currentCd = 0f;
 
+    private float currentFlyingTime = 0f;
+
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
@@ -57,6 +59,7 @@ public class GrapplingHook : MonoBehaviour
         stopMoving = ropeDrawen;
         if (isHooked && ropeDrawen)
         {
+            currentFlyingTime += Time.deltaTime;
             MovePlayer(endHookPos);
             needToDraw = 0;
         }
@@ -81,9 +84,11 @@ public class GrapplingHook : MonoBehaviour
             brokeRope = false;
         }
 
-        if (Input.GetKey(KeyCode.T) && needToDraw == 0 && currentCd <= 0)
+        if (PlayerMovement.canShootHook && Input.GetKey(KeyCode.T) && needToDraw == 0 && currentCd <= 0 && !isHooked)
         {
             ropeDrawen = false;
+
+            currentFlyingTime = 0;
 
             currentCd = hookCd;
             isHooked = false;
@@ -213,6 +218,7 @@ public class GrapplingHook : MonoBehaviour
     void MovePlayer(Vector2 endPos)
     {
         if (CheckDist(player.transform.position, endHookPos) < 2) return;
+        //if (currentFlyingTime > 1) return;
         player.transform.position = Vector2.MoveTowards(player.position, endPos, speed * Time.deltaTime);
         line.SetPosition(0, transform.position);
         line.SetPosition(1, endPos);

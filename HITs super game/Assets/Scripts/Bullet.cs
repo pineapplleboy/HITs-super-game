@@ -49,6 +49,7 @@ public class Bullet : MonoBehaviour
         Enemy enemy = collision.GetComponent<Enemy>();
         if (enemy != null)
         {
+            GameObject.Find("Hit").GetComponent<AudioSource>().Play();
             enemy.TakeDamage(CalculateDamage(), 1);
         }
 
@@ -71,6 +72,6 @@ public class Bullet : MonoBehaviour
 
     int CalculateDamage()
     {
-        return (int)Random.Range((damage + gunDamage) * 0.75f, (damage + gunDamage) * 1.25f + 1);
+        return (int)((Random.Range((damage + gunDamage) * 0.75f, (damage + gunDamage) * 1.25f + 1)) * PermanentStatsBoost.damageBoost);
     }
 }

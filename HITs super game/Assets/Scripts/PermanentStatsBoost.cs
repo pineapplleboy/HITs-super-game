@@ -9,8 +9,8 @@ public class PermanentStatsBoost : MonoBehaviour
 
     public static float damageBoost = 1;
 
-    public static float meleeResistanceBoost = 0;
-    public static float rangeResistanceBoost = 0;
+    public static int meleeResistanceBoost = 0;
+    public static int rangeResistanceBoost = 0;
 
     public static float regenerationSpeedBoost = 1;
     public static float intellectRegenSpeedBoost = 1;
@@ -49,7 +49,7 @@ public class PermanentStatsBoost : MonoBehaviour
     {
         if (meleeResistanceBoost < 0.5)
         {
-            meleeResistanceBoost += 0.1f;
+            meleeResistanceBoost += 10;
             return true;
         }
         return false;
@@ -59,7 +59,7 @@ public class PermanentStatsBoost : MonoBehaviour
     {
         if (rangeResistanceBoost < 0.5)
         {
-            rangeResistanceBoost += 0.1f;
+            rangeResistanceBoost += 10;
             return true;
         }
         return false;
