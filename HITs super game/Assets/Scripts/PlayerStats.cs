@@ -179,7 +179,7 @@ public class PlayerStats : MonoBehaviour
     {
         isDead = true;
         GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
-        Guide.ShowMessage("�� ������");
+        Guide.ShowMessage("Вы умерли");
         GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>().TPPLayerOnBase();
 
         yield return new WaitForSeconds(10);

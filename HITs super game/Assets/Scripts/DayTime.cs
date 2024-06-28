@@ -1,6 +1,7 @@
 using Newtonsoft.Json.Converters;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class DayTime : MonoBehaviour
@@ -46,6 +47,8 @@ public class DayTime : MonoBehaviour
     void Update()
     {
         currentTime += Time.deltaTime;
+
+        GameObject.Find("MainCanvas").transform.Find("UIPanel").transform.Find("Time").GetComponent<TMP_Text>().text = $"Время: {GetTime()}";
 
         if (isDay)
         {
@@ -103,6 +106,6 @@ public class DayTime : MonoBehaviour
 
     string GetTime()
     {
-        return currentHours + " " + currentMinutes;
+        return currentHours + ":" + currentMinutes;
     }
 }

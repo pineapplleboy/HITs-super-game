@@ -657,12 +657,16 @@ public class InventoryManager : MonoBehaviour
                 wallet.text = player.GetComponent<PlayerStats>().money.ToString();
                 kirka.item.level += 1;
                 costText.text = "MAX";
-                upgradeButton.SetActive(false);
             }
             else
             {
                 Guide.ShowMessage("Недостаточно средств");
             }
+        }
+
+        else
+        {
+            Guide.ShowMessage("Кирка достигла максимального уровня");
         }
     }
     public void UpgradeHealth()
