@@ -30,6 +30,20 @@ public class InventoryManager : MonoBehaviour
     private bool isNear = false;
     public TMP_Text costText;
     public GameObject upgradeButton;
+    public TMP_Text healthCost;
+    private int healthLevel = 1;
+    public TMP_Text intelCost;
+    private int intelLevel = 1;
+    public TMP_Text damageCost;
+    private int damageLevel = 1;
+    public TMP_Text meleeCost;
+    private int meleeLevel = 1;
+    public TMP_Text rangeCost;
+    private int rangeLevel = 1;
+    public TMP_Text regenCost;
+    private int regenLevel = 1;
+    public TMP_Text regenIntCost;
+    private int regenIntLevel = 1;
 
     private string saveKey = "mainSaveInventory";
 
@@ -289,7 +303,7 @@ public class InventoryManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("Вы бедны");
+                Guide.ShowMessage("Недостаточно средств");
             }
         }
         else if (kirka.item.level == 2)
@@ -303,7 +317,7 @@ public class InventoryManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("Вы бедны");
+                Guide.ShowMessage("Недостаточно средств");
             }
         }
         else if (kirka.item.level == 3)
@@ -313,14 +327,357 @@ public class InventoryManager : MonoBehaviour
                 player.GetComponent<PlayerStats>().money -= 2000;
                 wallet.text = player.GetComponent<PlayerStats>().money.ToString();
                 kirka.item.level += 1;
+                costText.text = "MAX";
                 upgradeButton.SetActive(false);
             }
             else
             {
-                Debug.Log("Вы бедны");
+                Guide.ShowMessage("Недостаточно средств");
             }
         }
     }
+    public void UpgradeHealth()
+    {
+        bool healthAdded = true;
+        if (healthLevel == 1 && player.GetComponent<PlayerStats>().money >= 300)
+        {
+            healthAdded = PermanentStatsBoost.AddMaxHealthBoost();
+            healthLevel++;
+            player.GetComponent<PlayerStats>().money -= 300;
+            wallet.text = player.GetComponent<PlayerStats>().money.ToString();
+            healthCost.text = "600";
+        }
+
+        else if (healthLevel == 2 && player.GetComponent<PlayerStats>().money >= 600)
+        {
+            healthAdded = PermanentStatsBoost.AddMaxHealthBoost();
+            healthLevel++;
+            player.GetComponent<PlayerStats>().money -= 600;
+            wallet.text = player.GetComponent<PlayerStats>().money.ToString();
+            healthCost.text = "1000";
+        }
+
+        else if (healthLevel == 3 && player.GetComponent<PlayerStats>().money >= 1000)
+        {
+            healthAdded = PermanentStatsBoost.AddMaxHealthBoost();
+            healthLevel++;
+            player.GetComponent<PlayerStats>().money -= 1000;
+            wallet.text = player.GetComponent<PlayerStats>().money.ToString();
+            healthCost.text = "1500";
+        }
+
+        else if (healthLevel == 4 && player.GetComponent<PlayerStats>().money >= 1500)
+        {
+            healthAdded = PermanentStatsBoost.AddMaxHealthBoost();
+            healthLevel++;
+            player.GetComponent<PlayerStats>().money -= 1500;
+            wallet.text = player.GetComponent<PlayerStats>().money.ToString();
+            healthCost.text = "MAX";
+        }
+        else if (healthAdded)
+        {
+            Guide.ShowMessage("Недостаточно средств");
+        }
+
+        if (!healthAdded)
+        {
+            Guide.ShowMessage("Достигнуто предельное значение здоровья");
+        }
+    }
+    public void UpgradeIntel()
+    {
+        bool intelAdded = true;
+        if (intelLevel == 1 && player.GetComponent<PlayerStats>().money >= 300)
+        {
+            intelAdded = PermanentStatsBoost.AddMaxIntellect();
+            intelLevel++;
+            player.GetComponent<PlayerStats>().money -= 300;
+            wallet.text = player.GetComponent<PlayerStats>().money.ToString();
+            intelCost.text = "600";
+        }
+
+        else if (intelLevel == 2 && player.GetComponent<PlayerStats>().money >= 600)
+        {
+            intelAdded = PermanentStatsBoost.AddMaxIntellect();
+            intelLevel++;
+            player.GetComponent<PlayerStats>().money -= 600;
+            wallet.text = player.GetComponent<PlayerStats>().money.ToString();
+            intelCost.text = "1000";
+        }
+
+        else if (intelLevel == 3 && player.GetComponent<PlayerStats>().money >= 1000)
+        {
+            intelAdded = PermanentStatsBoost.AddMaxIntellect();
+            intelLevel++;
+            player.GetComponent<PlayerStats>().money -= 1000;
+            wallet.text = player.GetComponent<PlayerStats>().money.ToString();
+            intelCost.text = "1500";
+        }
+
+        else if (intelLevel == 4 && player.GetComponent<PlayerStats>().money >= 1500)
+        {
+            intelAdded = PermanentStatsBoost.AddMaxIntellect();
+            intelLevel++;
+            player.GetComponent<PlayerStats>().money -= 1500;
+            wallet.text = player.GetComponent<PlayerStats>().money.ToString();
+            intelCost.text = "MAX";
+        }
+        else if (intelAdded)
+        {
+            Guide.ShowMessage("Недостаточно средств");
+        }
+
+        if (!intelAdded)
+        {
+            Guide.ShowMessage("Достигнуто предельное значение интеллекта");
+        }
+    }
+
+    public void UpgradeDamage()
+    {
+        bool damageAdded = true;
+        if (damageLevel == 1 && player.GetComponent<PlayerStats>().money >= 300)
+        {
+            damageAdded = PermanentStatsBoost.AddMaxDamage();
+            damageLevel++;
+            player.GetComponent<PlayerStats>().money -= 300;
+            wallet.text = player.GetComponent<PlayerStats>().money.ToString();
+            damageCost.text = "600";
+        }
+
+        else if (damageLevel == 2 && player.GetComponent<PlayerStats>().money >= 600)
+        {
+            damageAdded = PermanentStatsBoost.AddMaxDamage();
+            damageLevel++;
+            player.GetComponent<PlayerStats>().money -= 600;
+            wallet.text = player.GetComponent<PlayerStats>().money.ToString();
+            damageCost.text = "1000";
+        }
+
+        else if (damageLevel == 3 && player.GetComponent<PlayerStats>().money >= 1000)
+        {
+            damageAdded = PermanentStatsBoost.AddMaxDamage();
+            damageLevel++;
+            player.GetComponent<PlayerStats>().money -= 1000;
+            wallet.text = player.GetComponent<PlayerStats>().money.ToString();
+            damageCost.text = "1500";
+        }
+
+        else if (damageLevel == 4 && player.GetComponent<PlayerStats>().money >= 1500)
+        {
+            damageAdded = PermanentStatsBoost.AddMaxDamage();
+            damageLevel++;
+            player.GetComponent<PlayerStats>().money -= 1500;
+            wallet.text = player.GetComponent<PlayerStats>().money.ToString();
+            damageCost.text = "MAX";
+        }
+        else if (damageAdded)
+        {
+            Guide.ShowMessage("Недостаточно средств");
+        }
+
+        if (!damageAdded)
+        {
+            Guide.ShowMessage("Достигнуто предельное значение интеллекта");
+        }
+    }
+    public void UpgradeMelee()
+    {
+        bool meleeAdded = true;
+        if (meleeLevel == 1 && player.GetComponent<PlayerStats>().money >= 300)
+        {
+            meleeAdded = PermanentStatsBoost.AddMeleeResistance();
+            meleeLevel++;
+            player.GetComponent<PlayerStats>().money -= 300;
+            wallet.text = player.GetComponent<PlayerStats>().money.ToString();
+            meleeCost.text = "600";
+        }
+
+        else if (meleeLevel == 2 && player.GetComponent<PlayerStats>().money >= 600)
+        {
+            meleeAdded = PermanentStatsBoost.AddMeleeResistance();
+            meleeLevel++;
+            player.GetComponent<PlayerStats>().money -= 600;
+            wallet.text = player.GetComponent<PlayerStats>().money.ToString();
+            meleeCost.text = "1000";
+        }
+
+        else if (meleeLevel == 3 && player.GetComponent<PlayerStats>().money >= 1000)
+        {
+            meleeAdded = PermanentStatsBoost.AddMeleeResistance();
+            meleeLevel++;
+            player.GetComponent<PlayerStats>().money -= 1000;
+            wallet.text = player.GetComponent<PlayerStats>().money.ToString();
+            meleeCost.text = "1500";
+        }
+
+        else if (meleeLevel == 4 && player.GetComponent<PlayerStats>().money >= 1500)
+        {
+            meleeAdded = PermanentStatsBoost.AddMeleeResistance();
+            meleeLevel++;
+            player.GetComponent<PlayerStats>().money -= 1500;
+            wallet.text = player.GetComponent<PlayerStats>().money.ToString();
+            meleeCost.text = "MAX";
+        }
+        else if (meleeAdded)
+        {
+            Guide.ShowMessage("Недостаточно средств");
+        }
+
+        if (!meleeAdded)
+        {
+            Guide.ShowMessage("Достигнуто предельное значение интеллекта");
+        }
+    }
+    public void UpgradeRange()
+    {
+        bool rangeAdded = true;
+        if (rangeLevel == 1 && player.GetComponent<PlayerStats>().money >= 300)
+        {
+            rangeAdded = PermanentStatsBoost.AddRangeResistance();
+            rangeLevel++;
+            player.GetComponent<PlayerStats>().money -= 300;
+            wallet.text = player.GetComponent<PlayerStats>().money.ToString();
+            rangeCost.text = "600";
+        }
+
+        else if (rangeLevel == 2 && player.GetComponent<PlayerStats>().money >= 600)
+        {
+            rangeAdded = PermanentStatsBoost.AddRangeResistance();
+            rangeLevel++;
+            player.GetComponent<PlayerStats>().money -= 600;
+            wallet.text = player.GetComponent<PlayerStats>().money.ToString();
+            rangeCost.text = "1000";
+        }
+
+        else if (rangeLevel == 3 && player.GetComponent<PlayerStats>().money >= 1000)
+        {
+            rangeAdded = PermanentStatsBoost.AddRangeResistance();
+            rangeLevel++;
+            player.GetComponent<PlayerStats>().money -= 1000;
+            wallet.text = player.GetComponent<PlayerStats>().money.ToString();
+            rangeCost.text = "1500";
+        }
+
+        else if (rangeLevel == 4 && player.GetComponent<PlayerStats>().money >= 1500)
+        {
+            rangeAdded = PermanentStatsBoost.AddRangeResistance();
+            rangeLevel++;
+            player.GetComponent<PlayerStats>().money -= 1500;
+            wallet.text = player.GetComponent<PlayerStats>().money.ToString();
+            rangeCost.text = "MAX";
+        }
+
+        else if (rangeAdded)
+        {
+            Guide.ShowMessage("Недостаточно средств");
+        }
+
+        if (!rangeAdded)
+        {
+            Guide.ShowMessage("Достигнуто предельное значение интеллекта");
+        }
+    }
+    public void UpgradeRegen()
+    {
+        bool regenAdded = true;
+        if (regenLevel == 1 && player.GetComponent<PlayerStats>().money >= 300)
+        {
+            regenAdded = PermanentStatsBoost.AddRegenerationSpeed();
+            regenLevel++;
+            player.GetComponent<PlayerStats>().money -= 300;
+            wallet.text = player.GetComponent<PlayerStats>().money.ToString();
+            regenCost.text = "600";
+        }
+
+        if (regenLevel == 2 && player.GetComponent<PlayerStats>().money >= 600)
+        {
+            regenAdded = PermanentStatsBoost.AddRegenerationSpeed();
+            regenLevel++;
+            player.GetComponent<PlayerStats>().money -= 600;
+            wallet.text = player.GetComponent<PlayerStats>().money.ToString();
+            regenCost.text = "1000";
+        }
+
+        if (regenLevel == 3 && player.GetComponent<PlayerStats>().money >= 1000)
+        {
+            regenAdded = PermanentStatsBoost.AddRegenerationSpeed();
+            regenLevel++;
+            player.GetComponent<PlayerStats>().money -= 1000;
+            wallet.text = player.GetComponent<PlayerStats>().money.ToString();
+            regenCost.text = "1500";
+        }
+
+        if (regenLevel == 4 && player.GetComponent<PlayerStats>().money >= 1500)
+        {
+            regenAdded = PermanentStatsBoost.AddRegenerationSpeed();
+            regenLevel++;
+            player.GetComponent<PlayerStats>().money -= 1500;
+            wallet.text = player.GetComponent<PlayerStats>().money.ToString();
+            regenCost.text = "MAX";
+        }
+
+        else if (regenAdded)
+        {
+            Guide.ShowMessage("Недостаточно средств");
+        }
+
+        if (!regenAdded)
+        {
+            Guide.ShowMessage("Достигнуто предельное значение интеллекта");
+        }
+    }
+    public void UpgradeRegenInt()
+    {
+        bool regenIntAdded = true;
+        if (regenIntLevel == 1 && player.GetComponent<PlayerStats>().money >= 300)
+        {
+            regenIntAdded = PermanentStatsBoost.AddIntellectRegenSpeedSpeed();
+            regenIntLevel++;
+            player.GetComponent<PlayerStats>().money -= 300;
+            wallet.text = player.GetComponent<PlayerStats>().money.ToString();
+            regenIntCost.text = "600";
+        }
+
+        if (regenIntLevel == 2 && player.GetComponent<PlayerStats>().money >= 600)
+        {
+            regenIntAdded = PermanentStatsBoost.AddIntellectRegenSpeedSpeed();
+            regenIntLevel++;
+            player.GetComponent<PlayerStats>().money -= 600;
+            wallet.text = player.GetComponent<PlayerStats>().money.ToString();
+            regenIntCost.text = "1000";
+        }
+
+        if (regenIntLevel == 3 && player.GetComponent<PlayerStats>().money >= 1000)
+        {
+            regenIntAdded = PermanentStatsBoost.AddIntellectRegenSpeedSpeed();
+            regenIntLevel++;
+            player.GetComponent<PlayerStats>().money -= 1000;
+            wallet.text = player.GetComponent<PlayerStats>().money.ToString();
+            regenIntCost.text = "1500";
+        }
+
+        if (regenIntLevel == 4 && player.GetComponent<PlayerStats>().money >= 1500)
+        {
+            regenIntAdded = PermanentStatsBoost.AddIntellectRegenSpeedSpeed();
+            regenIntLevel++;
+            player.GetComponent<PlayerStats>().money -= 1500;
+            wallet.text = player.GetComponent<PlayerStats>().money.ToString();
+            regenIntCost.text = "MAX";
+        }
+
+        else if (regenIntAdded)
+        {
+            Guide.ShowMessage("Недостаточно средств");
+        }
+
+        if (!regenIntAdded)
+        {
+            Guide.ShowMessage("Достигнуто предельное значение интеллекта");
+        }
+    }
+
+
     public void AddItem(ItemScriptableObject _item, int _amount)
     {
         if (_item == null)

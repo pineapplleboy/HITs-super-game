@@ -39,7 +39,7 @@ public class PermanentStatsBoost : MonoBehaviour
     {
         if (damageBoost < 1.5)
         {
-            damageBoost += 0.05f;
+            damageBoost += 0.1f;
             return true;
         }
         return false;
@@ -69,7 +69,7 @@ public class PermanentStatsBoost : MonoBehaviour
     {
         if (regenerationSpeedBoost < 2)
         {
-            regenerationSpeedBoost += 0.1f;
+            regenerationSpeedBoost += 0.2f;
             return true;
         }
         return false;
@@ -79,7 +79,7 @@ public class PermanentStatsBoost : MonoBehaviour
     {
         if (intellectRegenSpeedBoost < 2)
         {
-            intellectRegenSpeedBoost += 0.1f;
+            intellectRegenSpeedBoost += 0.2f;
             return true;
         }
         return false;
