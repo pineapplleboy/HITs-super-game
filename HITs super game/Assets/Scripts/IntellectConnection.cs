@@ -50,6 +50,11 @@ public class IntellectConnection : MonoBehaviour
 
     }
 
+    private void DeleteTarget()
+    {
+
+    }
+
     private void OnDrawGizmosSelected()
     {
         if (head == null)
@@ -63,6 +68,7 @@ public class IntellectConnection : MonoBehaviour
 
     private void NextTarget(Collider2D[] hitEnemies)
     {
+        DeleteTarget();
         foreach (Collider2D enemy in hitEnemies)
         {
             if (enemy != hittedEnemy)
