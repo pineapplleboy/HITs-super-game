@@ -31,6 +31,9 @@ public class LaserDamage : MonoBehaviour
 
     void Update()
     {
+        if (PlayerStats.isDead)
+            return;
+
         if (!isActive) return;
 
         if (isShooting)

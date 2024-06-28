@@ -162,6 +162,8 @@ public class WorldGeneration : MonoBehaviour
     private string saveKey = "mainSave";
     private float timeAfterTp = 0;
 
+    public GameObject NPCPrefab;
+
     private SaveData.World GetSaveSnapshot()
     {
         var data = new SaveData.World()
@@ -170,6 +172,8 @@ public class WorldGeneration : MonoBehaviour
             bgWorld = bgWorld,
             world = world,
             lightMap = lightMap,
+            compPosX = GameObject.FindGameObjectWithTag("COMPUTER").transform.position.x,
+            compPosY = GameObject.FindGameObjectWithTag("COMPUTER").transform.position.y,
         };
 
         return data;
@@ -187,6 +191,9 @@ public class WorldGeneration : MonoBehaviour
         bgWorld = data.bgWorld;
         world = data.world;
         lightMap = data.lightMap;
+
+        if(data.compPosX != 0)
+            Instantiate(computer, new Vector3(data.compPosX, data.compPosY, 0), Quaternion.identity);
     }
 
     public WorldBlock GetBlock(int x, int y)
@@ -918,7 +925,10 @@ public class WorldGeneration : MonoBehaviour
                 bgWorld[x, y] = new WorldBlock(blocks.GetBlock("lead_bricks"));
             }
         }
+
         Instantiate(computer, new Vector2(worldWidth / 2 + baseWidth / 2, floorHeight + 2), Quaternion.identity);
+
+        Base.AddRoom(new Vector3Int(worldWidth / 2 + baseWidth / 2, floorHeight + 2, 0));
         Render();
     }
 
@@ -1197,6 +1207,25 @@ public class WorldGeneration : MonoBehaviour
         }
     }
 
+    private void GenerateNPCs()
+    {
+        for(int x = 50; x < worldWidth - 50; x += 10)
+        {
+            for(int y = worldHeight - 1; y >= 0; y--)
+            {
+                if (world[x, y] != null)
+                {
+                    if(UnityEngine.Random.Range(0, 100) < 30)
+                    {
+                        Instantiate(NPCPrefab, new Vector3(x, UnityEngine.Random.Range(20, y), 0), Quaternion.identity);
+                    }
+
+                    break;
+                }
+            }
+        }
+    }
+
     private void Start()
     {
         Player = GameObject.FindGameObjectWithTag("Player");
@@ -1218,7 +1247,6 @@ public class WorldGeneration : MonoBehaviour
             fgWorld = TreesGeneration(world);
             lightMap = new int[worldWidth, worldHeight];
             lightMap = SetDayLight(lightMap, bgWorld);
-
             GenerateBase();
         }
 
@@ -1241,6 +1269,8 @@ public class WorldGeneration : MonoBehaviour
         prevRenderRightBorder = Mathf.Clamp(playerChunkX + renderDistance, 0, worldWidth / chunkSize);
         prevRenderDownBorder = Mathf.Clamp(playerChunkY - renderDistance, 0, worldHeight / chunkSize);
         prevRenderUpBorder = Mathf.Clamp(playerChunkY + renderDistance, 0, worldHeight / chunkSize);
+
+        GenerateNPCs();
     }
 
     private void Update()

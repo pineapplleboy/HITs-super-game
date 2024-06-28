@@ -46,8 +46,24 @@ public class InventoryManager : MonoBehaviour
     private int regenIntLevel = 1;
 
     private string saveKey = "mainSaveInventory";
+    private string saveKey2 = "mainSavePermLvls";
 
     public ItemScriptableObject[] items;
+    private SaveData.PermStatsLvls GetSaveSnapshot2()
+    {
+        var data = new SaveData.PermStatsLvls()
+        {
+            healthLevel = healthLevel,
+            intelLevel = intelLevel,
+            damageLevel = damageLevel,
+            meleeLevel = meleeLevel,
+            rangeLevel = rangeLevel,
+            regenLevel = regenLevel,
+            regenIntLevel = regenIntLevel,
+        };
+
+        return data;
+    }
 
     public void UpdateMoneyOnScreen()
     {
@@ -90,6 +106,7 @@ public class InventoryManager : MonoBehaviour
     public void Save()
     {
         SaveManager.Save(saveKey, GetSaveSnapshot());
+        SaveManager.Save(saveKey2, GetSaveSnapshot2());
     }
 
     public void Load()
@@ -130,6 +147,155 @@ public class InventoryManager : MonoBehaviour
                 quickSlots[i].iconGO.GetComponent<Image>().color = new Color(0, 0, 0, 255);
             }
         }
+
+        var data2 = SaveManager.Load<SaveData.PermStatsLvls>(saveKey2);
+        healthLevel = data2.healthLevel;
+        intelLevel = data2.intelLevel;
+        damageLevel = data2.damageLevel;
+        meleeLevel = data2.meleeLevel;
+        rangeLevel = data2.rangeLevel;
+        regenLevel = data2.regenLevel;
+        regenIntLevel = data2.regenIntLevel;
+
+        if (healthLevel == 2)
+        {
+            healthCost.text = "600";
+        }
+
+        else if (healthLevel == 3)
+        {
+            healthCost.text = "1000";
+        }
+
+        else if (healthLevel == 4)
+        {
+            healthCost.text = "1500";
+        }
+
+        else if (healthLevel == 5)
+        {
+            healthCost.text = "MAX";
+        }
+
+        if (intelLevel == 2)
+        {
+            intelCost.text = "600";
+        }
+
+        else if (intelLevel == 3)
+        {
+            intelCost.text = "1000";
+        }
+
+        else if (intelLevel == 4)
+        {
+            intelCost.text = "1500";
+        }
+
+        else if (intelLevel == 5)
+        {
+            intelCost.text = "MAX";
+        }
+
+        if (damageLevel == 2)
+        {
+            damageCost.text = "600";
+        }
+
+        else if (damageLevel == 3)
+        {
+            damageCost.text = "1000";
+        }
+
+        else if (damageLevel == 4)
+        {
+            damageCost.text = "1500";
+        }
+
+        else if (damageLevel == 5)
+        {
+            damageCost.text = "MAX";
+        }
+
+        if (meleeLevel == 2)
+        {
+            meleeCost.text = "600";
+        }
+
+        else if (meleeLevel == 3)
+        {
+            meleeCost.text = "1000";
+        }
+
+        else if (meleeLevel == 4)
+        {
+            meleeCost.text = "1500";
+        }
+
+        else if (meleeLevel == 5)
+        {
+            meleeCost.text = "MAX";
+        }
+
+        if (rangeLevel == 2)
+        {
+            rangeCost.text = "600";
+        }
+
+        else if (rangeLevel == 3)
+        {
+            rangeCost.text = "1000";
+        }
+
+        else if (rangeLevel == 4)
+        {
+            rangeCost.text = "1500";
+        }
+
+        else if (rangeLevel == 5)
+        {
+            rangeCost.text = "MAX";
+        }
+
+        if (regenLevel == 2)
+        {
+            regenCost.text = "600";
+        }
+
+        if (regenLevel == 3)
+        {
+            regenCost.text = "1000";
+        }
+
+        if (regenLevel == 4)
+        {
+            regenCost.text = "1500";
+        }
+
+        if (regenLevel == 5)
+        {
+            regenCost.text = "MAX";
+        }
+
+        if (regenIntLevel == 2)
+        {
+            regenIntCost.text = "600";
+        }
+
+        if (regenIntLevel == 3)
+        {
+            regenIntCost.text = "1000";
+        }
+
+        if (regenIntLevel == 4)
+        {
+            regenIntCost.text = "1500";
+        }
+
+        if (regenIntLevel == 5)
+        {
+            regenIntCost.text = "MAX";
+        }
     }
 
     void Start()
@@ -156,6 +322,8 @@ public class InventoryManager : MonoBehaviour
 
     void Update()
     {
+        if (PlayerStats.isDead)
+            return;
         if (Input.GetKeyDown(KeyCode.E))
         {
             isOpened = !isOpened;

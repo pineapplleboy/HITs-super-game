@@ -9,6 +9,11 @@ public class PauseMenu : MonoBehaviour
     private bool onPause = false;
     [SerializeField] GameObject PauseMenuObj;
 
+    private void Start()
+    {
+        PermanentStatsBoost.Load();
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -29,6 +34,7 @@ public class PauseMenu : MonoBehaviour
         GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>().Save();
         GameObject.Find("BaseManager").GetComponent<BaseManagement>().Save();
         GameObject.Find("MainCanvas").GetComponent<InventoryManager>().Save();
+        PermanentStatsBoost.Save();
         Time.timeScale = 1;
         SceneManager.LoadScene("MainMenu");
     }

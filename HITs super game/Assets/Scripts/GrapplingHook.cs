@@ -54,6 +54,9 @@ public class GrapplingHook : MonoBehaviour
 
     private void Update()
     {
+        if (PlayerStats.isDead)
+            return;
+
         currentCd -= Time.deltaTime;
 
         stopMoving = ropeDrawen;

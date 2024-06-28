@@ -34,6 +34,8 @@ public class PlayerStats : MonoBehaviour
     public GameObject[] Hearts;
     public GameObject[] Brains;
 
+    public static bool isDead = false;
+
     void Start()
     {
         damageResistance = new List<int>() { 0, 0, 0 };
@@ -45,6 +47,11 @@ public class PlayerStats : MonoBehaviour
 
     private void Update()
     {
+        if (isDead)
+        {
+            return;
+        }
+
         if (Input.GetKey(KeyCode.J))
         {
             healthAmount -= 1000;
@@ -80,19 +87,19 @@ public class PlayerStats : MonoBehaviour
         IntellectText.text = Convert.ToInt32(intellectAmount).ToString() + "/" + Convert.ToInt32(maxIntellectAmount).ToString();
 
         int activeHearts = currHealth * Hearts.Length / maxHealth;
-        for(int i = 0; i < activeHearts; i++)
+        for (int i = 0; i < activeHearts; i++)
         {
             Hearts[i].SetActive(true);
             SetAlpha(Hearts[i], 1);
         }
 
-        if(activeHearts < Hearts.Length)
+        if (activeHearts < Hearts.Length)
         {
             Hearts[activeHearts].SetActive(true);
             SetAlpha(Hearts[activeHearts], (currHealth - activeHearts * (maxHealth / Hearts.Length)) / (maxHealth / Hearts.Length));
         }
 
-        for(int i = activeHearts + 1; i < Hearts.Length; ++i)
+        for (int i = activeHearts + 1; i < Hearts.Length; ++i)
         {
             Hearts[i].SetActive(false);
         }
@@ -104,7 +111,7 @@ public class PlayerStats : MonoBehaviour
             SetAlpha(Brains[i], 1);
         }
 
-        if(activeBrains < Brains.Length)
+        if (activeBrains < Brains.Length)
         {
             Brains[activeBrains].SetActive(true);
             SetAlpha(Brains[activeBrains], (intellectAmount - activeBrains * (maxIntellectAmount / Brains.Length)) / (maxIntellectAmount / Brains.Length));
@@ -114,6 +121,24 @@ public class PlayerStats : MonoBehaviour
         {
             Brains[i].SetActive(false);
         }
+
+        if (healthAmount <= 0)
+        {
+            StartCoroutine(Die());
+        }
+    }
+
+    IEnumerator Die()
+    {
+        isDead = true;
+        GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
+        Guide.ShowMessage("Вы умерли");
+        GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>().TPPLayerOnBase();
+
+        yield return new WaitForSeconds(10);
+        isDead = false;
+        healthAmount = maxHealth;
+        GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
     }
 
     private void Heal()

@@ -23,19 +23,19 @@ public class ExplosionScript : MonoBehaviour
 
         if (!IntellectConnection.startedConnection) return;
 
-        if (Input.GetKey(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
             if (IntellectConnection.targetEnemy == null)
             {
-                Guide.ShowMessage("Не по кому");
+                Guide.ShowMessage("Цель не отмечена");
             }
             else if (currentCd > 0)
             {
-                Guide.ShowMessage("ПЕРЕЗАРЯЖАЙ");
+                Guide.ShowMessage("Способность не готова");
             }
             else if (PlayerStats.intellectAmount < needIntellect)
             {
-                Guide.ShowMessage("Недостаточно интеллекта :(");
+                Guide.ShowMessage("Недостаточно интеллекта");
                 return;
             }
 

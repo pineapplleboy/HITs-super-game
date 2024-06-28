@@ -1,3 +1,4 @@
+using SaveData;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,7 +15,41 @@ public class PermanentStatsBoost : MonoBehaviour
 
     public static float regenerationSpeedBoost = 1;
     public static float intellectRegenSpeedBoost = 1;
- 
+
+    private static string saveKey = "mainSaveStats";
+    private static SaveData.PermanentStats GetSaveSnapshot()
+    {
+        var data = new SaveData.PermanentStats()
+        {
+            maxHealthBoost = maxHealthBoost,
+            maxIntellectBoost = maxIntellectBoost,
+            rangeResistanceBoost = rangeResistanceBoost,
+            damageBoost = damageBoost,
+            meleeResistanceBoost=meleeResistanceBoost,
+            regenerationSpeedBoost=regenerationSpeedBoost,
+            intellectRegenSpeedBoost=intellectRegenSpeedBoost
+        };
+
+        return data;
+    }
+
+    public static void Save()
+    {
+        SaveManager.Save(saveKey, GetSaveSnapshot());
+    }
+
+    public static void Load()
+    {
+        var data = SaveManager.Load<SaveData.PermanentStats>(saveKey);
+        maxHealthBoost = data.maxHealthBoost;
+        maxIntellectBoost = data.maxIntellectBoost;
+        rangeResistanceBoost = data.rangeResistanceBoost;
+        damageBoost = data.damageBoost;
+        meleeResistanceBoost = data.meleeResistanceBoost;
+        regenerationSpeedBoost = data.regenerationSpeedBoost;
+        intellectRegenSpeedBoost = data.intellectRegenSpeedBoost;
+    }
+
     public static bool AddMaxHealthBoost()
     {
         if (maxHealthBoost < 100)

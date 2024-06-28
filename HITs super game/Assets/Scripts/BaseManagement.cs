@@ -47,6 +47,11 @@ public class Room
         this.NPC.GetComponent<NPCController>().isInCage = false;
     }
 
+    public void SetEmptyNpc()
+    {
+        isWithNPC = true;
+    }
+
     public bool CheckNPC()
     {
         return isWithNPC;

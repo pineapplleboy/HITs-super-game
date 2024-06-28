@@ -66,6 +66,9 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        if (PlayerStats.isDead)
+            return;
+
         canShootHook = onGround;
 
         if (!LaserGun.isActive && !Gun.isActive) isShooting = false;

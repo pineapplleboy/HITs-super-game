@@ -66,7 +66,7 @@ public class DayTime : MonoBehaviour
 
         if (isDay && currentTime >= dayTime)
         {
-
+            Camera.main.transform.Find("Background").GetComponent<Animator>().SetTrigger("End");
             isDay = false;
             daysCounter++;
             currentTime = 0;
@@ -82,7 +82,7 @@ public class DayTime : MonoBehaviour
         }
         else if (!isDay && currentTime >= nightTime)
         {
-
+            Camera.main.transform.Find("Background").GetComponent<Animator>().SetTrigger("Start");
             isDay = true;
             nightsCounter++;
             currentTime = 0;

@@ -73,6 +73,10 @@ public class NPCController : MonoBehaviour
             Base.SetNpc(currRoom, this.gameObject);
             StopChoosingRoom();
         }
+        else
+        {
+            Guide.ShowMessage("Комната занята");
+        }
     }
 
     void ShowRoom()

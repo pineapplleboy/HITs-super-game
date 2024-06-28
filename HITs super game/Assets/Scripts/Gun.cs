@@ -24,6 +24,9 @@ public class Gun : MonoBehaviour
 
     void Update()
     {
+        if (PlayerStats.isDead)
+            return;
+
         if (!isActive) return;
 
         Vector2 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;

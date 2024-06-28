@@ -33,6 +33,8 @@ public class SwordAttack : MonoBehaviour
 
     void Update()
     {
+        if (PlayerStats.isDead)
+            return;
         if (!isActive) return;
 
         if (PlayerStats.isBlocking && !Input.GetMouseButton(1)) PlayerStats.UnBlock();
