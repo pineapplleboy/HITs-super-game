@@ -72,7 +72,7 @@ public class SwordAttack : MonoBehaviour
         {
             Enemy hittedEnemy = enemy.GetComponent<Enemy>();
             hittedEnemy.TakeDamage(CurrentDamage(), 0);
-            hittedEnemy.PushAway(attackPoint.position, 12500f);
+            //hittedEnemy.PushAway(attackPoint.position, 12500f);
         }
     }
 
