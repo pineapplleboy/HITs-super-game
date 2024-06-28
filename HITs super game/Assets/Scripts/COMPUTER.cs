@@ -22,5 +22,6 @@ public class COMPUTER : MonoBehaviour
     void ThisIsTheEnd()
     {
         Debug.Log("OH NO U DEAD");
+        Guide.ShowMessage("OH NO U DEAD");
     }
 }

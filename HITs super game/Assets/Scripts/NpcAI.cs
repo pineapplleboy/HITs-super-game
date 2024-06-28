@@ -23,7 +23,7 @@ public class NpcAI : MonoBehaviour
 
         Flip();
 
-        if (currentCd <= 0 && GetDistance(transform.position, targetEnemy.transform.position) < 30)
+        if (currentCd <= 0 && GetDistance(transform.position, targetEnemy.transform.position) < 30 && !GetComponent<NPCController>().isInCage)
         {
             Shoot();
         }

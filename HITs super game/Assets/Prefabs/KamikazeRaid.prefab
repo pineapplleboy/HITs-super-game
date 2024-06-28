@@ -173,9 +173,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7183952577230aa43aa785665b63f5be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 120
   currentHealth: 0
   damageResistance: 0a0000000000000000000000
+  onRaid: 1
 --- !u!95 &6807746384039905069
 Animator:
   serializedVersion: 5
@@ -210,5 +211,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 12
-  jumpForce: 1120
+  jumpForce: 1500
   damage: 100

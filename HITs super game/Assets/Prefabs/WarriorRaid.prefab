@@ -177,6 +177,7 @@ MonoBehaviour:
   maxHealth: 120
   currentHealth: 0
   damageResistance: 0a0000000000000000000000
+  onRaid: 1
 --- !u!95 &-2693509877694331092
 Animator:
   serializedVersion: 5
@@ -211,7 +212,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  jumpForce: 1120
+  jumpForce: 1500
   damage: 100
   attackPoint: {fileID: 7569214471383365269}
   attackRange: 5

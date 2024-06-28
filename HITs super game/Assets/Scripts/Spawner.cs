@@ -116,8 +116,8 @@ public class Spawner : MonoBehaviour
         //randEnemy = 1;
 
         //spawnPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        spawnPosition = GenerateRaidPosition();
-        //spawnPosition = GeneratePosition();
+        //spawnPosition = GenerateRaidPosition();
+        spawnPosition = GeneratePosition();
 
         if (!world.IsBlock((int)spawnPosition.x, (int)spawnPosition.y))
         {

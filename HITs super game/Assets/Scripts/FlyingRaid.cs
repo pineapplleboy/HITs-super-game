@@ -76,7 +76,7 @@ public class FlyingRaid : MonoBehaviour
 
         Collider2D[] hitPlayer = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
 
-        if (hitPlayer.Length > 0 && currentAttackCd <= 0)
+        if (hitPlayer.Length > 0 && currentAttackCd <= 0 && hitPlayer != null)
         {
             Attack(hitPlayer);
         }

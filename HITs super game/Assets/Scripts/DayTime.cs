@@ -25,7 +25,7 @@ public class DayTime : MonoBehaviour
 
     private float currentTime;
 
-    private int raidFrequency = 3;
+    private int raidFrequency = 1;
 
     void Start()
     {
@@ -71,7 +71,11 @@ public class DayTime : MonoBehaviour
             daysCounter++;
             currentTime = 0;
 
-            if (daysCounter % raidFrequency == 0) Spawner.isAttack = true;
+            if (daysCounter % raidFrequency == 0 && !Spawner.isAttack)
+            {
+                Spawner.isAttack = true;
+                Guide.ShowMessage("яхйн лнд");
+            }
 
             // Debug.Log("night" + " " + GetTime());
 
