@@ -1,3 +1,4 @@
+using SaveData;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -193,7 +194,51 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if(collision.collider.tag == "Ground" || collision.collider.tag == "Platform")
+        if (collision.transform.name == "Tilemap")
+        {
+            foreach (ContactPoint2D contactPoint in collision.contacts)
+            {
+                Vector2 hitPoint = contactPoint.point;
+
+                if (hitPoint.y - transform.position.y > -0.95)
+                {
+                    if (isFacedRight)
+                    {
+                        hitPoint.x += 1;
+                    }
+                    else
+                    {
+                        hitPoint.x -= 1f;
+                        hitPoint.y -= 1f;
+                    }
+
+                    WorldBlock block = GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>().GetBlock((int)(hitPoint.x), (int)(hitPoint.y));
+
+                    if (block == null)
+                    {
+                        hitPoint.y += 1f;
+                        block = GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>().GetBlock((int)(hitPoint.x), (int)(hitPoint.y));
+                    }
+
+                    if (block != null && block.isDoor)
+                    {
+                        if (isFacedRight)
+                        {
+                            transform.position = new Vector3(transform.position.x + 1.5f, transform.position.y, transform.position.z);
+                            return;
+                        }
+                        else
+                        {
+                            transform.position = new Vector3(transform.position.x - 1.5f, transform.position.y, transform.position.z);
+                            return;
+                        }
+                    }
+                }
+
+            }
+        }
+
+        if (collision.collider.tag == "Ground" || collision.collider.tag == "Platform")
         {
             boostFound = false;
 

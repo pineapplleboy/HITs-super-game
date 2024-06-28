@@ -15,6 +15,7 @@ public class Room
     [SerializeField] public Vector2Int center;
 
     [SerializeField] public bool isWithNPC = false;
+    [SerializeField] private GameObject NPC = null;
 
     public Room(Vector2Int leftDownCorner, Vector2Int rightUpCorner)
     {
@@ -39,14 +40,27 @@ public class Room
         return center;
     }
 
-    public void SetNpc()
+    public void SetNpc(GameObject NPC)
     {
         isWithNPC = true;
+        this.NPC = NPC;
+        this.NPC.GetComponent<NPCController>().isInCage = false;
     }
 
     public bool CheckNPC()
     {
         return isWithNPC;
+    }
+
+    public void DeleteNPC()
+    {
+        if(NPC != null)
+        {
+            NPC.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezeRotation;
+            NPC.GetComponent<BoxCollider2D>().isTrigger = true;
+            NPC.transform.Find("cage").gameObject.SetActive(true);
+            NPC.GetComponent<NPCController>().isInCage = true;
+        }
     }
 }
 
@@ -96,6 +110,7 @@ public static class Base
 
     public static void DestroyRoom(Room room)
     {
+        room.DeleteNPC();
         rooms.Remove(room);
     }
 
@@ -111,7 +126,7 @@ public static class Base
 
     public static void SetNpc(int id, GameObject NPC)
     {
-        rooms[id].SetNpc();
+        rooms[id].SetNpc(NPC);
         NPC.transform.position = new Vector3(rooms[id].GetCenter().x, rooms[id].GetCenter().y, NPC.transform.position.z);
         NPC.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
         NPC.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;

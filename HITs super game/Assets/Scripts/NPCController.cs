@@ -12,6 +12,8 @@ public class NPCController : MonoBehaviour
     private bool isChoosingRoom = false;
     private int currRoom = 0;
 
+    public bool isInCage = true;
+
     // Start is called before the first frame update
     void Start()
     {

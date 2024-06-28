@@ -18,12 +18,14 @@ public class WorldBlock
     [SerializeField] public float timeToBreak;
     [SerializeField] public bool isImportantForBase = false;
     [SerializeField] public int health;
+    [SerializeField] public bool isDoor;
 
     public WorldBlock()
     {
         name = null;
         timeToBreak = 0;
         health = 0;
+        isDoor = false;
     }
 
     public WorldBlock(Block block)
@@ -158,6 +160,7 @@ public class WorldGeneration : MonoBehaviour
     private string[] bricks = new string[]{"lead_bricks", "stone_bricks", "aluminum_bricks"};
 
     private string saveKey = "mainSave";
+    private float timeAfterTp = 0;
 
     private SaveData.World GetSaveSnapshot()
     {
@@ -241,7 +244,8 @@ public class WorldGeneration : MonoBehaviour
             {
                 if (!reduceLight)
                 {
-                    lightMap[currentX, currentY] = currentLightLvl;
+                    if (world[currentX, currentY] == null || !world[currentX, currentY].isDoor)
+                        lightMap[currentX, currentY] = currentLightLvl;
                 }
                 else
                 {
@@ -265,10 +269,10 @@ public class WorldGeneration : MonoBehaviour
         int objX = Mathf.Clamp((int)pos.x / chunkSize, 0, worldWidth / chunkSize);
         int objY = Mathf.Clamp((int)pos.y / chunkSize, 0, worldHeight / chunkSize);
 
-        renderLeftBorder = Mathf.Clamp(objX - renderDistance, 0, worldWidth / chunkSize);
-        renderRightBorder = Mathf.Clamp(objX + renderDistance, 0, worldWidth / chunkSize);
-        renderDownBorder = Mathf.Clamp(objY - renderDistance, 0, worldHeight / chunkSize);
-        renderUpBorder = Mathf.Clamp(objY + renderDistance, 0, worldHeight / chunkSize);
+        renderLeftBorder = Mathf.Clamp(objX - renderDistance * 2, 0, worldWidth / chunkSize);
+        renderRightBorder = Mathf.Clamp(objX + renderDistance * 2, 0, worldWidth / chunkSize);
+        renderDownBorder = Mathf.Clamp(objY - renderDistance / 2, 0, worldHeight / chunkSize);
+        renderUpBorder = Mathf.Clamp(objY + renderDistance / 2, 0, worldHeight / chunkSize);
 
         for (int i = renderLeftBorder; i < renderRightBorder; ++i)
         {
@@ -827,6 +831,19 @@ public class WorldGeneration : MonoBehaviour
         }
     }
 
+    public void TPPLayerOnBase()
+    {
+        if(timeAfterTp > 10)
+        {
+            TpObjectOnSurface(Player, worldWidth / 2);
+            timeAfterTp = 0;
+        }
+        else
+        {
+            Guide.ShowMessage($"Осталось {Convert.ToInt32(10 - timeAfterTp)} сек. до использования телепорта");
+        }
+    }
+
     public int GetFloorHeight()
     {
         int floorHeight = 0;
@@ -1031,6 +1048,37 @@ public class WorldGeneration : MonoBehaviour
                 bgWorld[x, y] = new WorldBlock(blocks.GetBlock("lead"));
             }
         }
+
+        world[room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 1].isDoor = true;
+        world[room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 2].isDoor = true;
+        world[room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 3].isDoor = true;
+
+        world[room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 1].isDoor = true;
+        world[room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 2].isDoor = true;
+        world[room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 3].isDoor = true;
+
+        lightMap[room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 1] = 7;
+        lightMap[room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 2] = 7;
+        lightMap[room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 3] = 7;
+
+        lightMap[room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 1] = 7;
+        lightMap[room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 2] = 7;
+        lightMap[room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 3] = 7;
+
+        tilemap.SetColor(new Vector3Int(room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 1, 0), new Color(lightMap[room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 1] / 15.0f,
+            lightMap[room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 1] / 15.0f, lightMap[room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 1] / 15.0f));
+        tilemap.SetColor(new Vector3Int(room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 2, 0), new Color(lightMap[room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 2] / 15.0f,
+            lightMap[room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 2] / 15.0f, lightMap[room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 2] / 15.0f));
+        tilemap.SetColor(new Vector3Int(room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 3, 0), new Color(lightMap[room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 3] / 15.0f,
+            lightMap[room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 3] / 15.0f, lightMap[room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 3] / 15.0f));
+
+        tilemap.SetColor(new Vector3Int(room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 1, 0), new Color(lightMap[room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 1] / 15.0f,
+            lightMap[room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 1] / 15.0f, lightMap[room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 1] / 15.0f));
+        tilemap.SetColor(new Vector3Int(room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 2, 0), new Color(lightMap[room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 2] / 15.0f,
+            lightMap[room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 2] / 15.0f, lightMap[room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 2] / 15.0f));
+        tilemap.SetColor(new Vector3Int(room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 3, 0), new Color(lightMap[room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 3] / 15.0f,
+            lightMap[room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 3] / 15.0f, lightMap[room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 3] / 15.0f));
+
         Render();
     }
 
@@ -1059,6 +1107,36 @@ public class WorldGeneration : MonoBehaviour
                 Debug.Log(x + " " + y);
             }
         }
+
+        world[room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 1].isDoor = false;
+        world[room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 2].isDoor = false;
+        world[room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 3].isDoor = false;
+
+        world[room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 1].isDoor = false;
+        world[room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 2].isDoor = false;
+        world[room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 3].isDoor = false;
+
+        lightMap[room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 1] = 15;
+        lightMap[room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 2] = 15;
+        lightMap[room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 3] = 15;
+
+        lightMap[room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 1] = 15;
+        lightMap[room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 2] = 15;
+        lightMap[room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 3] = 15;
+
+        tilemap.SetColor(new Vector3Int(room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 1, 0), new Color(lightMap[room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 1] / 15.0f,
+            lightMap[room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 1] / 15.0f, lightMap[room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 1] / 15.0f));
+        tilemap.SetColor(new Vector3Int(room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 2, 0), new Color(lightMap[room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 2] / 15.0f,
+            lightMap[room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 2] / 15.0f, lightMap[room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 2] / 15.0f));
+        tilemap.SetColor(new Vector3Int(room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 3, 0), new Color(lightMap[room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 3] / 15.0f,
+            lightMap[room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 3] / 15.0f, lightMap[room.GetLeftDownCorner().x, room.GetLeftDownCorner().y + 3] / 15.0f));
+
+        tilemap.SetColor(new Vector3Int(room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 1, 0), new Color(lightMap[room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 1] / 15.0f,
+            lightMap[room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 1] / 15.0f, lightMap[room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 1] / 15.0f));
+        tilemap.SetColor(new Vector3Int(room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 2, 0), new Color(lightMap[room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 2] / 15.0f,
+            lightMap[room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 2] / 15.0f, lightMap[room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 2] / 15.0f));
+        tilemap.SetColor(new Vector3Int(room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 3, 0), new Color(lightMap[room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 3] / 15.0f,
+            lightMap[room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 3] / 15.0f, lightMap[room.GetRightUpCorner().x, room.GetLeftDownCorner().y + 3] / 15.0f));
 
         Base.DestroyRoom(room);
         Render();
@@ -1107,6 +1185,11 @@ public class WorldGeneration : MonoBehaviour
                     ClearTileMap(tilemap, bgTilemap, fgTilemap, i, j, chunkSize);
                 }
             }
+        }
+
+        foreach (Room room in Base.GetRooms())
+        {
+            RenderMapByPosition(new Vector3(room.GetCenter().x, room.GetCenter().y, 0));
         }
     }
 
@@ -1158,6 +1241,8 @@ public class WorldGeneration : MonoBehaviour
 
     private void Update()
     {
+        timeAfterTp += Time.deltaTime;
+
         playerChunkX = Mathf.Clamp((int)Player.transform.position.x / chunkSize, 0, worldWidth / chunkSize);
         playerChunkY = Mathf.Clamp((int)Player.transform.position.y / chunkSize, 0, worldHeight / chunkSize);
 
