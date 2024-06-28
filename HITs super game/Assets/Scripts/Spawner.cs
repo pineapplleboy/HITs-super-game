@@ -59,7 +59,7 @@ public class Spawner : MonoBehaviour
             new List<int>() { 10, 0, 0 }, new List<int>() { 10, 0, 0 } };
 
         enemiesSpawnProbability = new List<int>() { 0, 100, 100, 0 };
-        raidEnemiesSpawnProbability = new List<int>() { 0, 100, 100, 0 };
+        raidEnemiesSpawnProbability = new List<int>() { 25, 25, 25, 25 };
 
         allSpawnedEnemies = new List<Enemy>();
     }
@@ -77,8 +77,8 @@ public class Spawner : MonoBehaviour
 
                 if (CheckDistance(computerCoord, player.transform.position) > 100)
                 {
-                    //SpawnEnemy();
-                    SpawnRaidEnemy();
+                    SpawnEnemy();
+                    //SpawnRaidEnemy();
                 }
 
             }
@@ -116,8 +116,8 @@ public class Spawner : MonoBehaviour
         //randEnemy = 1;
 
         //spawnPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //spawnPosition = GenerateRaidPosition();
-        spawnPosition = GeneratePosition();
+        spawnPosition = GenerateRaidPosition();
+        //spawnPosition = GeneratePosition();
 
         if (!world.IsBlock((int)spawnPosition.x, (int)spawnPosition.y))
         {

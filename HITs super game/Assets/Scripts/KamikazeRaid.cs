@@ -1,10 +1,10 @@
 using SaveData;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
-public class WarriorRaidEnemy : MonoBehaviour
+public class KamikazeRaid : MonoBehaviour
 {
     public float speed = 1;
     private Transform player;
@@ -23,29 +23,22 @@ public class WarriorRaidEnemy : MonoBehaviour
     private float flipTime = 0.2f;
     private float currentFlipTime = 0;
 
-    private float jumpCooldown = 0.3f;
-    private float currentJumpTime = 0;
-
     private float sleepTime = 0f;
-
-    public Transform attackPoint;
-    public float attackRange = 5;
-    public LayerMask enemyLayers;
-
-    private int stepCounter = 0;
 
     private float goBackJumpingCd = 1f;
     private float currentGoBackJumpingCd = 0f;
 
-    private float currentAttackCd = 0f;
-    private float attackCd = 1f;
+    private float jumpCooldown = 0.3f;
+    private float currentJumpTime = 0;
+
+    private int stepCounter = 0;
 
     private bool nearWall = false;
 
     private float hitBlockCd = 0.3f;
     private float currentHitBlockCd = 0f;
 
-    private int blockDamage = 5;
+    private int blockDamage = 3;
 
     private WorldGeneration world;
 
@@ -70,7 +63,6 @@ public class WarriorRaidEnemy : MonoBehaviour
     {
         sleepTime -= Time.deltaTime;
         currentGoBackJumpingCd -= Time.deltaTime;
-        currentAttackCd -= Time.deltaTime;
         currentHitBlockCd -= Time.deltaTime;
 
         if (sleepTime > 0) return;
@@ -88,21 +80,14 @@ public class WarriorRaidEnemy : MonoBehaviour
 
         if (!onGround)
         {
-            speed = 5;
+            speed = 6;
         }
         else
         {
-            speed = 10;
+            speed = 12;
         }
 
         currentJumpTime -= Time.deltaTime;
-
-        Collider2D[] hitPlayer = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
-
-        if (hitPlayer.Length > 0 && currentAttackCd <= 0)
-        {
-            Attack(hitPlayer);
-        }
         //transform.position = Vector2.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
     }
 
@@ -132,7 +117,7 @@ public class WarriorRaidEnemy : MonoBehaviour
             {
                 Vector2 hitPoint = contactPoint.point;
 
-                if (hitPoint.y - transform.position.y > -0.98)
+                if (hitPoint.y - transform.position.y > -0.95)
                 {
                     if (currentGoBackJumpingCd <= 0)
                     {
@@ -188,7 +173,7 @@ public class WarriorRaidEnemy : MonoBehaviour
                 world.EnemyBreakBlock(hitPoint);
             }
         }
-        
+
     }
 
     private void GoBackAndJump()
@@ -217,9 +202,8 @@ public class WarriorRaidEnemy : MonoBehaviour
 
     private void Jump()
     {
-        if (onGround && currentJumpTime <= 0)
+        if (onGround)
         {
-            currentJumpTime = jumpCooldown;
             rb.AddForce(Vector2.up * (jumpForce * slowRate));
             onGround = false;
         }
@@ -287,22 +271,6 @@ public class WarriorRaidEnemy : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, 180, 0);
             currentFlipTime = 0;
         }
-    }
-
-    private void Attack(Collider2D[] hitPlayer)
-    {
-        currentAttackCd = attackCd;
-        foreach (Collider2D npc in hitPlayer)
-        {
-            PlayerStats hittedNpc = npc.GetComponent<PlayerStats>();
-            hittedNpc.TakeDamage(CurrentDamage(), 0);
-        }
-
-    }
-
-    private int CurrentDamage()
-    {
-        return 1;
     }
 
     public void Sleep(float newSleepingTime)

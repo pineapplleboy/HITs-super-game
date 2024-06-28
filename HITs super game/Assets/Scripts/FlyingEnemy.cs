@@ -87,6 +87,12 @@ public class FlyingEnemy : MonoBehaviour
             nearPlayer = true;  
         }
 
+        if (nearPlayer && CalculateDist() > 20)
+        {
+            nearPlayer = false;
+            angle = 0;
+        }
+
         if (nearPlayer)
         {
             verticalMoving = Vector2.MoveTowards(transform.position, player.position, speed * Time.deltaTime);

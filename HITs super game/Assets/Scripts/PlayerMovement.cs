@@ -65,7 +65,7 @@ public class PlayerMovement : MonoBehaviour
             GrapplingHook.needToDraw = 0;
         }
 
-        if (GrapplingHook.isHooked && GrapplingHook.stopMoving)
+        if (GrapplingHook.isHooked && GrapplingHook.ropeDrawen)
         {
             rb.gravityScale = 0;
             onGround = true;

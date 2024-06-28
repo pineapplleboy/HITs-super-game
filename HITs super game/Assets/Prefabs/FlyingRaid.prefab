@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 4104161138408653061}
   - component: {fileID: 5138316755663626437}
   - component: {fileID: 2011299249724194771}
-  - component: {fileID: 3182119420816666639}
-  m_Layer: 14
-  m_Name: FlyingEnemy
+  - component: {fileID: -3110928435952074783}
+  m_Layer: 6
+  m_Name: FlyingRaid
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -173,11 +173,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7183952577230aa43aa785665b63f5be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 120
   currentHealth: 0
   damageResistance: 0a0000000000000000000000
-  onRaid: 0
---- !u!114 &3182119420816666639
+  onRaid: 1
+--- !u!114 &-3110928435952074783
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -186,7 +186,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1870344505190257690}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf6185f4be3b1bc4e8212697cd40b411, type: 3}
+  m_Script: {fileID: 11500000, guid: 84192b6d373cdb5438d14a69fd9f6265, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
@@ -196,7 +196,7 @@ MonoBehaviour:
   attackRange: 5
   enemyLayers:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 8320
   radius: 10
   angularSpeed: 1.33
   positionX: 0
@@ -211,7 +211,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3806864509358002917}
-  m_Layer: 14
+  m_Layer: 6
   m_Name: attackPoint
   m_TagString: Untagged
   m_Icon: {fileID: 7422848464349959988, guid: 0000000000000000d000000000000000, type: 0}

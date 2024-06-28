@@ -4,15 +4,23 @@ using UnityEngine;
 
 public class COMPUTER : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private int health = 100;
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if (health <= 0)
+        {
+            ThisIsTheEnd();
+        }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+    }
+
+    void ThisIsTheEnd()
+    {
+        Debug.Log("OH NO U DEAD");
     }
 }

@@ -40,7 +40,7 @@ public class NPCBullet : MonoBehaviour
             enemy.TakeDamage(CalculateDamage(), 1);
         }
 
-        if (collision.tag == "Enemy" || collision.tag == "KamikazeEnemy" || collision.tag == "Cage")
+        if (collision.tag == "Enemy" || collision.tag == "KamikazeEnemy" || collision.tag == "FlyingEnemy")
         {
             Destroy(gameObject);
         }

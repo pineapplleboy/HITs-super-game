@@ -947,7 +947,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -2.0999756}
+  m_AnchoredPosition: {x: 5.669983, y: -8.030029}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &100169563
@@ -4504,7 +4504,10 @@ MonoBehaviour:
   - {fileID: 1870344505190257690, guid: 15b52bc44fc54dd4cbc3ca835aece875, type: 3}
   - {fileID: 1870344505190257690, guid: 60dfa1226c7fe1649baf83a87149d83c, type: 3}
   raidEnemies:
+  - {fileID: 1870344505190257690, guid: 2f030c2ae55aeee4fb7816e7baa0385d, type: 3}
   - {fileID: 1870344505190257690, guid: ae42f8bcbd27528418c7a2e99d1b004e, type: 3}
+  - {fileID: 1870344505190257690, guid: 8c1fd921a468bdf49b2b5f5c15938361, type: 3}
+  - {fileID: 1870344505190257690, guid: f962e264c1219834292fab1857403f84, type: 3}
 --- !u!4 &716512071
 Transform:
   m_ObjectHideFlags: 0
