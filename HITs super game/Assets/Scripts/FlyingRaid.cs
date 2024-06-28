@@ -167,7 +167,17 @@ public class FlyingRaid : MonoBehaviour
         foreach (Collider2D npc in hitPlayer)
         {
             PlayerStats hittedNpc = npc.GetComponent<PlayerStats>();
-            hittedNpc.TakeDamage(1, 0);
+            COMPUTER hittedComp = npc.GetComponent<COMPUTER>();
+
+            if (hittedNpc != null)
+            {
+                hittedNpc.TakeDamage(1, 0);
+            }
+
+            if (hittedComp != null)
+            {
+                hittedComp.TakeDamage(1);
+            }
         }
 
     }

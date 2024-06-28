@@ -25,7 +25,7 @@ public class DayTime : MonoBehaviour
 
     private float currentTime;
 
-    private int raidFrequency = 1;
+    private int raidFrequency = 3;
 
     void Start()
     {

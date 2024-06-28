@@ -196,7 +196,11 @@ public class WorldGeneration : MonoBehaviour
 
     public bool IsBlock(int x, int y)
     {
-        return world[x, y] != null;
+        if (0 <= x && x <= worldWidth && 0 <= y && y <= worldHeight)
+        {
+            return world[x, y] != null;
+        }
+        return false;
     }
 
     public WorldBlock[,] GenerateArray(int width, int height, bool empty)

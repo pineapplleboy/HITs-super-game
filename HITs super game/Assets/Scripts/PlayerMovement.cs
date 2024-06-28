@@ -44,11 +44,17 @@ public class PlayerMovement : MonoBehaviour
     private float jumpBoost = 1f;
     private bool boostFound = false;
 
+    private bool isInBlock = false;
+
+    private WorldGeneration world;
+
     void Start()
     {
         Time.fixedDeltaTime = Time.timeScale * 0.01f;
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+
+        world = GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>();
     }
 
     void Update()
@@ -57,6 +63,18 @@ public class PlayerMovement : MonoBehaviour
 
         if (boostFound) jumpBoost = 1.3f;
         else jumpBoost = 1f;
+
+        CheckWhereIsPlayer();
+
+        if (isInBlock)
+        {
+            rb.gravityScale = 0;
+            rb.position = new Vector2(rb.position.x, rb.position.y + 3f);
+        }
+        else
+        {
+            rb.gravityScale = 10;
+        }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -178,6 +196,32 @@ public class PlayerMovement : MonoBehaviour
         lastMovingDirection = moveX;
 
         Flip();
+    }
+
+    private void CheckWhereIsPlayer()
+    {
+        int inBlock = 0;
+
+        for (int i = -1; i <= 1; i++)
+        {
+            for (int j = -1; j <= 1; j++)
+            {
+                if (world.IsBlock((int)transform.position.x + i, (int)transform.position.y + j))
+                {
+                    inBlock++;
+                }
+            }
+        }
+
+        if (inBlock == 9)
+        {
+            isInBlock = true;
+        }
+        else
+        {
+            isInBlock = false;
+        }
+
     }
 
     private void Flip()

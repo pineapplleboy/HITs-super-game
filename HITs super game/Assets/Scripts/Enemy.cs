@@ -82,6 +82,10 @@ public class Enemy : MonoBehaviour
         if (gameObject.layer == 8 && collision.gameObject.tag == "COMPUTER")
         {
             computer.TakeDamage(100);
+
+            Spawner.currentNearEnemies--;
+            Spawner.allSpawnedEnemies.RemoveAt(enemyIndex);
+            Destroy(gameObject);
         }
     }
 
@@ -147,16 +151,17 @@ public class Enemy : MonoBehaviour
 
     private bool IsFarAway()
     {
-        //if (onRaid)
-        //{
-        //    return Mathf.Min(Mathf.Sqrt(Mathf.Pow(transform.position.x - player.position.x, 2) +
-        //    Mathf.Pow(transform.position.y - player.position.y, 2)),
-        //    Mathf.Sqrt(Mathf.Pow(computer.transform.position.x - player.position.x, 2) +
-        //    Mathf.Pow(computer.transform.position.y - player.position.y, 2))) > 250;
-        //}
+        if (onRaid)
+        {
+            return Mathf.Min(Mathf.Sqrt(Mathf.Pow(transform.position.x - player.position.x, 2) +
+            Mathf.Pow(transform.position.y - player.position.y, 2)),
+
+            Mathf.Sqrt(Mathf.Pow(computer.transform.position.x - player.position.x, 2) +
+            Mathf.Pow(computer.transform.position.y - player.position.y, 2))) > 150;
+        }
 
         return Mathf.Sqrt(Mathf.Pow(transform.position.x - player.position.x, 2) + 
-            Mathf.Pow(transform.position.y - player.position.y, 2)) > 250;
+            Mathf.Pow(transform.position.y - player.position.y, 2)) > 150;
     }
 
     public void SetIndex(int index)
