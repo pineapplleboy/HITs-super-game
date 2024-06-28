@@ -92,8 +92,8 @@ public class LaserGun : MonoBehaviour
 
             lastDigit = (int)shootingTime;
 
-            lineRenderer.startWidth += 0.002f;
-            lineRenderer.endWidth += 0.002f;
+            lineRenderer.startWidth += widthGrowth;
+            lineRenderer.endWidth += widthGrowth;
 
             lineRenderer.startWidth = Mathf.Min(lineRenderer.startWidth, 1);
             lineRenderer.endWidth = Mathf.Min(lineRenderer.endWidth, 1);
@@ -163,7 +163,8 @@ public class LaserGun : MonoBehaviour
 
         Vector2 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
 
-        hitInfo = Physics2D.Raycast(firePoint.position, difference);
+        //hitInfo = Physics2D.Raycast(firePoint.position, difference);
+        hitInfo = Physics2D.Raycast(firePoint.position, difference, 100000, mask);
         //hitInfo = Physics2D.Raycast(firePoint.position, difference, 100000, mask);
 
         if (hitInfo)

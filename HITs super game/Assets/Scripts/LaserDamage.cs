@@ -104,8 +104,8 @@ public class LaserDamage : MonoBehaviour
 
         Vector2 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
 
-        hitInfo = Physics2D.Raycast(firePoint.position, difference);
-        //hitInfo = Physics2D.Raycast(firePoint.position, difference, 100000, mask);
+        //hitInfo = Physics2D.Raycast(firePoint.position, difference);
+        hitInfo = Physics2D.Raycast(firePoint.position, difference, 100000, mask);
 
         if (hitInfo)
         {

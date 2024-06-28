@@ -13093,7 +13093,7 @@ MonoBehaviour:
       timeToBreak: 0.1
       item: {fileID: 11400000, guid: c807a0992ac3e8f4680a5aba3de4e6c3, type: 2}
       icon: {fileID: 1373156484, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
-      health: 3
+      health: 5
     - name: dirt
       tile: {fileID: 11400000, guid: abb6c0693b6a7c84fa6f724c10cee3d1, type: 2}
       timeToBreak: 0.1
@@ -13111,7 +13111,7 @@ MonoBehaviour:
       timeToBreak: 0.1
       item: {fileID: 11400000, guid: 02b8b61d3aa69fd4f9a83600aca219ae, type: 2}
       icon: {fileID: -301507201, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
-      health: 4
+      health: 8
     - name: uranus
       tile: {fileID: 11400000, guid: 6866e5ebcd1ca8c4696080cccd082500, type: 2}
       timeToBreak: 0.1
@@ -13123,49 +13123,49 @@ MonoBehaviour:
       timeToBreak: 0.1
       item: {fileID: 11400000, guid: fcb8f78a9a74e3442af2c2bd2ce3f42a, type: 2}
       icon: {fileID: 391304829, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
-      health: 3
+      health: 5
     - name: tree_1
       tile: {fileID: 11400000, guid: 2808af5b3b355ea418394ee13e60bdb9, type: 2}
       timeToBreak: 0.1
       item: {fileID: 0}
       icon: {fileID: 0}
-      health: 2
+      health: 4
     - name: tree_2
       tile: {fileID: 11400000, guid: b1d1d09ea9cedef4eb56bbd2a0d932d0, type: 2}
       timeToBreak: 0.1
       item: {fileID: 0}
       icon: {fileID: 0}
-      health: 2
+      health: 4
     - name: tree_3
       tile: {fileID: 11400000, guid: fa6aa32911ce4bf4099e017a91230dc7, type: 2}
       timeToBreak: 0.1
       item: {fileID: 0}
       icon: {fileID: 0}
-      health: 2
+      health: 4
     - name: tree_4
       tile: {fileID: 11400000, guid: 42e63c2c4ae19ba4e9337c46ec7c84e2, type: 2}
       timeToBreak: 0.1
       item: {fileID: 0}
       icon: {fileID: 0}
-      health: 1
+      health: 4
     - name: stone_bricks
       tile: {fileID: 11400000, guid: b0c7578b356c2e647b029ebaf6c86c49, type: 2}
       timeToBreak: 0.1
       item: {fileID: 11400000, guid: b3e0d35f68409af47b95e52240a85486, type: 2}
       icon: {fileID: -903343890, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
-      health: 5
+      health: 12
     - name: aluminum_bricks
       tile: {fileID: 11400000, guid: afe12d2f93b589746b45da0f55152905, type: 2}
       timeToBreak: 0.1
       item: {fileID: 11400000, guid: e54b24c49d925294b9c4de003cebacc6, type: 2}
       icon: {fileID: 2011450129, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
-      health: 7
+      health: 15
     - name: lead_bricks
       tile: {fileID: 11400000, guid: 2c87c2d69f213b746bcef52ee8e71c8d, type: 2}
       timeToBreak: 0.1
       item: {fileID: 11400000, guid: 3dd5b61e83a5e9f44a9ba2d6932f17ca, type: 2}
       icon: {fileID: 452481324, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
-      health: 10
+      health: 17
   tilemap: {fileID: 1672563625}
   bgTilemap: {fileID: 317892334}
   fgTilemap: {fileID: 1812858003}
@@ -20020,7 +20020,7 @@ MonoBehaviour:
   laserCooldown: 0.5
   mask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 18807
   laser: {fileID: 11400000, guid: b177b7ea1048acb4ba4a56f2f9808b5e, type: 2}
 --- !u!4 &2161114676778608187
 Transform:
@@ -20939,7 +20939,7 @@ MonoBehaviour:
   laserCooldown: 0.5
   mask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 18807
   laser: {fileID: 11400000, guid: b177b7ea1048acb4ba4a56f2f9808b5e, type: 2}
 --- !u!114 &3630255787698879170
 MonoBehaviour:
