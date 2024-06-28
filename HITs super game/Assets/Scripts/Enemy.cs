@@ -147,6 +147,8 @@ public class Enemy : MonoBehaviour
         died = true;
 
         GetComponent<Rigidbody2D>().gravityScale = 3;
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>().money += 10;
+        GameObject.Find("MainCanvas").GetComponent<InventoryManager>().UpdateMoneyOnScreen();
 
         Spawner.allSpawnedEnemies.RemoveAt(enemyIndex);
     }

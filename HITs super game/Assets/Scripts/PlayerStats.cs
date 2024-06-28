@@ -51,6 +51,12 @@ public class PlayerStats : MonoBehaviour
             GameObject.FindGameObjectWithTag("COMPUTER").GetComponent<COMPUTER>().TakeDamage(1000);
         }
 
+        if (Input.GetKey(KeyCode.I))
+        {
+            money += 100;
+            GameObject.Find("MainCanvas").GetComponent<InventoryManager>().UpdateMoneyOnScreen();
+        }
+
         currentTakeDamageTime += Time.deltaTime;
 
         if (currentTakeDamageTime >= whenStartHealing)

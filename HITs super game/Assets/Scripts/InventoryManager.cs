@@ -49,6 +49,11 @@ public class InventoryManager : MonoBehaviour
 
     public ItemScriptableObject[] items;
 
+    public void UpdateMoneyOnScreen()
+    {
+        wallet.text = player.GetComponent<PlayerStats>().money.ToString();
+    }
+
     private ItemScriptableObject FindItemByName(string name)
     {
         foreach (var item in items)

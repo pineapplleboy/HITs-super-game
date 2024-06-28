@@ -47,12 +47,12 @@ public class IntellectConnection : MonoBehaviour
 
     private void DrawTarget()
     {
-
+        targetEnemy.transform.Find("Aim").gameObject.SetActive(true);
     }
 
     private void DeleteTarget()
     {
-
+        targetEnemy.transform.Find("Aim").gameObject.SetActive(false);
     }
 
     private void OnDrawGizmosSelected()
