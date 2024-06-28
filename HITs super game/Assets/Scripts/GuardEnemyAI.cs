@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEditor;
-using UnityEditor.Tilemaps;
 using UnityEngine;
 
 public class Guard : MonoBehaviour
