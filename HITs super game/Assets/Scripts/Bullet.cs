@@ -11,7 +11,7 @@ public class Bullet : MonoBehaviour
 
     public float lifeTime = 10f;
     public float distance;
-    public int damage;
+    private int damage = 2;
     public LayerMask whatIsSolid;
 
     private float currentLifeTime = 0f;
@@ -35,6 +35,9 @@ public class Bullet : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        gunDamage = Gun.damage;
+        speed = Gun.bulletSpeed;
 
         currentLifeTime += Time.deltaTime;
 

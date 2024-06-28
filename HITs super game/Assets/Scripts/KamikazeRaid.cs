@@ -38,7 +38,7 @@ public class KamikazeRaid : MonoBehaviour
     private float hitBlockCd = 0.3f;
     private float currentHitBlockCd = 0f;
 
-    private int blockDamage = 3;
+    private int blockDamage = 7;
 
     private WorldGeneration world;
 
@@ -166,7 +166,7 @@ public class KamikazeRaid : MonoBehaviour
 
         if (block != null)
         {
-            block.TakeDamage(1);
+            block.TakeDamage(blockDamage);
             //Debug.Log(block.GetHealth());
             if (block.GetHealth() <= 0)
             {

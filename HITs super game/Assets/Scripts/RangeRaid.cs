@@ -167,7 +167,7 @@ public class RangeRaid : MonoBehaviour
 
         if (block != null)
         {
-            block.TakeDamage(1);
+            block.TakeDamage(blockDamage);
             //Debug.Log(block.GetHealth());
             if (block.GetHealth() <= 0)
             {

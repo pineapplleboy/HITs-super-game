@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Scripting;
+using System.Runtime.CompilerServices;
 
 public class PlayerStats : MonoBehaviour
 {
@@ -35,6 +36,11 @@ public class PlayerStats : MonoBehaviour
     public GameObject[] Brains;
 
     public static bool isDead = false;
+    private float currentPotionCd = 0f;
+    private float healthPotionCd = 60f;
+
+    private float currentSaveCd = 0f;
+    private float saveCd = 300f;
 
     void Start()
     {
@@ -64,7 +70,23 @@ public class PlayerStats : MonoBehaviour
             GameObject.Find("MainCanvas").GetComponent<InventoryManager>().UpdateMoneyOnScreen();
         }
 
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            if (currentPotionCd <= 0)
+            {
+                healthAmount += 50;
+                currentPotionCd = healthPotionCd;
+            }
+            else
+            {
+                Guide.ShowMessage("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ " + (int)currentPotionCd + " пїЅпїЅпїЅпїЅпїЅпїЅ");
+            }
+            
+        }
+
+        currentPotionCd -= Time.deltaTime;
         currentTakeDamageTime += Time.deltaTime;
+        currentSaveCd -= Time.deltaTime;
 
         if (currentTakeDamageTime >= whenStartHealing)
         {
@@ -80,7 +102,7 @@ public class PlayerStats : MonoBehaviour
         healthAmount = (healthAmount < 0) ? 0 : healthAmount;
         currHealth = healthAmount;
 
-        intellectAmount += 3 * Time.deltaTime * PermanentStatsBoost.intellectRegenSpeedBoost;
+        intellectAmount += 5 * Time.deltaTime * PermanentStatsBoost.intellectRegenSpeedBoost;
         intellectAmount = Mathf.Min(intellectAmount, maxIntellectAmount);
 
         HealthText.text = Convert.ToInt32(healthAmount).ToString() + "/" + Convert.ToInt32(maxHealth).ToString();
@@ -132,7 +154,7 @@ public class PlayerStats : MonoBehaviour
     {
         isDead = true;
         GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
-        Guide.ShowMessage("Вы умерли");
+        Guide.ShowMessage("пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ");
         GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>().TPPLayerOnBase();
 
         yield return new WaitForSeconds(10);
@@ -143,7 +165,7 @@ public class PlayerStats : MonoBehaviour
 
     private void Heal()
     {
-        addHeartsAmount += 5 * Time.deltaTime * PermanentStatsBoost.regenerationSpeedBoost;
+        addHeartsAmount += 3 * Time.deltaTime * PermanentStatsBoost.regenerationSpeedBoost;
 
         healthAmount += (int)addHeartsAmount;
         healthAmount = Mathf.Min(healthAmount, maxHealth);
@@ -162,14 +184,14 @@ public class PlayerStats : MonoBehaviour
     {
         isBlocking = true;
         PlayerMovement.slowRate = 0.2f;
-        tempDamageResistance[0] += 5;
+        tempDamageResistance[0] += 50;
     }
 
     public static void UnBlock()
     {
         isBlocking = false;
         PlayerMovement.slowRate = 1f;
-        tempDamageResistance[0] -= 5;
+        tempDamageResistance[0] -= 50;
     }
 
     public void TakeDamage(int damage, int typeOfDamage)
@@ -180,7 +202,7 @@ public class PlayerStats : MonoBehaviour
 
         if (healthAmount <= 0)
         {
-            // возрождение ??
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ ??
         }
     }
 
@@ -190,7 +212,7 @@ public class PlayerStats : MonoBehaviour
 
         if (healthAmount <= 0)
         {
-            // возрождение ??
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ ??
         }
     }
 

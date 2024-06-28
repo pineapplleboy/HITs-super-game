@@ -2714,7 +2714,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.2
-  m_ScrollSensitivity: 30
+  m_ScrollSensitivity: 52
   m_Viewport: {fileID: 295676362}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 0}
@@ -5313,81 +5313,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &657308061
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 657308062}
-  - component: {fileID: 657308064}
-  - component: {fileID: 657308063}
-  m_Layer: 5
-  m_Name: CraftSlot (5)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &657308062
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 657308061}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2128489693}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 900, y: 300}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &657308063
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 657308061}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 417948646, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &657308064
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 657308061}
-  m_CullTransparentMesh: 1
 --- !u!1001 &661659891
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7708,6 +7633,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2029819991362870367, guid: 3c08ce34ccde14449a08a2594a2ac934, type: 3}
+      propertyPath: gun
+      value: 
+      objectReference: {fileID: 11400000, guid: 89796dd509d155c489c3b73dd4f4904c, type: 2}
     - target: {fileID: 2194185551771034119, guid: 3c08ce34ccde14449a08a2594a2ac934, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.08065538
@@ -9360,7 +9289,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.2
-  m_ScrollSensitivity: 30
+  m_ScrollSensitivity: 52
   m_Viewport: {fileID: 1186479177}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 0}
@@ -10098,81 +10027,6 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1258135629}
-  m_CullTransparentMesh: 1
---- !u!1 &1258702590
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1258702591}
-  - component: {fileID: 1258702593}
-  - component: {fileID: 1258702592}
-  m_Layer: 5
-  m_Name: CraftSlot (4)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1258702591
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1258702590}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2128489693}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 900, y: 300}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1258702592
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1258702590}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 417948646, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &1258702593
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1258702590}
   m_CullTransparentMesh: 1
 --- !u!1 &1276115915
 GameObject:
@@ -12267,6 +12121,12 @@ MonoBehaviour:
   kirk: {fileID: 6573914249929306734, guid: 7410595da95ab2e469141cf35650369a, type: 3}
   costText: {fileID: 1276115917}
   upgradeButton: {fileID: 1614354943}
+  upgradeSword: {fileID: 1760299171}
+  upgradeGun: {fileID: 1508057225}
+  upgradeLaser: {fileID: 528083245}
+  swordCost: {fileID: 1306486641}
+  gunCost: {fileID: 394508265}
+  laserCost: {fileID: 1300289431}
   healthCost: {fileID: 1382520069}
   intelCost: {fileID: 342327045}
   damageCost: {fileID: 1333886823}
@@ -13216,7 +13076,7 @@ MonoBehaviour:
       timeToBreak: 0.1
       item: {fileID: 11400000, guid: 02b8b61d3aa69fd4f9a83600aca219ae, type: 2}
       icon: {fileID: -301507201, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
-      health: 1
+      health: 8
     - name: uranus
       tile: {fileID: 11400000, guid: 6866e5ebcd1ca8c4696080cccd082500, type: 2}
       timeToBreak: 0.1
@@ -13228,49 +13088,49 @@ MonoBehaviour:
       timeToBreak: 0.1
       item: {fileID: 11400000, guid: fcb8f78a9a74e3442af2c2bd2ce3f42a, type: 2}
       icon: {fileID: 391304829, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
-      health: 1
+      health: 5
     - name: tree_1
       tile: {fileID: 11400000, guid: 2808af5b3b355ea418394ee13e60bdb9, type: 2}
       timeToBreak: 0.1
       item: {fileID: 0}
       icon: {fileID: 0}
-      health: 2
+      health: 4
     - name: tree_2
       tile: {fileID: 11400000, guid: b1d1d09ea9cedef4eb56bbd2a0d932d0, type: 2}
       timeToBreak: 0.1
       item: {fileID: 0}
       icon: {fileID: 0}
-      health: 2
+      health: 4
     - name: tree_3
       tile: {fileID: 11400000, guid: fa6aa32911ce4bf4099e017a91230dc7, type: 2}
       timeToBreak: 0.1
       item: {fileID: 0}
       icon: {fileID: 0}
-      health: 2
+      health: 4
     - name: tree_4
       tile: {fileID: 11400000, guid: 42e63c2c4ae19ba4e9337c46ec7c84e2, type: 2}
       timeToBreak: 0.1
       item: {fileID: 0}
       icon: {fileID: 0}
-      health: 1
+      health: 4
     - name: stone_bricks
       tile: {fileID: 11400000, guid: b0c7578b356c2e647b029ebaf6c86c49, type: 2}
       timeToBreak: 0.1
       item: {fileID: 11400000, guid: b3e0d35f68409af47b95e52240a85486, type: 2}
       icon: {fileID: -903343890, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
-      health: 2
+      health: 12
     - name: aluminum_bricks
       tile: {fileID: 11400000, guid: afe12d2f93b589746b45da0f55152905, type: 2}
       timeToBreak: 0.1
       item: {fileID: 11400000, guid: e54b24c49d925294b9c4de003cebacc6, type: 2}
       icon: {fileID: 2011450129, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
-      health: 2
+      health: 15
     - name: lead_bricks
       tile: {fileID: 11400000, guid: 2c87c2d69f213b746bcef52ee8e71c8d, type: 2}
       timeToBreak: 0.1
       item: {fileID: 11400000, guid: 3dd5b61e83a5e9f44a9ba2d6932f17ca, type: 2}
       icon: {fileID: 452481324, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
-      health: 10
+      health: 17
   tilemap: {fileID: 1672563625}
   bgTilemap: {fileID: 317892334}
   fgTilemap: {fileID: 1812858003}
@@ -14843,81 +14703,6 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1747853591}
-  m_CullTransparentMesh: 1
---- !u!1 &1747999330
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1747999331}
-  - component: {fileID: 1747999333}
-  - component: {fileID: 1747999332}
-  m_Layer: 5
-  m_Name: CraftSlot (6)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1747999331
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1747999330}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2128489693}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 900, y: 300}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1747999332
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1747999330}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 417948646, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &1747999333
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1747999330}
   m_CullTransparentMesh: 1
 --- !u!1 &1749130484
 GameObject:
@@ -18948,14 +18733,11 @@ RectTransform:
   - {fileID: 1922530124}
   - {fileID: 1804278978}
   - {fileID: 25339354}
-  - {fileID: 1258702591}
-  - {fileID: 657308062}
-  - {fileID: 1747999331}
   m_Father: {fileID: 295676362}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 10.27, y: -1390.0005}
+  m_AnchoredPosition: {x: 10.27, y: -925.0003}
   m_SizeDelta: {x: 974.2249, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2128489694
@@ -19522,7 +19304,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 858b5590f21ac704e99746bf8f619ee7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 15
+  speed: 12
   jumpForce: 3000
   autoJumpForce: 0
   dashCooldown: 2
@@ -20147,7 +19929,8 @@ MonoBehaviour:
   laserCooldown: 0.5
   mask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 18807
+  laser: {fileID: 11400000, guid: b177b7ea1048acb4ba4a56f2f9808b5e, type: 2}
 --- !u!4 &2161114676778608187
 Transform:
   m_ObjectHideFlags: 0
@@ -20445,6 +20228,12 @@ MonoBehaviour:
   kirk: {fileID: 0}
   costText: {fileID: 0}
   upgradeButton: {fileID: 0}
+  upgradeSword: {fileID: 0}
+  upgradeGun: {fileID: 0}
+  upgradeLaser: {fileID: 0}
+  swordCost: {fileID: 0}
+  gunCost: {fileID: 0}
+  laserCost: {fileID: 0}
   healthCost: {fileID: 0}
   intelCost: {fileID: 0}
   damageCost: {fileID: 0}
@@ -21023,6 +20812,7 @@ MonoBehaviour:
   amountOfBullets: 100
   Shot: {fileID: 9914260}
   ShotSound: {fileID: 8300000, guid: 95023a032a55eac42950bb9084b9e186, type: 3}
+  gun: {fileID: 11400000, guid: 89796dd509d155c489c3b73dd4f4904c, type: 2}
 --- !u!1 &3622704265484628213
 GameObject:
   m_ObjectHideFlags: 0
@@ -21058,7 +20848,8 @@ MonoBehaviour:
   laserCooldown: 0.5
   mask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 18807
+  laser: {fileID: 11400000, guid: b177b7ea1048acb4ba4a56f2f9808b5e, type: 2}
 --- !u!114 &3630255787698879170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23200,6 +22991,7 @@ MonoBehaviour:
     m_Bits: 16704
   damage: 50
   critRate: 4
+  sword: {fileID: 11400000, guid: 6b028e9c8d81eb34ea8734eb7a6f325e, type: 2}
 --- !u!114 &8544795285834769375
 MonoBehaviour:
   m_ObjectHideFlags: 0

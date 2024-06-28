@@ -22,6 +22,7 @@ public class LaserGun : MonoBehaviour
     private float currentLaserAttackTime = 0f;
 
     private float laserWidth = 0.2f;
+    private float widthGrowth = 0f;
 
     private float intellectPerTick = 10f;
 
@@ -32,6 +33,8 @@ public class LaserGun : MonoBehaviour
 
     public LayerMask mask;
 
+    public ItemScriptableObject laser;
+
     private void Start()
     {
         lineRenderer.startWidth = laserWidth;
@@ -41,6 +44,25 @@ public class LaserGun : MonoBehaviour
     void Update()
     {
         if (!isActive) return;
+
+        if (laser.level == 1)
+        {
+            laserWidth = 0.1f;
+            intellectPerTick = 10f;
+            widthGrowth = 0;
+        }
+        else if (laser.level == 2)
+        {
+            laserWidth = 0.15f;
+            intellectPerTick = 7f;
+            widthGrowth = 0.001f;
+        }
+        else if (laser.level == 3)
+        {
+            laserWidth = 0.2f;
+            intellectPerTick = 5f;
+            widthGrowth = 0.002f;
+        }
 
         if (isShooting)
         {
@@ -70,8 +92,8 @@ public class LaserGun : MonoBehaviour
 
             lastDigit = (int)shootingTime;
 
-            lineRenderer.startWidth += 0.002f;
-            lineRenderer.endWidth += 0.002f;
+            lineRenderer.startWidth += widthGrowth;
+            lineRenderer.endWidth += widthGrowth;
 
             lineRenderer.startWidth = Mathf.Min(lineRenderer.startWidth, 1);
             lineRenderer.endWidth = Mathf.Min(lineRenderer.endWidth, 1);
@@ -141,7 +163,8 @@ public class LaserGun : MonoBehaviour
 
         Vector2 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
 
-        hitInfo = Physics2D.Raycast(firePoint.position, difference);
+        //hitInfo = Physics2D.Raycast(firePoint.position, difference);
+        hitInfo = Physics2D.Raycast(firePoint.position, difference, 100000, mask);
         //hitInfo = Physics2D.Raycast(firePoint.position, difference, 100000, mask);
 
         if (hitInfo)

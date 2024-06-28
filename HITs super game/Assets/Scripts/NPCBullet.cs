@@ -9,7 +9,7 @@ public class NPCBullet : MonoBehaviour
 
     public float lifeTime = 10f;
     public float distance;
-    public int damage;
+    private int damage = 20;
     public LayerMask whatIsSolid;
 
     private float currentLifeTime = 0f;

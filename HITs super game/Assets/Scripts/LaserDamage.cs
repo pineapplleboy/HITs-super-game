@@ -29,12 +29,33 @@ public class LaserDamage : MonoBehaviour
 
     public LayerMask mask;
 
+    public ItemScriptableObject laser;
+
     void Update()
     {
         if (PlayerStats.isDead)
             return;
 
         if (!isActive) return;
+
+        if (laser.level == 1)
+        {
+            baseDamage = 20;
+            maxDamage = 70;
+            intellectPerTick = 10f;
+        }
+        else if (laser.level == 2)
+        {
+            baseDamage = 50;
+            maxDamage = 152;
+            intellectPerTick = 7f;
+        }
+        else if (laser.level == 3)
+        {
+            baseDamage = 60;
+            maxDamage = 200;
+            intellectPerTick = 5f;
+        }
 
         if (isShooting)
         {
@@ -86,8 +107,8 @@ public class LaserDamage : MonoBehaviour
 
         Vector2 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
 
-        hitInfo = Physics2D.Raycast(firePoint.position, difference);
-        //hitInfo = Physics2D.Raycast(firePoint.position, difference, 100000, mask);
+        //hitInfo = Physics2D.Raycast(firePoint.position, difference);
+        hitInfo = Physics2D.Raycast(firePoint.position, difference, 100000, mask);
 
         if (hitInfo)
         {

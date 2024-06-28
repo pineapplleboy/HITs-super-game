@@ -15,12 +15,16 @@ public class Gun : MonoBehaviour
 
     public static int damage = 10;
 
-    public int amountOfBullets = 100;
+    public int amountOfBullets = 10000;
 
     public static bool isActive = false;
 
     public AudioSource Shot;
     public AudioClip ShotSound;
+
+    public ItemScriptableObject gun;
+
+    public static float bulletSpeed;
 
     void Update()
     {
@@ -29,33 +33,33 @@ public class Gun : MonoBehaviour
 
         if (!isActive) return;
 
+        if (gun.level == 1)
+        {
+            shotSpeed = 0.5f;
+            damage = 15;
+            bulletSpeed = 15f;
+        }
+        else if (gun.level == 2)
+        {
+            shotSpeed = 0.3f;
+            damage = 20;
+            bulletSpeed = 20f;
+        }
+        else if (gun.level == 3)
+        {
+            shotSpeed = 0.15f;
+            damage = 17;
+            bulletSpeed = 23f;
+        }
+
         Vector2 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
         float rotZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
-
-        //if (amountOfBullets > 0 && Input.GetMouseButton(0)) {
-        //    if (PlayerMovement.isFacedRight)
-        //        transform.rotation = Quaternion.Euler(0f, 0f, rotZ + offset);
-        //    else
-        //        transform.rotation = Quaternion.Euler(180f, 0f, rotZ);
-        //}
-        //else
-        //{
-        //    PlayerMovement.isShooting = false;
-        //    if (PlayerMovement.isFacedRight)
-        //    {
-        //        transform.rotation = Quaternion.Euler(0f, 0f, -90f);
-        //    }
-        //    else
-        //    {
-        //        transform.rotation = Quaternion.Euler(180f, 0f, 90f);
-        //    }
-        //}
 
         ChangePosition();
 
         if (currentShotTime <= 0)
         {
-            if (amountOfBullets > 0 && Input.GetMouseButton(0))
+            if (Input.GetMouseButton(0))
             {
                 PlayerMovement.isShooting = true;
                 amountOfBullets--;

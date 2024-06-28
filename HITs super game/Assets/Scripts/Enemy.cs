@@ -25,6 +25,8 @@ public class Enemy : MonoBehaviour
 
     private COMPUTER computer;
 
+    private float lifeTime = 0f;
+
     void Start()
     {
         currentHealth = maxHealth;
@@ -50,6 +52,13 @@ public class Enemy : MonoBehaviour
             }
         }
 
+        lifeTime += Time.deltaTime;
+
+        if (lifeTime >= 120)
+        {
+            Die();
+        }
+
         if (IsFarAway())
         {
             Spawner.currentNearEnemies--;
@@ -64,11 +73,11 @@ public class Enemy : MonoBehaviour
         {
             if (onRaid)
             {
-                PlayerStats.TakeTouchDamage(100, 0);
+                PlayerStats.TakeTouchDamage(90, 0);
             }
             else
             {
-                PlayerStats.TakeTouchDamage(70, 0);
+                PlayerStats.TakeTouchDamage(60, 0);
             }
             
             Spawner.currentNearEnemies--;
@@ -166,7 +175,7 @@ public class Enemy : MonoBehaviour
         }
 
         return Mathf.Sqrt(Mathf.Pow(transform.position.x - player.position.x, 2) + 
-            Mathf.Pow(transform.position.y - player.position.y, 2)) > 150;
+            Mathf.Pow(transform.position.y - player.position.y, 2)) > 100;
     }
 
     public void SetIndex(int index)

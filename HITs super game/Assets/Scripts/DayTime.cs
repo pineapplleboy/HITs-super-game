@@ -8,10 +8,12 @@ public class DayTime : MonoBehaviour
     public static int daysCounter;
     public static int nightsCounter;
 
-    private float dayTime = 12f;
-    private float nightTime = 12f;
+    public static int raidsCounter = 0;
 
-    private float raidTime = 24f;
+    private float dayTime = 300f;
+    private float nightTime = 120f;
+
+    private float raidTime = 120f;
 
     private float secondsInHour = 1f;
 
@@ -25,7 +27,7 @@ public class DayTime : MonoBehaviour
 
     private float currentTime;
 
-    private int raidFrequency = 50;
+    private int raidFrequency = 1;
 
     void Start()
     {
@@ -74,7 +76,7 @@ public class DayTime : MonoBehaviour
             if (daysCounter % raidFrequency == 0 && !Spawner.isAttack)
             {
                 Spawner.isAttack = true;
-                Guide.ShowMessage("яхйн лнд");
+                Guide.ShowMessage("О©╫О©╫О©╫О©╫ О©╫О©╫О©╫");
             }
 
             // Debug.Log("night" + " " + GetTime());
@@ -83,11 +85,16 @@ public class DayTime : MonoBehaviour
         else if (!isDay && currentTime >= nightTime)
         {
             Camera.main.transform.Find("Background").GetComponent<Animator>().SetTrigger("Start");
+            if (Spawner.isAttack)
+            {
+                Spawner.isAttack = false;
+                raidsCounter++;
+                Guide.ShowMessage("О©╫О©╫О©╫О©╫ О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫");
+            }
+
             isDay = true;
             nightsCounter++;
             currentTime = 0;
-
-            Spawner.isAttack = false;
 
             // Debug.Log("day" + " " + GetTime());
 

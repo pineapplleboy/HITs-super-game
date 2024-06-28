@@ -15,7 +15,7 @@ public class SwordAttack : MonoBehaviour
     public float attackSpeed = 1;
 
     public Transform attackPoint;
-    public float attackRange = 5;
+    public float attackRange = 3;
     public LayerMask enemyLayers;
 
     public int damage = 50;
@@ -25,6 +25,8 @@ public class SwordAttack : MonoBehaviour
     private float maxSwingTime = 1f;
 
     public static bool isActive = true;
+
+    public ItemScriptableObject sword;
 
     private void Start()
     {
@@ -36,6 +38,19 @@ public class SwordAttack : MonoBehaviour
         if (PlayerStats.isDead)
             return;
         if (!isActive) return;
+
+        if (sword.level == 1)
+        {
+            Debug.Log("sword level 1");
+        }
+        else if (sword.level == 2)
+        {
+            Debug.Log("sword level 2");
+        }
+        else if (sword.level == 3)
+        {
+            Debug.Log("sword level 3");
+        }
 
         if (PlayerStats.isBlocking && !Input.GetMouseButton(1)) PlayerStats.UnBlock();
         

@@ -342,7 +342,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  jumpForce: 1500
+  jumpForce: 1350
   damage: 100
   attackPoint: {fileID: 7569214471383365269}
   attackRange: 5
