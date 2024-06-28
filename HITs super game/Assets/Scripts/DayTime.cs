@@ -8,6 +8,8 @@ public class DayTime : MonoBehaviour
     public static int daysCounter;
     public static int nightsCounter;
 
+    public static int raidsCounter = 0;
+
     private float dayTime = 12f;
     private float nightTime = 12f;
 
@@ -82,12 +84,16 @@ public class DayTime : MonoBehaviour
         }
         else if (!isDay && currentTime >= nightTime)
         {
+            if (Spawner.isAttack)
+            {
+                Spawner.isAttack = false;
+                raidsCounter++;
+                Guide.ShowMessage("СИКО МОД закончился");
+            }
 
             isDay = true;
             nightsCounter++;
             currentTime = 0;
-
-            Spawner.isAttack = false;
 
             // Debug.Log("day" + " " + GetTime());
 
