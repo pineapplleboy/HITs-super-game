@@ -42,8 +42,33 @@ public class PlayerStats : MonoBehaviour
     private float currentSaveCd = 0f;
     private float saveCd = 300f;
 
+    private string saveKey = "mainSaveMoney";
+    private SaveData.Money GetSaveSnapshot()
+    {
+        var data = new SaveData.Money()
+        {
+            value = money,
+        };
+
+        return data;
+    }
+
+    public void Save()
+    {
+        SaveManager.Save(saveKey, GetSaveSnapshot());
+    }
+
+    public void Load()
+    {
+        var data = SaveManager.Load<SaveData.Money>(saveKey);
+        money = data.value;
+        GameObject.Find("MainCanvas").GetComponent<InventoryManager>().UpdateMoneyOnScreen();
+
+    }
     void Start()
     {
+        Load();
+
         damageResistance = new List<int>() { 0, 0, 0 };
         tempDamageResistance = new List<int>() { 0, 0, 0 };
 
@@ -79,7 +104,7 @@ public class PlayerStats : MonoBehaviour
             }
             else
             {
-                Guide.ShowMessage("�����������. �������� " + (int)currentPotionCd + " ������");
+                Guide.ShowMessage("Перезарядка. Осталось " + (int)currentPotionCd + " секунд");
             }
             
         }

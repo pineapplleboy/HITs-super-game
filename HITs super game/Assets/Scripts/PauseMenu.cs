@@ -34,6 +34,7 @@ public class PauseMenu : MonoBehaviour
         GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>().Save();
         GameObject.Find("BaseManager").GetComponent<BaseManagement>().Save();
         GameObject.Find("MainCanvas").GetComponent<InventoryManager>().Save();
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>().Save();
         PermanentStatsBoost.Save();
         Time.timeScale = 1;
         SceneManager.LoadScene("MainMenu");

@@ -26,6 +26,33 @@ namespace SaveData
     }
 
     [System.Serializable]
+    public class Money
+    {
+        public int value;
+        public Money()
+        {
+            value = 0;
+        }
+    }
+
+    [System.Serializable]
+    public class Weapons
+    {
+        public int sword;
+        public int gun;
+        public int laser;
+        public int pickaxe;
+
+        public Weapons()
+        {
+            sword = 0;
+            gun = 0;
+            laser = 0;
+            pickaxe = 1;
+        }
+    }
+
+    [System.Serializable]
     public class PermanentStats
     {
         public int maxHealthBoost;

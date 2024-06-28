@@ -53,6 +53,7 @@ public class InventoryManager : MonoBehaviour
 
     private string saveKey = "mainSaveInventory";
     private string saveKey2 = "mainSavePermLvls";
+    private string saveKey3 = "mainSaveWeapons";
 
     public ItemScriptableObject[] items;
     private SaveData.PermStatsLvls GetSaveSnapshot2()
@@ -66,6 +67,19 @@ public class InventoryManager : MonoBehaviour
             rangeLevel = rangeLevel,
             regenLevel = regenLevel,
             regenIntLevel = regenIntLevel,
+        };
+
+        return data;
+    }
+
+    private SaveData.Weapons GetSaveSnapshot3()
+    {
+        var data = new SaveData.Weapons()
+        {
+            sword = sword.GetComponent<Item>().item.level,
+            gun = gun.GetComponent<Item>().item.level,
+            laser = laserGun.GetComponent<Item>().item.level,
+            pickaxe = kirk.GetComponent<Item>().item.level,
         };
 
         return data;
@@ -113,10 +127,80 @@ public class InventoryManager : MonoBehaviour
     {
         SaveManager.Save(saveKey, GetSaveSnapshot());
         SaveManager.Save(saveKey2, GetSaveSnapshot2());
+        SaveManager.Save(saveKey3, GetSaveSnapshot3());
     }
 
     public void Load()
     {
+        var data3 = SaveManager.Load<SaveData.Weapons>(saveKey3);
+        sword.GetComponent<Item>().item.level = data3.sword;
+        gun.GetComponent<Item>().item.level = data3.gun;
+        laserGun.GetComponent<Item>().item.level = data3.laser;
+        kirk.GetComponent<Item>().item.level = data3.pickaxe;
+
+        if (sword.GetComponent<Item>().item.level == 1)
+        {
+            upgradeSword.text = "УЛУЧШИТЬ";
+            swordCost.text = "1000";
+        }
+        else if (sword.GetComponent<Item>().item.level == 2)
+        {
+            upgradeSword.text = "УЛУЧШИТЬ";
+            swordCost.text = "1500";
+        }
+        else if (sword.GetComponent<Item>().item.level == 3)
+        {
+            swordCost.text = "MAX";
+            upgradeSword.text = "MAX";
+        }
+
+        if (gun.GetComponent<Item>().item.level == 1)
+        {
+            upgradeGun.text = "УЛУЧШИТЬ";
+            gunCost.text = "2000";
+        }
+        else if (gun.GetComponent<Item>().item.level == 2)
+        {
+            upgradeGun.text = "УЛУЧШИТЬ";
+            gunCost.text = "3000";
+        }
+        else if (gun.GetComponent<Item>().item.level == 3)
+        {
+            gunCost.text = "MAX";
+            upgradeGun.text = "MAX";
+        }
+
+        if (laserGun.GetComponent<Item>().item.level == 1)
+        {
+            upgradeLaser.text = "УЛУЧШИТЬ";
+            laserCost.text = "3500";
+        }
+        else if (laserGun.GetComponent<Item>().item.level == 2)
+        {
+            upgradeLaser.text = "УЛУЧШИТЬ";
+            laserCost.text = "5000";
+        }
+        else if (laserGun.GetComponent<Item>().item.level == 3)
+        {
+            laserCost.text = "MAX";
+            upgradeLaser.text = "MAX";
+        }
+
+        Item kirka = kirk.GetComponent<Item>();
+        if (kirka.item.level == 2)
+        {
+            costText.text = "1000";
+        }
+        else if (kirka.item.level == 3)
+        {
+            costText.text = "2000";
+        }
+        else if (kirka.item.level == 4)
+        {
+            costText.text = "MAX";
+            upgradeButton.SetActive(false);
+        }
+
         var data = SaveManager.Load<SaveData.Inventory>(saveKey);
 
         for(int i = 0; i < slots.Count; ++i)
@@ -323,10 +407,6 @@ public class InventoryManager : MonoBehaviour
         }
         Panel.SetActive(false);
         ShopPanel.SetActive(false);
-        sword.GetComponent<Item>().item.level = 0;
-        gun.GetComponent<Item>().item.level = 0;
-        laserGun.GetComponent<Item>().item.level = 0;
-        kirk.GetComponent<Item>().item.level = 1;
         Load();
     }
 

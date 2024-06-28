@@ -76,7 +76,7 @@ public class DayTime : MonoBehaviour
             if (daysCounter % raidFrequency == 0 && !Spawner.isAttack)
             {
                 Spawner.isAttack = true;
-                Guide.ShowMessage("���� ���");
+                Guide.ShowMessage("Рейд начался");
             }
 
             // Debug.Log("night" + " " + GetTime());
@@ -89,7 +89,7 @@ public class DayTime : MonoBehaviour
             {
                 Spawner.isAttack = false;
                 raidsCounter++;
-                Guide.ShowMessage("���� ��� ����������");
+                Guide.ShowMessage("Рейд закончился");
             }
 
             isDay = true;
