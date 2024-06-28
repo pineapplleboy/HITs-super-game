@@ -15,6 +15,7 @@ TagManager:
   - ChooseRoomPanel
   - COMPUTER
   - Guide
+  - Info
   layers:
   - Default
   - TransparentFX
