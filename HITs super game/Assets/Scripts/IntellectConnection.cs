@@ -37,7 +37,17 @@ public class IntellectConnection : MonoBehaviour
             {
                 NextTarget(hitEnemies);
             }
+
+            if (ExplosionScript.readyToAttack)
+            {
+                DrawTarget();
+            }
         }
+    }
+
+    private void DrawTarget()
+    {
+
     }
 
     private void OnDrawGizmosSelected()

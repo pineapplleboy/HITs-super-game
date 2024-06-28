@@ -13538,7 +13538,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 10.27, y: -1390.0012}
+  m_AnchoredPosition: {x: 10.27, y: -1389.9998}
   m_SizeDelta: {x: 974.2249, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2128489694
@@ -15124,7 +15124,7 @@ GameObject:
   - component: {fileID: 2532773818659373814}
   - component: {fileID: 7155947544013011276}
   - component: {fileID: 6945109352953285843}
-  - component: {fileID: 3224482700025955743}
+  - component: {fileID: 8544795285834769375}
   - component: {fileID: 4769605644511814818}
   - component: {fileID: 3196629512576848448}
   m_Layer: 7
@@ -15407,18 +15407,6 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
---- !u!114 &3224482700025955743
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2640865200587604953}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b050b053ced2f1843a65bf17e717f86a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!222 &3245339627670579466
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -16960,7 +16948,7 @@ MonoBehaviour:
   attackRange: 20
   enemyLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 16704
 --- !u!114 &6982598361621259345
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17781,6 +17769,18 @@ MonoBehaviour:
     m_Bits: 16704
   damage: 50
   critRate: 4
+--- !u!114 &8544795285834769375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2640865200587604953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c2fa765f0432314c9ae1b7833878f41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8584160901709831962
 GameObject:
   m_ObjectHideFlags: 0
