@@ -140,6 +140,8 @@ public class Enemy : MonoBehaviour
 
     void Die()
     {
+        GameObject.Find("DeadSound").GetComponent<AudioSource>().Play();
+
         Spawner.currentNearEnemies--;
         GetComponent<Collider2D>().enabled = false;
         died = true;

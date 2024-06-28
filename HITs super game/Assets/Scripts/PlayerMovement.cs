@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEditor;
 using UnityEngine;
 
@@ -47,6 +48,10 @@ public class PlayerMovement : MonoBehaviour
     private bool isInBlock = false;
 
     private WorldGeneration world;
+
+    [SerializeField] AudioSource StepSound;
+    [SerializeField] AudioClip[] Steps;
+    private float stepsSoundTime;
 
     void Start()
     {
@@ -132,6 +137,16 @@ public class PlayerMovement : MonoBehaviour
 
         if(moveX != 0){
             animator.SetBool("isRunning", true);
+            if (stepsSoundTime <= 0)
+            {
+                StepSound.clip = Steps[UnityEngine.Random.Range(0, Steps.Length)];
+                stepsSoundTime = StepSound.clip.length + 0.3f;
+                StepSound.Play();
+            }
+            else
+            {
+                stepsSoundTime -= Time.deltaTime;
+            }
         }
         else
         {

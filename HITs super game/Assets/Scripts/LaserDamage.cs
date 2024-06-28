@@ -50,6 +50,7 @@ public class LaserDamage : MonoBehaviour
             shootingTime += Time.deltaTime;
             PlayerStats.intellectAmount -= intellectPerTick * Time.deltaTime;
             Shoot();
+            GameObject.Find("Sound").GetComponent<AudioSource>().Play();
 
             if ((int)shootingTime != lastDigit)
             {
@@ -67,6 +68,8 @@ public class LaserDamage : MonoBehaviour
             realDamage = baseDamage;
             shootingTime = 0f;
             currentLaserAttackTime = 0f;
+
+            GameObject.Find("Sound").GetComponent<AudioSource>().Stop();
         }
     }
 

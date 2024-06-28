@@ -98,7 +98,10 @@ public class LaserGun : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
-            transform.rotation = Quaternion.Euler(0f, 0f, rotZ - 90);
+            if (PlayerMovement.isFacedRight)
+                transform.rotation = Quaternion.Euler(0f, 0f, rotZ - 90);
+            else
+                transform.rotation = Quaternion.Euler(0f, 180f, 90 - rotZ);
         }
         else
         {
@@ -109,10 +112,9 @@ public class LaserGun : MonoBehaviour
             }
             else
             {
-                transform.rotation = Quaternion.Euler(0f, 0f, 90f);
+                transform.rotation = Quaternion.Euler(180f, 0f, 90f);
             }
         }
-
 
         if (PlayerStats.intellectAmount > 0 && Input.GetMouseButton(0))
         {

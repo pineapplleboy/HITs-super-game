@@ -15,8 +15,9 @@ MonoBehaviour:
   itemType: 0
   itemPrefab: {fileID: 312115067703082325, guid: b32cc45d5f33a3e4b8295ff2080c65c2, type: 3}
   itemName: LaserGun
-  icon: {fileID: -1127442751, guid: b424224c91c9d0d40949ee6c7e26b419, type: 3}
+  icon: {fileID: 1110748015, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
   maximumAmount: 1
+  level: 1
   itemDescription: 
   isConsumeable: 0
   healAmount: 0

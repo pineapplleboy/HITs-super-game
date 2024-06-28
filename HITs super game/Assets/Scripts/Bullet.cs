@@ -49,6 +49,7 @@ public class Bullet : MonoBehaviour
         Enemy enemy = collision.GetComponent<Enemy>();
         if (enemy != null)
         {
+            GameObject.Find("Hit").GetComponent<AudioSource>().Play();
             enemy.TakeDamage(CalculateDamage(), 1);
         }
 
