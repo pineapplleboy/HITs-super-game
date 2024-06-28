@@ -25,7 +25,9 @@ public class Spawner : MonoBehaviour
 
     public static int spawnRate = 3;
     private int maxNearEnemies = 1;
-    private int raidMaxNearEnemies = 15;
+    private int raidMaxNearEnemies = 10;
+
+    private float raidEnemiesGrowth = 1.7f;
 
     private float spawnCd = 3f;
     private float raidSpawnCd = 1.5f;
@@ -69,6 +71,9 @@ public class Spawner : MonoBehaviour
     void Update()
     {
         timer += Time.deltaTime;
+
+        raidMaxNearEnemies = (int) (10 * Mathf.Pow(raidEnemiesGrowth, DayTime.raidsCounter));
+        raidSpawnCd = 1.5f + DayTime.raidsCounter / 10;
 
         //computerCoord = new Vector2(world.worldWidth / 2 + 20 / 2, world.GetFloorHeight() / 2);
         computerCoord = GameObject.FindGameObjectWithTag("COMPUTER").GetComponent<COMPUTER>().transform.position;

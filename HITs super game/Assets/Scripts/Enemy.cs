@@ -25,6 +25,8 @@ public class Enemy : MonoBehaviour
 
     private COMPUTER computer;
 
+    private float lifeTime = 0f;
+
     void Start()
     {
         currentHealth = maxHealth;
@@ -48,6 +50,13 @@ public class Enemy : MonoBehaviour
             {
                 Destroy(gameObject);
             }
+        }
+
+        lifeTime += Time.deltaTime;
+
+        if (lifeTime >= 2)
+        {
+            Die();
         }
 
         if (IsFarAway())
@@ -166,7 +175,7 @@ public class Enemy : MonoBehaviour
         }
 
         return Mathf.Sqrt(Mathf.Pow(transform.position.x - player.position.x, 2) + 
-            Mathf.Pow(transform.position.y - player.position.y, 2)) > 150;
+            Mathf.Pow(transform.position.y - player.position.y, 2)) > 100;
     }
 
     public void SetIndex(int index)
