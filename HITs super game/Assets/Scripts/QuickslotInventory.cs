@@ -79,6 +79,7 @@ public class QuickslotInventory : MonoBehaviour
                     quickslotParent.GetChild(currentQuickslotID).GetComponent<Image>().sprite = selectedSprite;
                     Check();
                 }
+                Check();
             }
         }
 
@@ -177,6 +178,16 @@ public class QuickslotInventory : MonoBehaviour
                     sword.SetActive(false);
                     gun.SetActive(false);
                 }
+            }
+            else
+            {
+                SwordAttack.isActive = false;
+                Gun.isActive = false;
+                LaserGun.isActive = false;
+                LaserDamage.isActive = false;
+                laserGun.SetActive(false);
+                sword.SetActive(false);
+                gun.SetActive(false);
             }
         }
         else

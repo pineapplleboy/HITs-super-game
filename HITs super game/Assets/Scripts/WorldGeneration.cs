@@ -771,6 +771,7 @@ public class WorldGeneration : MonoBehaviour
                 }
                 else
                 {
+                    Guide.ShowMessage($"Кирка {QuickslotPanel.GetChild(i).GetComponent<InventorySlot>().item.level} уровня, нужен {blocks.GetBlock(world[blockPressedCoords.x, blockPressedCoords.y].name).item.level} уровень");
                     Debug.Log($"пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ {QuickslotPanel.GetChild(i).GetComponent<InventorySlot>().item.level}, пїЅ пїЅпїЅпїЅпїЅпїЅ {blocks.GetBlock(world[blockPressedCoords.x, blockPressedCoords.y].name).item.level}");
                 }
             }

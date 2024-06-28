@@ -55,7 +55,7 @@ public class DragAndDropItem : MonoBehaviour, IPointerDownHandler, IPointerUpHan
         transform.position = oldSlot.transform.position;
         if (eventData.pointerCurrentRaycast.gameObject.name == "UIPanel")
         {
-            if (oldSlot.item.itemName != "kirk")
+            if (oldSlot.item.itemType.ToString() != "Weapon")
             {
                 DropAndThrowItem();
             }

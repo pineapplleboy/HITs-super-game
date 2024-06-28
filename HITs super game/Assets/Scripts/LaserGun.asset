@@ -17,7 +17,7 @@ MonoBehaviour:
   itemName: LaserGun
   icon: {fileID: 1110748015, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
   maximumAmount: 1
-  level: 1
+  level: 0
   itemDescription: 
   isConsumeable: 0
   healAmount: 0
