@@ -90,6 +90,6 @@ public class SwordAttack : MonoBehaviour
     private int CurrentDamage()
     {
         int boostDamage = (int) (damage * (swingTime / maxSwingTime));
-        return (int) Random.Range(damage * 0.75f, damage * 1.25f + 1) + boostDamage;
+        return (int) ((Random.Range(damage * 0.75f, damage * 1.25f + 1) + boostDamage) * PermanentStatsBoost.damageBoost);
     }
 }

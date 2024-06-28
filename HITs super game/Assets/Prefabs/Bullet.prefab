@@ -235,7 +235,7 @@ MonoBehaviour:
   damage: 10
   whatIsSolid:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 16704
 --- !u!58 &7139699836646212901
 CircleCollider2D:
   m_ObjectHideFlags: 0

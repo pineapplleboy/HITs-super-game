@@ -4502,7 +4502,7 @@ MonoBehaviour:
   - {fileID: 1870344505190257690, guid: 9858b640c4d4b9b45bea0a442c3b941a, type: 3}
   - {fileID: 1870344505190257690, guid: d43923932d6c3054b9bd8dab01e1aae5, type: 3}
   - {fileID: 1870344505190257690, guid: 15b52bc44fc54dd4cbc3ca835aece875, type: 3}
-  - {fileID: 1870344505190257690, guid: 60dfa1226c7fe1649baf83a87149d83c, type: 3}
+  - {fileID: 1870344505190257690, guid: f962e264c1219834292fab1857403f84, type: 3}
   raidEnemies:
   - {fileID: 1870344505190257690, guid: 2f030c2ae55aeee4fb7816e7baa0385d, type: 3}
   - {fileID: 1870344505190257690, guid: ae42f8bcbd27528418c7a2e99d1b004e, type: 3}
@@ -17778,7 +17778,7 @@ MonoBehaviour:
   attackRange: 5
   enemyLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 16704
   damage: 50
   critRate: 4
 --- !u!1 &8584160901709831962

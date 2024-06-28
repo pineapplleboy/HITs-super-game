@@ -72,6 +72,6 @@ public class Bullet : MonoBehaviour
 
     int CalculateDamage()
     {
-        return (int)Random.Range((damage + gunDamage) * 0.75f, (damage + gunDamage) * 1.25f + 1);
+        return (int)((Random.Range((damage + gunDamage) * 0.75f, (damage + gunDamage) * 1.25f + 1)) * PermanentStatsBoost.damageBoost);
     }
 }

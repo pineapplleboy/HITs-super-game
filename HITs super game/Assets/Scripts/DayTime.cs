@@ -8,7 +8,7 @@ public class DayTime : MonoBehaviour
     public static int daysCounter;
     public static int nightsCounter;
 
-    private float dayTime = 36f;
+    private float dayTime = 12f;
     private float nightTime = 12f;
 
     private float raidTime = 24f;
@@ -25,7 +25,7 @@ public class DayTime : MonoBehaviour
 
     private float currentTime;
 
-    private int raidFrequency = 3;
+    private int raidFrequency = 50;
 
     void Start()
     {

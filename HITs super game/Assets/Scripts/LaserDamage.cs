@@ -107,6 +107,6 @@ public class LaserDamage : MonoBehaviour
 
     int CalculateDamage()
     {
-        return (int)Random.Range((realDamage) * 0.75f, (realDamage) * 1.25f + 1);
+        return (int)((Random.Range((realDamage) * 0.75f, (realDamage) * 1.25f + 1)) * PermanentStatsBoost.damageBoost);
     }
 }

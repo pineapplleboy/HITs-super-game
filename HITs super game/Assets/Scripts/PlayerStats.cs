@@ -24,6 +24,10 @@ public class PlayerStats : MonoBehaviour
     public static float intellectAmount = 100;
     public static float maxIntellectAmount = 100;
 
+    private float whenStartHealing = 2.5f;
+    private float currentTakeDamageTime = 0f;
+    private float addHeartsAmount = 0f;
+
     public TMPro.TMP_Text HealthText;
     public TMPro.TMP_Text IntellectText;
 
@@ -41,9 +45,29 @@ public class PlayerStats : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKey(KeyCode.J))
+        {
+            healthAmount -= 1000;
+            GameObject.FindGameObjectWithTag("COMPUTER").GetComponent<COMPUTER>().TakeDamage(1000);
+        }
+
+        currentTakeDamageTime += Time.deltaTime;
+
+        if (currentTakeDamageTime >= whenStartHealing)
+        {
+            Heal();
+        }
+
+        maxHealth = 100 + PermanentStatsBoost.maxHealthBoost;
+        maxIntellectAmount = 100 + PermanentStatsBoost.maxIntellectBoost;
+
+        damageResistance[0] = PermanentStatsBoost.meleeResistanceBoost;
+        damageResistance[1] = PermanentStatsBoost.rangeResistanceBoost;
+
         healthAmount = (healthAmount < 0) ? 0 : healthAmount;
         currHealth = healthAmount;
-        intellectAmount += 3 * Time.deltaTime;
+
+        intellectAmount += 3 * Time.deltaTime * PermanentStatsBoost.intellectRegenSpeedBoost;
         intellectAmount = Mathf.Min(intellectAmount, maxIntellectAmount);
 
         HealthText.text = Convert.ToInt32(healthAmount).ToString() + "/" + Convert.ToInt32(maxHealth).ToString();
@@ -86,6 +110,16 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
+    private void Heal()
+    {
+        addHeartsAmount += 5 * Time.deltaTime * PermanentStatsBoost.regenerationSpeedBoost;
+
+        healthAmount += (int)addHeartsAmount;
+        healthAmount = Mathf.Min(healthAmount, maxHealth);
+
+        addHeartsAmount %= 1;
+    }
+
     private void SetAlpha(GameObject Image, float alpha)
     {
         var tempColor = Image.GetComponent<Image>().color;
@@ -109,7 +143,9 @@ public class PlayerStats : MonoBehaviour
 
     public void TakeDamage(int damage, int typeOfDamage)
     {
+        currentTakeDamageTime = 0;
         healthAmount -= CalculateDamage(damage, typeOfDamage);
+        addHeartsAmount = 0;
 
         if (healthAmount <= 0)
         {
