@@ -17,6 +17,7 @@ MonoBehaviour:
   itemName: kirk
   icon: {fileID: 484658470, guid: 05138d0fea3443f4083045a848d446ec, type: 3}
   maximumAmount: 1
+  level: 4
   itemDescription: 
   isConsumeable: 0
   healAmount: 0

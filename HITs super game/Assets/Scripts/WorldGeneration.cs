@@ -723,7 +723,7 @@ public class WorldGeneration : MonoBehaviour
         Render();
     }
 
-    public void BreakBlock(float distanceToBreak)
+    public void BreakBlock(float distanceToBreak, int i)
     {
         Vector3 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector3Int cellPosition = tilemap.WorldToCell(worldPoint);
@@ -748,17 +748,25 @@ public class WorldGeneration : MonoBehaviour
 
             if (world[blockPressedCoords.x, blockPressedCoords.y] != null && blockPressedTime >= world[blockPressedCoords.x, blockPressedCoords.y].GetTimeToBreak())
             {
-                GameObject newTileDrop = Instantiate(tileDrop, new Vector2(blockPressedCoords.x + 0.5f, blockPressedCoords.y + 1), Quaternion.identity);
-                newTileDrop.GetComponent<SpriteRenderer>().sprite = tilemap.GetSprite(cellPosition);
-                newTileDrop.GetComponent<Item>().item = blocks.GetBlock(world[blockPressedCoords.x, blockPressedCoords.y].name).item;
-
-                if (world[blockPressedCoords.x, blockPressedCoords.y].getImportance())
+                if (QuickslotPanel.GetChild(i).GetComponent<InventorySlot>().item.level >= blocks.GetBlock(world[blockPressedCoords.x, blockPressedCoords.y].name).item.level)
                 {
-                    DestroyRoom(blockPressedCoords.x, blockPressedCoords.y);
-                }
+                    GameObject newTileDrop = Instantiate(tileDrop, new Vector2(blockPressedCoords.x + 0.5f, blockPressedCoords.y + 1), Quaternion.identity);
+                    newTileDrop.GetComponent<SpriteRenderer>().sprite = tilemap.GetSprite(cellPosition);
+                    newTileDrop.GetComponent<Item>().item = blocks.GetBlock(world[blockPressedCoords.x, blockPressedCoords.y].name).item;
 
-                world[blockPressedCoords.x, blockPressedCoords.y] = null;
+                    if (world[blockPressedCoords.x, blockPressedCoords.y].getImportance())
+                    {
+                        DestroyRoom(blockPressedCoords.x, blockPressedCoords.y);
+                    }
+
+                    world[blockPressedCoords.x, blockPressedCoords.y] = null;
+                }
+                else
+                {
+                    Debug.Log($"��� ������� ����� {QuickslotPanel.GetChild(i).GetComponent<InventorySlot>().item.level}, � ����� {blocks.GetBlock(world[blockPressedCoords.x, blockPressedCoords.y].name).item.level}");
+                }
             }
+               
         }
 
         Render();
@@ -1193,7 +1201,7 @@ public class WorldGeneration : MonoBehaviour
                     {
                         if (Input.GetKey(KeyCode.Mouse0))
                         {
-                            BreakBlock(5);
+                            BreakBlock(5, i);
                         }
                     }
                 }

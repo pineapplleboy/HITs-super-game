@@ -26,7 +26,10 @@ public class InventoryManager : MonoBehaviour
     public GameObject stoneBricks;
     public GameObject aluminiumBricks;
     public GameObject leadBricks;
+    public GameObject kirk;
     private bool isNear = false;
+    public TMP_Text costText;
+    public GameObject upgradeButton;
 
     private string saveKey = "mainSaveInventory";
 
@@ -269,6 +272,53 @@ public class InventoryManager : MonoBehaviour
         else
         {
             Guide.ShowMessage("Недостаточно денег");
+        }
+    }
+    public void UpgradeKirk()
+    {
+        Item kirka = kirk.GetComponent<Item>();
+        Debug.Log("YURA");
+        if (kirka.item.level == 1)
+        {
+            if (player.GetComponent<PlayerStats>().money >= 300)
+            {
+                player.GetComponent<PlayerStats>().money -= 300;
+                wallet.text = player.GetComponent<PlayerStats>().money.ToString();
+                kirka.item.level += 1;
+                costText.text = "1000";
+            }
+            else
+            {
+                Debug.Log("Вы бедны");
+            }
+        }
+        else if (kirka.item.level == 2)
+        {
+            if (player.GetComponent<PlayerStats>().money >= 1000)
+            {
+                player.GetComponent<PlayerStats>().money -= 1000;
+                wallet.text = player.GetComponent<PlayerStats>().money.ToString();
+                kirka.item.level += 1;
+                costText.text = "2000";
+            }
+            else
+            {
+                Debug.Log("Вы бедны");
+            }
+        }
+        else if (kirka.item.level == 3)
+        {
+            if (player.GetComponent<PlayerStats>().money >= 2000)
+            {
+                player.GetComponent<PlayerStats>().money -= 2000;
+                wallet.text = player.GetComponent<PlayerStats>().money.ToString();
+                kirka.item.level += 1;
+                upgradeButton.SetActive(false);
+            }
+            else
+            {
+                Debug.Log("Вы бедны");
+            }
         }
     }
     public void AddItem(ItemScriptableObject _item, int _amount)

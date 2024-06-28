@@ -11,6 +11,7 @@ public class ItemScriptableObject : ScriptableObject
     public string itemName;
     public Sprite icon;
     public int maximumAmount;
+    public int level = 1;
     public string itemDescription;
     public bool isConsumeable;
 }
