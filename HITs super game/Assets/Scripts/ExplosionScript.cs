@@ -5,7 +5,7 @@ using UnityEngine;
 public class ExplosionScript : MonoBehaviour
 {
     private int damage = 2000;
-    private int needIntellect = 20;
+    private int needIntellect = 70;
 
     private float attackCd = 5f;
     private float currentCd = 0f;

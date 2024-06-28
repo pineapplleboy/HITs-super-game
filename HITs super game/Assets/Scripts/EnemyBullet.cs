@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class EnemyBullet : MonoBehaviour
 {
-    public float speed = 20f;
+    public float speed = 15f;
     public Rigidbody2D rb;
 
     public float lifeTime = 10f;
     public float distance;
-    public int damage;
+    private int damage = 1;
     public LayerMask whatIsSolid;
 
     private float currentLifeTime = 0f;
 
-    private int gunDamage = 50;
+    private int gunDamage = 15;
 
     private WorldGeneration world;
 
@@ -51,7 +51,7 @@ public class EnemyBullet : MonoBehaviour
         COMPUTER computer = collision.GetComponent<COMPUTER>();
         if (computer != null)
         {
-            computer.TakeDamage(30);
+            computer.TakeDamage(70);
         }
 
         if (collision.name == "Tilemap" || collision.tag == "Player" || collision.tag == "COMPUTER")

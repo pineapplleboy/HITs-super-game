@@ -297,7 +297,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 12
-  jumpForce: 1500
+  jumpForce: 1350
   damage: 100
 --- !u!1 &4037293359820108386
 GameObject:

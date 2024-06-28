@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class COMPUTER : MonoBehaviour
 {
-    private int health = 100;
+    private int health = 5000;
+    private int startHealth = 5000;
+
+    private void Start()
+    {
+        health = startHealth;
+    }
 
     void Update()
     {
@@ -17,6 +23,11 @@ public class COMPUTER : MonoBehaviour
     public void TakeDamage(int damage)
     {
         health -= damage;
+    }
+
+    public void Restore()
+    {
+        health = startHealth;
     }
 
     void ThisIsTheEnd()

@@ -7765,6 +7765,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2029819991362870367, guid: 3c08ce34ccde14449a08a2594a2ac934, type: 3}
+      propertyPath: gun
+      value: 
+      objectReference: {fileID: 11400000, guid: 89796dd509d155c489c3b73dd4f4904c, type: 2}
     - target: {fileID: 2194185551771034119, guid: 3c08ce34ccde14449a08a2594a2ac934, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.08065538
@@ -19613,7 +19617,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 858b5590f21ac704e99746bf8f619ee7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 15
+  speed: 12
   jumpForce: 3000
   autoJumpForce: 0
   dashCooldown: 2
@@ -20239,6 +20243,7 @@ MonoBehaviour:
   mask:
     serializedVersion: 2
     m_Bits: 0
+  laser: {fileID: 11400000, guid: b177b7ea1048acb4ba4a56f2f9808b5e, type: 2}
 --- !u!4 &2161114676778608187
 Transform:
   m_ObjectHideFlags: 0
@@ -21114,6 +21119,7 @@ MonoBehaviour:
   amountOfBullets: 100
   Shot: {fileID: 9914260}
   ShotSound: {fileID: 8300000, guid: 95023a032a55eac42950bb9084b9e186, type: 3}
+  gun: {fileID: 11400000, guid: 89796dd509d155c489c3b73dd4f4904c, type: 2}
 --- !u!1 &3622704265484628213
 GameObject:
   m_ObjectHideFlags: 0
@@ -21150,6 +21156,7 @@ MonoBehaviour:
   mask:
     serializedVersion: 2
     m_Bits: 0
+  laser: {fileID: 11400000, guid: b177b7ea1048acb4ba4a56f2f9808b5e, type: 2}
 --- !u!114 &3630255787698879170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23291,6 +23298,7 @@ MonoBehaviour:
     m_Bits: 16704
   damage: 50
   critRate: 4
+  sword: {fileID: 11400000, guid: 6b028e9c8d81eb34ea8734eb7a6f325e, type: 2}
 --- !u!114 &8544795285834769375
 MonoBehaviour:
   m_ObjectHideFlags: 0

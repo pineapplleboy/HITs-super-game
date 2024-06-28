@@ -29,9 +29,30 @@ public class LaserDamage : MonoBehaviour
 
     public LayerMask mask;
 
+    public ItemScriptableObject laser;
+
     void Update()
     {
         if (!isActive) return;
+
+        if (laser.level == 1)
+        {
+            baseDamage = 20;
+            maxDamage = 70;
+            intellectPerTick = 10f;
+        }
+        else if (laser.level == 2)
+        {
+            baseDamage = 50;
+            maxDamage = 152;
+            intellectPerTick = 7f;
+        }
+        else if (laser.level == 3)
+        {
+            baseDamage = 60;
+            maxDamage = 200;
+            intellectPerTick = 5f;
+        }
 
         if (isShooting)
         {

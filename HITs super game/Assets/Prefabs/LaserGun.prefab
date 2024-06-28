@@ -111,6 +111,7 @@ MonoBehaviour:
   mask:
     serializedVersion: 2
     m_Bits: 0
+  laser: {fileID: 11400000, guid: b177b7ea1048acb4ba4a56f2f9808b5e, type: 2}
 --- !u!120 &6203322785291215186
 LineRenderer:
   serializedVersion: 2
@@ -233,6 +234,7 @@ MonoBehaviour:
   mask:
     serializedVersion: 2
     m_Bits: 0
+  laser: {fileID: 11400000, guid: b177b7ea1048acb4ba4a56f2f9808b5e, type: 2}
 --- !u!61 &-4646969154975317019
 BoxCollider2D:
   m_ObjectHideFlags: 0

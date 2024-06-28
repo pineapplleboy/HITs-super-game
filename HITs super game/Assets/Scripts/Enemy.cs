@@ -54,7 +54,7 @@ public class Enemy : MonoBehaviour
 
         lifeTime += Time.deltaTime;
 
-        if (lifeTime >= 2)
+        if (lifeTime >= 120)
         {
             Die();
         }
@@ -73,11 +73,11 @@ public class Enemy : MonoBehaviour
         {
             if (onRaid)
             {
-                PlayerStats.TakeTouchDamage(100, 0);
+                PlayerStats.TakeTouchDamage(90, 0);
             }
             else
             {
-                PlayerStats.TakeTouchDamage(70, 0);
+                PlayerStats.TakeTouchDamage(60, 0);
             }
             
             Spawner.currentNearEnemies--;

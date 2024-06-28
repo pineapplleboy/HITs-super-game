@@ -15,7 +15,7 @@ public class WarriorRaidEnemy : MonoBehaviour
     public int jumpForce = 500;
     public static float slowRate = 1;
 
-    public int damage = 100;
+    private int damage = 23;
 
     private bool onGround = false;
     private bool isFacedRight = true;
@@ -29,7 +29,7 @@ public class WarriorRaidEnemy : MonoBehaviour
     private float sleepTime = 0f;
 
     public Transform attackPoint;
-    public float attackRange = 5;
+    public float attackRange = 1.5f;
     public LayerMask enemyLayers;
 
     private int stepCounter = 0;
@@ -38,7 +38,7 @@ public class WarriorRaidEnemy : MonoBehaviour
     private float currentGoBackJumpingCd = 0f;
 
     private float currentAttackCd = 0f;
-    private float attackCd = 1f;
+    private float attackCd = 2f;
 
     private bool nearWall = false;
 
@@ -181,7 +181,7 @@ public class WarriorRaidEnemy : MonoBehaviour
 
         if (block != null)
         {
-            block.TakeDamage(1);
+            block.TakeDamage(blockDamage);
             //Debug.Log(block.GetHealth());
             if (block.GetHealth() <= 0)
             {
@@ -302,7 +302,7 @@ public class WarriorRaidEnemy : MonoBehaviour
 
     private int CurrentDamage()
     {
-        return 1;
+        return (int)((Random.Range(damage * 0.75f, damage * 1.25f + 1)));
     }
 
     public void Sleep(float newSleepingTime)

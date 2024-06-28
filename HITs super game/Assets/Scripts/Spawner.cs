@@ -24,12 +24,12 @@ public class Spawner : MonoBehaviour
     private Vector2 spawnPosition;
 
     public static int spawnRate = 3;
-    private int maxNearEnemies = 1;
+    private int maxNearEnemies = 5;
     private int raidMaxNearEnemies = 10;
 
     private float raidEnemiesGrowth = 1.7f;
 
-    private float spawnCd = 3f;
+    private float spawnCd = 4.5f;
     private float raidSpawnCd = 1.5f;
 
     public static int currentNearEnemies = 0;
@@ -56,13 +56,13 @@ public class Spawner : MonoBehaviour
 
         world = GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>();
 
-        enemiesMinHp = new List<int>() { 100, 100, 100, 100 };
-        enemiesMaxHp = new List<int>() { 100, 100, 100, 100 };
+        enemiesMinHp = new List<int>() { 30, 150, 75, 40 };
+        enemiesMaxHp = new List<int>() { 40, 200, 90, 60 };
 
-        enemiesResistance = new List<List<int>>() { new List<int>() { 10, 0, 0 }, new List<int>() { 10, 0, 0 }, 
-            new List<int>() { 10, 0, 0 }, new List<int>() { 10, 0, 0 } };
+        enemiesResistance = new List<List<int>>() { new List<int>() { 20, 20, 20 }, new List<int>() { 30, 0, 0 }, 
+            new List<int>() { 0, 15, 0 }, new List<int>() { 0, 0, 0 } };
 
-        enemiesSpawnProbability = new List<int>() { 0, 100, 100, 0 };
+        enemiesSpawnProbability = new List<int>() { 10, 45, 35, 10 };
         raidEnemiesSpawnProbability = new List<int>() { 25, 25, 25, 25 };
 
         allSpawnedEnemies = new List<Enemy>();
@@ -74,6 +74,27 @@ public class Spawner : MonoBehaviour
 
         raidMaxNearEnemies = (int) (10 * Mathf.Pow(raidEnemiesGrowth, DayTime.raidsCounter));
         raidSpawnCd = 1.5f + DayTime.raidsCounter / 10;
+
+        if (DayTime.raidsCounter == 0)
+        {
+            raidEnemiesSpawnProbability = new List<int>() { 0, 100, 0, 0 };
+        }
+        else if (DayTime.raidsCounter == 1)
+        {
+            raidEnemiesSpawnProbability = new List<int>() { 30, 40, 30, 0 };
+        }
+        else if (DayTime.raidsCounter == 2)
+        {
+            raidEnemiesSpawnProbability = new List<int>() { 20, 40, 30, 10 };
+        }
+        else if (DayTime.raidsCounter == 3)
+        {
+            raidEnemiesSpawnProbability = new List<int>() { 0, 0, 0, 100 };
+        }
+        else
+        {
+            raidEnemiesSpawnProbability = new List<int>() { 25, 35, 25, 15 };
+        }
 
         //computerCoord = new Vector2(world.worldWidth / 2 + 20 / 2, world.GetFloorHeight() / 2);
         computerCoord = GameObject.FindGameObjectWithTag("COMPUTER").GetComponent<COMPUTER>().transform.position;
