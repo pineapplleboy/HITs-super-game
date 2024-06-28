@@ -59,26 +59,15 @@ public class KamikazeEnemyAI : MonoBehaviour
 
         if (!onGround)
         {
-            speed = 4;
+            speed = 5;
         }
         else
         {
-            speed = 8;
+            speed = 10;
         }
 
         currentJumpTime -= Time.deltaTime;
         //transform.position = Vector2.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.tag == "Player")
-        {
-            PlayerStats.TakeTouchDamage(damage, 0);
-            Spawner.currentNearEnemies--;
-            Destroy(gameObject);
-        }
-
     }
 
     private void OnCollisionStay2D(Collision2D collision)

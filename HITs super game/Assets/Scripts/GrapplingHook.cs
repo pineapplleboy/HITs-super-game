@@ -22,7 +22,7 @@ public class GrapplingHook : MonoBehaviour
     private float speed = 45;
     private Vector2 endHookPos;
 
-    private bool ropeDrawen = false;
+    public static bool ropeDrawen = false;
     public static bool stopMoving = false;
     private Vector2 ropeDrawCoord;
 

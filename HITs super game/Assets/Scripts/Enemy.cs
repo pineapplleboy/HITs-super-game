@@ -1,6 +1,7 @@
 using Newtonsoft.Json.Bson;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -20,7 +21,9 @@ public class Enemy : MonoBehaviour
 
     private int enemyIndex;
 
-    private bool onRaid = false;
+    public bool onRaid = false;
+
+    private COMPUTER computer;
 
     void Start()
     {
@@ -31,6 +34,8 @@ public class Enemy : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
 
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+
+        computer = GameObject.FindGameObjectWithTag("COMPUTER").GetComponent<COMPUTER>();
     }
 
     private void Update()
@@ -50,6 +55,33 @@ public class Enemy : MonoBehaviour
             Spawner.currentNearEnemies--;
             Spawner.allSpawnedEnemies.RemoveAt(enemyIndex);
             Destroy(gameObject);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (gameObject.layer == 8 && collision.gameObject.tag == "Player")
+        {
+            if (onRaid)
+            {
+                PlayerStats.TakeTouchDamage(100, 0);
+            }
+            else
+            {
+                PlayerStats.TakeTouchDamage(70, 0);
+            }
+            
+            Spawner.currentNearEnemies--;
+            Spawner.allSpawnedEnemies.RemoveAt(enemyIndex);
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (gameObject.layer == 8 && collision.gameObject.tag == "COMPUTER")
+        {
+            computer.TakeDamage(100);
         }
     }
 
@@ -108,13 +140,23 @@ public class Enemy : MonoBehaviour
         GetComponent<Collider2D>().enabled = false;
         died = true;
 
+        GetComponent<Rigidbody2D>().gravityScale = 3;
+
         Spawner.allSpawnedEnemies.RemoveAt(enemyIndex);
     }
 
     private bool IsFarAway()
     {
+        //if (onRaid)
+        //{
+        //    return Mathf.Min(Mathf.Sqrt(Mathf.Pow(transform.position.x - player.position.x, 2) +
+        //    Mathf.Pow(transform.position.y - player.position.y, 2)),
+        //    Mathf.Sqrt(Mathf.Pow(computer.transform.position.x - player.position.x, 2) +
+        //    Mathf.Pow(computer.transform.position.y - player.position.y, 2))) > 250;
+        //}
+
         return Mathf.Sqrt(Mathf.Pow(transform.position.x - player.position.x, 2) + 
-            Mathf.Pow(transform.position.y - player.position.y, 2)) > 400;
+            Mathf.Pow(transform.position.y - player.position.y, 2)) > 250;
     }
 
     public void SetIndex(int index)

@@ -59,6 +59,8 @@ public class NpcAI : MonoBehaviour
 
         for (int i = 0; i < Spawner.allSpawnedEnemies.Count; i++)
         {
+            if (Spawner.allSpawnedEnemies[i] == null) continue;
+
             float currentDist = GetDistance(transform.position, Spawner.allSpawnedEnemies[i].transform.position);
 
             if (currentDist < minDist)

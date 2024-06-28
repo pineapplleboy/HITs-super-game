@@ -16,13 +16,22 @@ public class EnemyBullet : MonoBehaviour
 
     private int gunDamage = 50;
 
+    private WorldGeneration world;
+
     private void Start()
     {
         rb.velocity = transform.right * speed;
+
+        world = GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>();
     }
 
     void Update()
     {
+        if (world.IsBlock((int)transform.position.x, (int)transform.position.y))
+        {
+            Destroy(gameObject);
+        }
+
         currentLifeTime += Time.deltaTime;
 
         if (currentLifeTime >= lifeTime)
@@ -39,8 +48,13 @@ public class EnemyBullet : MonoBehaviour
             player.TakeDamage(CalculateDamage(), 1);
         }
 
+        COMPUTER computer = collision.GetComponent<COMPUTER>();
+        if (computer != null)
+        {
+            computer.TakeDamage(30);
+        }
 
-        if (collision.name == "Tilemap" || collision.tag == "Player")
+        if (collision.name == "Tilemap" || collision.tag == "Player" || collision.tag == "COMPUTER")
         {
             Destroy(gameObject);
         }
@@ -48,7 +62,7 @@ public class EnemyBullet : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.name == "Tilemap" || collision.name == "Player")
+        if (collision.name == "Tilemap" || collision.name == "Player" || collision.tag == "COMPUTER")
         {
             Destroy(gameObject);
         }

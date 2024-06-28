@@ -1,5 +1,7 @@
+using SaveData;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
@@ -16,15 +18,24 @@ public class Bullet : MonoBehaviour
 
     private int gunDamage;
 
+    private WorldGeneration world;
+
     private void Start()
     {
         // определяем, какая при создании пули была пушка в руках, в зависимости от этого ставим дамаг
         rb.velocity = transform.right * speed;
         gunDamage = Gun.damage;
+
+        world = GameObject.FindGameObjectWithTag("World").GetComponent<WorldGeneration>();
     }
 
     void Update()
     {
+        if (world.IsBlock((int)transform.position.x, (int)transform.position.y))
+        {
+            Destroy(gameObject);
+        }
+
         currentLifeTime += Time.deltaTime;
 
         if (currentLifeTime >= lifeTime)
