@@ -343,12 +343,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   jumpForce: 1350
-  damage: 100
   attackPoint: {fileID: 7569214471383365269}
-  attackRange: 5
   enemyLayers:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 8320
 --- !u!1 &3530252337927239877
 GameObject:
   m_ObjectHideFlags: 0
