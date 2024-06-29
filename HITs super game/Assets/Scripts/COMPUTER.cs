@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public class COMPUTER : MonoBehaviour
 {
-    private int health = 2000;
-    private int startHealth = 2000;
+    private int health = 1500;
+    private int startHealth = 1500;
 
     private void Start()
     {

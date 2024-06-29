@@ -54,7 +54,7 @@ public class Enemy : MonoBehaviour
 
         lifeTime += Time.deltaTime;
 
-        if (lifeTime >= 120)
+        if (lifeTime >= 120 && !died)
         {
             Die();
         }
@@ -90,7 +90,7 @@ public class Enemy : MonoBehaviour
     {
         if (gameObject.layer == 8 && collision.gameObject.tag == "COMPUTER")
         {
-            computer.TakeDamage(100);
+            computer.TakeDamage(200);
 
             Spawner.currentNearEnemies--;
             Spawner.allSpawnedEnemies.RemoveAt(enemyIndex);

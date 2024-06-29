@@ -30,7 +30,7 @@ public class Spawner : MonoBehaviour
     private float raidEnemiesGrowth = 1.7f;
 
     private float spawnCd = 4.5f;
-    private float raidSpawnCd = 5f;
+    private float raidSpawnCd = 2.5f;
 
     public static int currentNearEnemies = 0;
 
@@ -73,7 +73,8 @@ public class Spawner : MonoBehaviour
         timer += Time.deltaTime;
 
         raidMaxNearEnemies = (int) (10 * Mathf.Pow(raidEnemiesGrowth, DayTime.raidsCounter));
-        raidSpawnCd = 5f + DayTime.raidsCounter / 10;
+        raidSpawnCd = 2.5f - DayTime.raidsCounter / 10;
+        raidSpawnCd = Mathf.Max(raidSpawnCd, 2f);
 
         if (DayTime.raidsCounter == 0)
         {

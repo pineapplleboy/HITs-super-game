@@ -106,6 +106,11 @@ public class DayTime : MonoBehaviour
 
     string GetTime()
     {
-        return currentHours + ":" + currentMinutes;
+        if (currentMinutes >= 10)
+        {
+            return currentHours + ":" + currentMinutes;
+        }
+        return currentHours + ":0" + currentMinutes;
+
     }
 }

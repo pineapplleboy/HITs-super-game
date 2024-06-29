@@ -29,7 +29,7 @@ public class WarriorEnemyAI : MonoBehaviour
     private float sleepTime = 0f;
 
     public Transform attackPoint;
-    public float attackRange = 1.5f;
+    private float attackRange = 1.5f;
     public LayerMask enemyLayers;
 
     private int stepCounter = 0;

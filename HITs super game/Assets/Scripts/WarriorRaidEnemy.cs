@@ -29,7 +29,7 @@ public class WarriorRaidEnemy : MonoBehaviour
     private float sleepTime = 0f;
 
     public Transform attackPoint;
-    public float attackRange = 1.5f;
+    private float attackRange = 1.5f;
     public LayerMask enemyLayers;
 
     private int stepCounter = 0;
@@ -295,7 +295,19 @@ public class WarriorRaidEnemy : MonoBehaviour
         foreach (Collider2D npc in hitPlayer)
         {
             PlayerStats hittedNpc = npc.GetComponent<PlayerStats>();
-            hittedNpc.TakeDamage(CurrentDamage(), 0);
+
+            if (hittedNpc != null)
+            {
+                hittedNpc.TakeDamage(CurrentDamage(), 0);
+            }
+
+            COMPUTER hittedComp = npc.GetComponent<COMPUTER>();
+
+            if (hittedComp != null)
+            {
+                hittedComp.TakeDamage(100);
+            }
+
         }
 
     }
