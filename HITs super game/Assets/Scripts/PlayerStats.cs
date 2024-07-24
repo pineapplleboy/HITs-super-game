@@ -86,7 +86,7 @@ public class PlayerStats : MonoBehaviour
         if (Input.GetKey(KeyCode.J))
         {
             healthAmount -= 1000;
-            GameObject.FindGameObjectWithTag("COMPUTER").GetComponent<COMPUTER>().TakeDamage(1000);
+            GameObject.FindGameObjectWithTag("COMPUTER").GetComponent<COMPUTER>().TakeDamage(2000);
         }
 
         if (Input.GetKey(KeyCode.I))
