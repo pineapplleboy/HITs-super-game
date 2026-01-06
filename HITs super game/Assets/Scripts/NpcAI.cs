@@ -1,3 +1,4 @@
+using Domain;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,14 +10,13 @@ public class NpcAI : MonoBehaviour
     public GameObject bullet;
     public Transform shotPoint;
 
-    public float cooldown = 1f;
-    private float currentCd = 0f;
+    public CooldownParameter cooldownParameter = new CooldownParameter(1f, 0f); 
 
     private Enemy targetEnemy;
 
     void Update()
     {
-        currentCd -= Time.deltaTime;
+        cooldownParameter.CurrentCd -= Time.deltaTime;
         if (Spawner.allSpawnedEnemies.Count <= 0) return;
         targetEnemy = FindEnemy();
 
@@ -24,7 +24,8 @@ public class NpcAI : MonoBehaviour
 
         Flip();
 
-        if (currentCd <= 0 && GetDistance(transform.position, targetEnemy.transform.position) < 30 && !GetComponent<NPCController>().isInCage)
+        if (cooldownParameter.CurrentCd <= 0 && GetDistance(transform.position, targetEnemy.transform.position) < 30 
+            && !GetComponent<NPCController>().isInCage)
         {
             Shoot();
         }
@@ -48,7 +49,7 @@ public class NpcAI : MonoBehaviour
         Vector2 difference = targetEnemy.transform.position - transform.position;
         float rotZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
 
-        currentCd = cooldown;
+        cooldownParameter.CurrentCd = cooldownParameter.Cooldown;
 
         Instantiate(bullet, shotPoint.position, Quaternion.Euler(0f, 0f, rotZ));
     }
