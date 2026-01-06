@@ -1,3 +1,4 @@
+using Domain;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -52,7 +53,7 @@ public class Gun : MonoBehaviour
         }
 
         Vector2 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-        float rotZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
+        RotationAngle rotZ = new RotationAngle(Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg);
 
         ChangePosition();
 
@@ -62,7 +63,7 @@ public class Gun : MonoBehaviour
             {
                 PlayerMovement.isShooting = true;
                 amountOfBullets--;
-                Instantiate(bullet, shotPoint.position, Quaternion.Euler(0f, 0f, rotZ));
+                Instantiate(bullet, shotPoint.position, Quaternion.Euler(0f, 0f, rotZ.RotationAngleValue));
                 currentShotTime = shotSpeed;
 
                 Shot.clip = ShotSound;
