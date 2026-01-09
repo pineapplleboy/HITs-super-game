@@ -1,3 +1,4 @@
+using Domain;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using UnityEngine;
 
 using Random = UnityEngine.Random;
 
-public class SwordAttack : MonoBehaviour
+public class SwordAttack : Weapon
 {
     private Animator anim;
 
@@ -18,8 +19,7 @@ public class SwordAttack : MonoBehaviour
     public float attackRange = 3;
     public LayerMask enemyLayers;
 
-    public int damage = 50;
-    public float critRate = 4;
+    public DamageParameter damageParameter = new DamageParameter(50, 4);
 
     private float swingTime = 0f;
     private float maxSwingTime = 1f;
@@ -33,7 +33,7 @@ public class SwordAttack : MonoBehaviour
         anim = GetComponent<Animator>();
     }
 
-    void Update()
+    protected override void Update()
     {
         if (PlayerStats.isDead)
             return;
@@ -106,7 +106,7 @@ public class SwordAttack : MonoBehaviour
 
     private int CurrentDamage()
     {
-        int boostDamage = (int) (damage * (swingTime / maxSwingTime));
-        return (int) ((Random.Range(damage * 0.75f, damage * 1.25f + 1) + boostDamage) * PermanentStatsBoost.damageBoost);
+        int boostDamage = (int) (damageParameter.Damage * (swingTime / maxSwingTime));
+        return (int) ((Random.Range(damageParameter.Damage * 0.75f, damageParameter.Damage * 1.25f + 1) + boostDamage) * PermanentStatsBoost.damageBoost);
     }
 }
