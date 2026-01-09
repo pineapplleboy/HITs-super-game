@@ -8,7 +8,7 @@ using UnityEngine;
 
 using Random = UnityEngine.Random;
 
-public class SwordAttack : MonoBehaviour
+public class SwordAttack : Weapon
 {
     private Animator anim;
 
@@ -33,7 +33,7 @@ public class SwordAttack : MonoBehaviour
         anim = GetComponent<Animator>();
     }
 
-    void Update()
+    protected override void Update()
     {
         if (PlayerStats.isDead)
             return;

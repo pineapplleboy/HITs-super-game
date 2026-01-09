@@ -10,5 +10,10 @@
             Damage = damage;
             CritRate = critRate;
         }
+
+        public DamageParameter()
+        {
+            
+        }
     }
 }

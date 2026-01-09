@@ -1,9 +1,10 @@
+using Domain;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-public class LaserGun : MonoBehaviour
+public class LaserGun : Weapon
 {
     public Transform firePoint;
     public LineRenderer lineRenderer;
@@ -41,7 +42,7 @@ public class LaserGun : MonoBehaviour
         lineRenderer.endWidth = laserWidth;
     }
 
-    void Update()
+    protected override void Update()
     {
         if (!isActive) return;
 

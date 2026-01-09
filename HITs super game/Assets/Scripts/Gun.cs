@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Gun : MonoBehaviour
+public class Gun : Weapon
 {
     public float offset;
     public GameObject bullet;
@@ -26,7 +26,7 @@ public class Gun : MonoBehaviour
 
     public static float bulletSpeed;
 
-    void Update()
+    protected override void Update()
     {
         if (PlayerStats.isDead)
             return;
